@@ -5,7 +5,7 @@ def center_image(image):
     image.anchor_y = image.height / 2
 
 def load_images():
-	pyglet.resource.path = ['../assets']
+	pyglet.resource.path = ['assets']
 	pyglet.resource.reindex()
 
 	images = {}
