@@ -8,6 +8,10 @@ class RelativeNode(absolute_node.AbsoluteNode):
 	relative_scale_x = 1.0
 	relative_scale_y = 1.0
 
+	def on_command(self, command, queue):
+		self.update_transform()
+		super().on_command(command, queue)
+
 	def on_update(self, dt):
 		self.update_transform()
 		super().on_update(dt)
@@ -21,7 +25,7 @@ class RelativeNode(absolute_node.AbsoluteNode):
 			scale_y = self.parent.sprite.scale_y * self.relative_scale_y,
 		)
 
-	def update_relative(self, x = 0, y = 0, rotation = 0.0, scale_x = 1.0, scale_y = 1.0):
+	def set_relative_transform(self, x = 0, y = 0, rotation = 0.0, scale_x = 1.0, scale_y = 1.0):
 		self.relative_x = x
 		self.relative_y = y
 		self.rotation = rotation

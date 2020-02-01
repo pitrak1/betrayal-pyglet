@@ -1,10 +1,14 @@
-import pyglet
+from pyglet import sprite
 
 class AbsoluteNode():
 	def __init__(self, img, batch, x=0, y=0):
-		self.sprite = pyglet.sprite.Sprite(img, x, y, batch = batch)
+		self.sprite = sprite.Sprite(img, x, y, batch = batch)
 		self.children = []
 		self.parent = None
+
+	def on_command(self, command, queue):
+		for child in self.children:
+			child.on_command(command, queue)
 
 	def on_update(self, dt):
 		for child in self.children:

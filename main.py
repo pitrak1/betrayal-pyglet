@@ -2,6 +2,7 @@ import pyglet
 from pyglet.gl import *
 from src.world import world
 from src import camera
+from src.commands import *
 
 game_window = pyglet.window.Window(800, 600)
 game_world = world.World()
@@ -23,7 +24,8 @@ def on_draw():
 
 @game_window.event
 def on_key_press(symbol, modifiers):
-    event_stack.append('key pressed')
+    command = src.commands.key_press_command.KeyPressCommand(symbol, modifiers)
+    event_stack.append(command)
 
 # @window.event
 # def on_mouse_press(x, y, button, modifiers):
