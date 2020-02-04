@@ -19,6 +19,14 @@ def make_world_with_stubbed_rooms(make_stubbed_room_node):
 	return _make_world_with_stubbed_rooms
 
 @pytest.fixture
+def make_list():
+	def _make_list(mocker):
+		stubbed_list = types.SimpleNamespace()
+		stubbed_list.append = mocker.stub()
+		return stubbed_list
+	return _make_list
+
+@pytest.fixture
 def make_sprite():
 	def _make_sprite(mocker, x=5, y=10, rotation=0.0, scale_x=1.0, scale_y=1.0):
 		sprite = types.SimpleNamespace()

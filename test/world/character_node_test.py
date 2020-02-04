@@ -2,6 +2,7 @@ import pytest
 import pyglet
 from pyglet import sprite
 from src.world import character_node
+from src.commands import mouse_press_command, highlight_command
 
 class TestCharacterNode():
 	class TestConstructor():
@@ -21,4 +22,52 @@ class TestCharacterNode():
 			node.highlighted = True
 			node.on_draw()
 			node.sprite_highlighted.draw.assert_called_once()
+
+	class TestOnCommand():
+		class TestWithMousePressCommand():
+			class TestWhenWithinBounds():
+				def test_appends_highlight_command_to_queue(self, mocker, make_list, make_character_node):
+					node = make_character_node(mocker, 30, 40)
+					x = 30 + (character_node.CHARACTER_SIZE - 10) // 2
+					command = mouse_press_command.MousePressCommand(x=x, y=40, button='button', modifiers=[])
+					queue = make_list(mocker)
+					node.on_command(command, queue)
+					queue.append.assert_called_once()
+					assert queue.append.call_args[0][0].node == node
+
+				def test_returns_true(self, mocker, make_list, make_character_node):
+					node = make_character_node(mocker, 30, 40)
+					x = 30 + (character_node.CHARACTER_SIZE - 10) // 2
+					command = mouse_press_command.MousePressCommand(x=x, y=40, button='button', modifiers=[])
+					assert node.on_command(command, make_list(mocker)) == True
+
+			class TestWhenNotWithinBounds():
+				def test_does_not_append_to_queue(self, mocker, make_list, make_character_node):
+					node = make_character_node(mocker, 30, 40)
+					x = 30 + (character_node.CHARACTER_SIZE + 10) // 2
+					command = mouse_press_command.MousePressCommand(x=x, y=40, button='button', modifiers=[])
+					queue = make_list(mocker)
+					node.on_command(command, queue)
+					queue.append.assert_not_called()
+
+				def test_returns_false(self, mocker, make_list, make_character_node):
+					node = make_character_node(mocker, 30, 40)
+					x = 30 + (character_node.CHARACTER_SIZE + 10) // 2
+					command = mouse_press_command.MousePressCommand(x=x, y=40, button='button', modifiers=[])
+					assert node.on_command(command, make_list(mocker)) == False
+					
+		class TestWithHighlightCommand():
+			def test_sets_highlighted_if_given_self(self, mocker, make_character_node):
+				node = make_character_node(mocker)
+				command = highlight_command.HighlightCommand(node)
+				node.on_command(command, [command])
+				assert node.highlighted == True
+
+			def test_resets_highlighted_if_not_given_self(self, mocker, make_character_node):
+				node = make_character_node(mocker)
+				other_node = make_character_node(mocker)
+				command = highlight_command.HighlightCommand(other_node)
+				node.on_command(command, [command])
+				assert node.highlighted == False
+					
     
