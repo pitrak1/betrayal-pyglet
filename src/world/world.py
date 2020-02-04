@@ -33,4 +33,4 @@ class World():
 					room.on_update(dt)
 
 	def __add_room(self, command):
-		self.rooms[command.grid_x][command.grid_y] = room_node.RoomNode(command.img, command.grid_x, command.grid_y)
+		self.rooms[command.grid_x][command.grid_y] = room_node.RoomNode(command.img, command.img_highlighted, command.grid_x, command.grid_y)

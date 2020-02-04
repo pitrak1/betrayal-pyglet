@@ -36,8 +36,9 @@ def make_sprite():
 def make_room_node(make_sprite):
 	def _make_room_node(mocker, grid_x=0, grid_y=0):
 		mocker.patch('pyglet.sprite.Sprite')
-		node = room_node.RoomNode(img='image', grid_x=grid_x, grid_y=grid_y)
+		node = room_node.RoomNode(img='image', img_highlighted='image', grid_x=grid_x, grid_y=grid_y)
 		node.sprite = make_sprite(mocker, x=grid_x * room_node.ROOM_SIZE, y=grid_y * room_node.ROOM_SIZE)
+		node.sprite_highlighted = make_sprite(mocker, x=grid_x * room_node.ROOM_SIZE, y=grid_y * room_node.ROOM_SIZE)
 		return node
 	return _make_room_node
 
@@ -64,8 +65,9 @@ def make_room_node_with_stubbed_characters(make_room_node, make_stubbed_characte
 def make_character_node(make_sprite):
 	def _make_character_node(mocker, x=0, y=0):
 		mocker.patch('pyglet.sprite.Sprite')
-		node = character_node.CharacterNode(img='image', grid_x=0, grid_y=0, x=x, y=y)
+		node = character_node.CharacterNode(img='image', img_highlighted='image', grid_x=0, grid_y=0, x=x, y=y)
 		node.sprite = make_sprite(mocker, x=x, y=y)
+		node.sprite_highlighted = make_sprite(mocker, x=x, y=y)
 		return node
 	return _make_character_node
 

@@ -16,13 +16,13 @@ class TestWorld():
 		class TestWithAddRoomCommand():
 			def test_adds_room(self, mocker, make_world):
 				node = make_world(mocker)
-				command = add_room_command.AddRoomCommand(img='img', grid_x=1, grid_y=2)
+				command = add_room_command.AddRoomCommand(img='img', img_highlighted='img', grid_x=1, grid_y=2)
 				node.on_command(command, [command])
 				assert node.rooms[1][2].__class__.__name__ == 'RoomNode'
 
 			def test_does_not_pass_to_rooms(self, mocker, make_world_with_stubbed_rooms):
 				node = make_world_with_stubbed_rooms(mocker)
-				command = add_room_command.AddRoomCommand(img='img', grid_x=0, grid_y=0)
+				command = add_room_command.AddRoomCommand(img='img', img_highlighted='img', grid_x=0, grid_y=0)
 				node.on_command(command, [command])
 				node.rooms[1][2].on_command.assert_not_called()
 				node.rooms[2][3].on_command.assert_not_called()

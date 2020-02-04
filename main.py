@@ -1,7 +1,7 @@
 import pyglet
 from pyglet.gl import *
 from src.world import world
-from src.commands import add_room_command, add_character_command, key_press_command
+from src.commands import add_room_command, add_character_command, key_press_command, mouse_press_command
 from src import camera, assets
 
 game_window = pyglet.window.Window(800, 600)
@@ -17,9 +17,9 @@ game_window.push_handlers(game_camera)
 images = assets.load_images()
 
 command_queue = []
-command_queue.append(add_room_command.AddRoomCommand(images['rooms'][0], 3, 3))
-command_queue.append(add_room_command.AddRoomCommand(images['rooms'][1], 3, 4))
-command_queue.append(add_character_command.AddCharacterCommand(images['brandon_jaspers'], 3, 3))
+command_queue.append(add_room_command.AddRoomCommand(images['rooms'][0], images['rooms_highlighted'][0], 0, 0))
+command_queue.append(add_room_command.AddRoomCommand(images['rooms'][1], images['rooms_highlighted'][1], 0, 1))
+command_queue.append(add_character_command.AddCharacterCommand(images['brandon_jaspers'], images['brandon_jaspers_highlighted'], 0, 1))
 
 @game_window.event
 def on_draw():
@@ -30,6 +30,12 @@ def on_draw():
 @game_window.event
 def on_key_press(symbol, modifiers):
     command_queue.append(key_press_command.KeyPressCommand(symbol, modifiers))
+
+@game_window.event
+def on_mouse_press(x, y, button, modifiers):
+    adjusted_x = x + game_camera.x
+    adjusted_y = y + game_camera.y
+    command_queue.append(mouse_press_command.MousePressCommand(adjusted_x, adjusted_y, button, modifiers))
 
 @game_window.event
 def on_update(dt):

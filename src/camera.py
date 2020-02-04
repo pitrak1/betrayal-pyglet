@@ -21,16 +21,17 @@ class Camera():
             self.y -= dy*2
 
     def on_mouse_scroll(self, x, y, dx, dy):
-        if dy > 0:
-            self.camera_left -= 40
-            self.camera_right += 40
-            self.camera_bottom -= 30
-            self.camera_top += 30
-        elif self.camera_right - self.camera_left > 500:
-            self.camera_left += 40
-            self.camera_right -= 40
-            self.camera_bottom += 30
-            self.camera_top -= 30
+        pass
+        # if dy > 0:
+        #     self.camera_left -= 40
+        #     self.camera_right += 40
+        #     self.camera_bottom -= 30
+        #     self.camera_top += 30
+        # elif self.camera_right - self.camera_left > 500:
+        #     self.camera_left += 40
+        #     self.camera_right -= 40
+        #     self.camera_bottom += 30
+        #     self.camera_top -= 30
 
     def apply(self):
         glMatrixMode(GL_PROJECTION)
