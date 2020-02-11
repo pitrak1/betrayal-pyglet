@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from pyglet import sprite
+from pyglet import sprite, window
 from src.world import room_node
 from src.commands import add_character_command, mouse_press_command, highlight_command
 
@@ -59,27 +59,28 @@ class TestRoomNode():
 					node.characters[1].on_command.assert_called_once_with(command, [command])
 		class TestWithMousePressCommand():
 			class TestWhenWithinBounds():
-				def test_appends_highlight_command_if_characters_return_false(self, mocker, make_list, make_room_node_with_stubbed_characters):
-					node = make_room_node_with_stubbed_characters(mocker)
-					command = mouse_press_command.MousePressCommand(x=0, y=0, button='button', modifiers='modifiers')
-					node.characters[0].on_command.return_value = False
-					node.characters[1].on_command.return_value = False
-					queue = make_list(mocker)
-					node.on_command(command, queue)
-					assert queue.append.call_args[0][0].node == node
+				class TestWhenButtonIsLeftMouseButton():
+					def test_appends_highlight_command_if_characters_return_false(self, mocker, make_list, make_room_node_with_stubbed_characters):
+						node = make_room_node_with_stubbed_characters(mocker)
+						command = mouse_press_command.MousePressCommand(x=0, y=0, button=window.mouse.LEFT, modifiers='modifiers')
+						node.characters[0].on_command.return_value = False
+						node.characters[1].on_command.return_value = False
+						queue = make_list(mocker)
+						node.on_command(command, queue)
+						assert queue.append.call_args[0][0].node == node
 
-				def test_does_not_append_highlight_command_if_a_character_returns_true(self, mocker, make_list, make_room_node_with_stubbed_characters):
-					node = make_room_node_with_stubbed_characters(mocker)
-					command = mouse_press_command.MousePressCommand(x=0, y=0, button='button', modifiers='modifiers')
-					node.characters[0].on_command.return_value = True
-					node.characters[1].on_command.return_value = False
-					queue = make_list(mocker)
-					node.on_command(command, queue)
-					queue.append.assert_not_called()
+					def test_does_not_append_highlight_command_if_a_character_returns_true(self, mocker, make_list, make_room_node_with_stubbed_characters):
+						node = make_room_node_with_stubbed_characters(mocker)
+						command = mouse_press_command.MousePressCommand(x=0, y=0, button=window.mouse.LEFT, modifiers='modifiers')
+						node.characters[0].on_command.return_value = True
+						node.characters[1].on_command.return_value = False
+						queue = make_list(mocker)
+						node.on_command(command, queue)
+						queue.append.assert_not_called()
 			class TestWhenNotWithinBounds():
 				def test_passes_to_characters(self, mocker, make_room_node_with_stubbed_characters):
 					node = make_room_node_with_stubbed_characters(mocker)
-					command = mouse_press_command.MousePressCommand(x=(room_node.ROOM_SIZE + 10) // 2, y=0, button='button', modifiers='modifiers')
+					command = mouse_press_command.MousePressCommand(x=(room_node.ROOM_SIZE + 10) // 2, y=0, button=window.mouse.LEFT, modifiers='modifiers')
 					node.on_command(command, [command])
 					node.characters[0].on_command.assert_called_once_with(command, [command])
 					node.characters[1].on_command.assert_called_once_with(command, [command])

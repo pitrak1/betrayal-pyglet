@@ -1,4 +1,4 @@
-from pyglet import sprite
+from pyglet import sprite, window
 from src.commands import add_character_command, mouse_press_command, highlight_command
 from src.world import character_node
 
@@ -25,15 +25,17 @@ class RoomNode():
 				and self.grid_x == command.grid_x and self.grid_y == command.grid_y:
 			self.__add_character(command)
 		elif isinstance(command, mouse_press_command.MousePressCommand) \
-				and self.__within_bounds(command.x, command.y):
+			and self.__within_bounds(command.x, command.y):
+				if command.button == window.mouse.LEFT:
+					hit_flag = False
+					for character in self.characters:
+						if character.on_command(command, queue):
+							hit_flag = True
 
-			hit_flag = False
-			for character in self.characters:
-				if character.on_command(command, queue):
-					hit_flag = True
-
-			if not hit_flag:
-				queue.append(highlight_command.HighlightCommand(self))
+					if not hit_flag:
+						queue.append(highlight_command.HighlightCommand(self))
+				elif command.button == window.mouse.RIGHT:
+					pass
 		elif isinstance(command, highlight_command.HighlightCommand):
 			if command.node == self:
 				self.highlighted = True
