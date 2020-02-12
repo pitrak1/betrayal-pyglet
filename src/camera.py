@@ -2,40 +2,49 @@ import pyglet
 from pyglet.window import key
 from pyglet.gl import *
 
+CAMERA_PAN_COEFF = 100
+
 class Camera():
-    x, y, z = 0, 0, 0
-    camera_left = 0
-    camera_right = 800
-    camera_bottom = 0
-    camera_top = 600
+    def __init__(self, keys):
+        self.x, self.y = 0, 0
+        self.width = 800
+        self.height = 600
+        self.zoom_factor = 1.0
+        self.keys = keys
+        self.apply()
 
-    def __init__(self):
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        glOrtho(self.camera_left, self.camera_right, self.camera_bottom, self.camera_top, -1, 1)
-        glMatrixMode(GL_MODELVIEW)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glDepthFunc(GL_LEQUAL)
 
-    def on_mouse_drag(self, x, y, dx, dy, button, modifiers):
-        if button == 1:
-            self.x -= dx*2
-            self.y -= dy*2
+    def translate_window_to_absolute_coordinates(self, x, y):
+        adjusted_x = self.x * 2 + (x - self.width // 2) * self.zoom_factor
+        adjusted_y = self.y * 2 + (y - self.height // 2) * self.zoom_factor
+        return [adjusted_x, adjusted_y]
+
+    def on_update(self, dt):
+        if self.keys[key.W]:
+            self.y += dt * CAMERA_PAN_COEFF * self.zoom_factor
+        if self.keys[key.S]:
+            self.y -= dt * CAMERA_PAN_COEFF * self.zoom_factor
+        if self.keys[key.A]:
+            self.x -= dt * CAMERA_PAN_COEFF * self.zoom_factor
+        if self.keys[key.D]:
+            self.x += dt * CAMERA_PAN_COEFF * self.zoom_factor
 
     def on_mouse_scroll(self, x, y, dx, dy):
-        pass
-        # if dy > 0:
-        #     self.camera_left -= 40
-        #     self.camera_right += 40
-        #     self.camera_bottom -= 30
-        #     self.camera_top += 30
-        # elif self.camera_right - self.camera_left > 500:
-        #     self.camera_left += 40
-        #     self.camera_right -= 40
-        #     self.camera_bottom += 30
-        #     self.camera_top -= 30
+        if dy > 0:
+            if self.zoom_factor < 15: self.zoom_factor *= 1.1 
+        else:
+            if self.zoom_factor > 1: self.zoom_factor *= 0.9 
 
     def apply(self):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        glOrtho(self.camera_left, self.camera_right, self.camera_bottom, self.camera_top, -1, 1)
-        glTranslatef(-self.x, -self.y, -self.z)
+        left = (self.x) - (self.width * self.zoom_factor) // 2
+        right = (self.x) + (self.width * self.zoom_factor) // 2
+        bottom = (self.y) - (self.height * self.zoom_factor) // 2
+        top = (self.y) + (self.height * self.zoom_factor) // 2
+        glOrtho(left, right, bottom, top, -1, 1)
+        glTranslatef(-self.x, -self.y, 0)
         glMatrixMode(GL_MODELVIEW)

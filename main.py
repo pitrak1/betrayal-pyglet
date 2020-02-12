@@ -14,13 +14,13 @@ command_queue.append(commands.AddCharacterCommand(images['brandon_jaspers'], ima
 
 game_state_machine = state_machine.StateMachine(command_queue)
 game_world_node = world_node.WorldNode(game_state_machine)
-game_camera = camera.Camera()
 
-glEnable(GL_BLEND)
-glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-glDepthFunc(GL_LEQUAL)
 
+keys = pyglet.window.key.KeyStateHandler()
+game_window.push_handlers(keys)
+game_camera = camera.Camera(keys)
 game_window.push_handlers(game_camera)
+
 
 @game_window.event
 def on_draw():
@@ -34,9 +34,8 @@ def on_key_press(symbol, modifiers):
 
 @game_window.event
 def on_mouse_press(x, y, button, modifiers):
-    adjusted_x = x + game_camera.x
-    adjusted_y = y + game_camera.y
-    command_queue.append(commands.MousePressCommand(adjusted_x, adjusted_y, button, modifiers))
+    coordinates = game_camera.translate_window_to_absolute_coordinates(x, y)
+    command_queue.append(commands.MousePressCommand(coordinates[0], coordinates[1], button, modifiers))
 
 @game_window.event
 def on_update(dt):
@@ -45,6 +44,7 @@ def on_update(dt):
         del command_queue[0]
 
     game_world_node.on_update(dt)
+    game_camera.on_update(dt)
 
 if __name__ == "__main__":
     pyglet.clock.schedule_interval(on_update, 1 / 120.0)
