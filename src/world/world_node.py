@@ -18,14 +18,14 @@ class WorldNode():
 				if isinstance(room, room_node.RoomNode):
 					room.on_draw()
 
-	def on_command(self, command, state_machine):
+	def on_command(self, command):
 		if isinstance(command, commands.AddRoomCommand):
 			self.__add_room(command)
 		else:
 			for room_row in self.rooms:
 				for room in room_row:
 					if isinstance(room, room_node.RoomNode):
-						room.on_command(command, state_machine)
+						room.on_command(command)
 
 	def on_update(self, dt):
 		for room_row in self.rooms:

@@ -41,7 +41,7 @@ def on_mouse_press(x, y, button, modifiers):
 @game_window.event
 def on_update(dt):
     while command_queue:
-        game_world_node.on_command(command_queue[0], game_state_machine)
+        game_world_node.on_command(command_queue[0])
         del command_queue[0]
 
     game_world_node.on_update(dt)

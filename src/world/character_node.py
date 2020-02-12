@@ -18,14 +18,14 @@ class CharacterNode():
 		else:
 			self.sprite.draw()
 
-	def on_command(self, command, state_machine):
+	def on_command(self, command):
 		if isinstance(command, commands.MousePressCommand):
-			return self.__mouse_press_handler(command, state_machine)
+			return self.__mouse_press_handler(command)
 
-	def __mouse_press_handler(self, command, state_machine):
+	def __mouse_press_handler(self, command):
 		if command.button == window.mouse.LEFT:
 			if self.__within_bounds(command.x, command.y):
-				state_machine.select(self)
+				self.state_machine.select(self)
 				return True
 			return False
 		elif command.button == window.mouse.RIGHT:

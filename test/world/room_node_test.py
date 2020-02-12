@@ -41,13 +41,13 @@ class TestRoomNode():
 				def test_adds_character(self, mocker, make_room_node):
 					node = make_room_node(mocker, grid_x=1, grid_y=2)
 					command = commands.AddCharacterCommand(img='img', img_selected='img', grid_x=1, grid_y=2)
-					node.on_command(command, [command])
+					node.on_command(command)
 					assert len(node.characters) == 1
 
 				def test_does_not_pass_to_characters(self, mocker, make_room_node_with_stubbed_characters):
 					node = make_room_node_with_stubbed_characters(mocker, grid_x=1, grid_y=2)
 					command = commands.AddCharacterCommand(img='img', img_selected='img', grid_x=1, grid_y=2)
-					node.on_command(command, [command])
+					node.on_command(command)
 					node.characters[0].on_command.assert_not_called()
 					node.characters[1].on_command.assert_not_called()
 
@@ -55,15 +55,15 @@ class TestRoomNode():
 				def test_does_not_add_character(self, mocker, make_room_node):
 					node = make_room_node(mocker, grid_x=1, grid_y=2)
 					command = commands.AddCharacterCommand(img='img', img_selected='img', grid_x=2, grid_y=2)
-					node.on_command(command, [command])
+					node.on_command(command)
 					assert len(node.characters) == 0
 
 				def test_passes_to_characters(self, mocker, make_room_node_with_stubbed_characters):
 					node = make_room_node_with_stubbed_characters(mocker, grid_x=1, grid_y=2)
 					command = commands.AddCharacterCommand(img='img', img_selected='img', grid_x=2, grid_y=2)
-					node.on_command(command, [command])
-					node.characters[0].on_command.assert_called_once_with(command, [command])
-					node.characters[1].on_command.assert_called_once_with(command, [command])
+					node.on_command(command)
+					node.characters[0].on_command.assert_called_once_with(command)
+					node.characters[1].on_command.assert_called_once_with(command)
 		class TestWithMousePressCommand():
 			class TestWhenWithinBounds():
 				class TestWhenButtonIsLeftMouseButton():
@@ -72,32 +72,30 @@ class TestRoomNode():
 						command = commands.MousePressCommand(x=0, y=0, button=window.mouse.LEFT, modifiers='modifiers')
 						node.characters[0].on_command.return_value = False
 						node.characters[1].on_command.return_value = False
-						state_machine = make_stubbed_state_machine(mocker)
-						node.on_command(command, state_machine)
-						state_machine.select.assert_called_once_with(node)
+						node.on_command(command)
+						node.state_machine.select.assert_called_once_with(node)
 
 					def test_does_not_call_select_on_state_machine_if_a_character_returns_true(self, mocker, make_stubbed_state_machine, make_room_node_with_stubbed_characters):
 						node = make_room_node_with_stubbed_characters(mocker)
 						command = commands.MousePressCommand(x=0, y=0, button=window.mouse.LEFT, modifiers='modifiers')
 						node.characters[0].on_command.return_value = True
 						node.characters[1].on_command.return_value = False
-						state_machine = make_stubbed_state_machine(mocker)
-						node.on_command(command, state_machine)
-						state_machine.select.assert_not_called()
+						node.on_command(command)
+						node.state_machine.select.assert_not_called()
 			class TestWhenNotWithinBounds():
 				def test_passes_to_characters(self, mocker, make_room_node_with_stubbed_characters):
 					node = make_room_node_with_stubbed_characters(mocker)
 					command = commands.MousePressCommand(x=(room_node.ROOM_SIZE + 10) // 2, y=0, button=window.mouse.LEFT, modifiers='modifiers')
-					node.on_command(command, [command])
-					node.characters[0].on_command.assert_called_once_with(command, [command])
-					node.characters[1].on_command.assert_called_once_with(command, [command])
+					node.on_command(command)
+					node.characters[0].on_command.assert_called_once_with(command)
+					node.characters[1].on_command.assert_called_once_with(command)
 
 		class TestWithOtherCommand():
 			def test_passes_to_characters(self, mocker, make_room_node_with_stubbed_characters):
 				node = make_room_node_with_stubbed_characters(mocker)
-				node.on_command('some command', ['some command'])
-				node.characters[0].on_command.assert_called_once_with('some command', ['some command'])
-				node.characters[1].on_command.assert_called_once_with('some command', ['some command'])
+				node.on_command('some command')
+				node.characters[0].on_command.assert_called_once_with('some command')
+				node.characters[1].on_command.assert_called_once_with('some command')
 
 	class TestOnUpdate():
 		def test_calls_on_update_for_characters(self, mocker, make_room_node_with_stubbed_characters):

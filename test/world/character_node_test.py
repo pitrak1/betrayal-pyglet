@@ -32,29 +32,27 @@ class TestCharacterNode():
 						node = make_character_node(mocker, 30, 40)
 						x = 30 + (character_node.CHARACTER_SIZE - 10) // 2
 						command = commands.MousePressCommand(x=x, y=40, button=window.mouse.LEFT, modifiers=[])
-						state_machine = make_stubbed_state_machine(mocker)
-						node.on_command(command, state_machine)
-						state_machine.select.assert_called_once_with(node)
+						node.on_command(command)
+						node.state_machine.select.assert_called_once_with(node)
 
 					def test_returns_true(self, mocker, make_stubbed_state_machine, make_character_node):
 						node = make_character_node(mocker, 30, 40)
 						x = 30 + (character_node.CHARACTER_SIZE - 10) // 2
 						command = commands.MousePressCommand(x=x, y=40, button=window.mouse.LEFT, modifiers=[])
-						assert node.on_command(command, make_stubbed_state_machine(mocker)) == True
+						assert node.on_command(command) == True
 
 				class TestWhenNotWithinBounds():
 					def test_does_not_call_select_on_state_machine(self, mocker, make_stubbed_state_machine, make_character_node):
 						node = make_character_node(mocker, 30, 40)
 						x = 30 + (character_node.CHARACTER_SIZE + 10) // 2
 						command = commands.MousePressCommand(x=x, y=40, button=window.mouse.LEFT, modifiers=[])
-						state_machine = make_stubbed_state_machine(mocker)
-						node.on_command(command, state_machine)
-						state_machine.select.assert_not_called()
+						node.on_command(command)
+						node.state_machine.select.assert_not_called()
 
 					def test_returns_false(self, mocker, make_stubbed_state_machine, make_character_node):
 						node = make_character_node(mocker, 30, 40)
 						x = 30 + (character_node.CHARACTER_SIZE + 10) // 2
 						command = commands.MousePressCommand(x=x, y=40, button=window.mouse.LEFT, modifiers=[])
-						assert node.on_command(command, make_stubbed_state_machine(mocker)) == False
+						assert node.on_command(command) == False
 					
     

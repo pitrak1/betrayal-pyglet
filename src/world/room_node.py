@@ -23,7 +23,7 @@ class RoomNode():
 		for character in self.characters:
 			character.on_draw()
 
-	def on_command(self, command, state_machine):
+	def on_command(self, command):
 		if isinstance(command, commands.AddCharacterCommand) \
 				and self.grid_x == command.grid_x and self.grid_y == command.grid_y:
 			self.__add_character(command)
@@ -32,16 +32,16 @@ class RoomNode():
 				if command.button == window.mouse.LEFT:
 					hit_flag = False
 					for character in self.characters:
-						if character.on_command(command, state_machine):
+						if character.on_command(command):
 							hit_flag = True
 
 					if not hit_flag:
-						state_machine.select(self)
+						self.state_machine.select(self)
 				elif command.button == window.mouse.RIGHT:
 					pass
 		else:
 			for character in self.characters:
-				character.on_command(command, state_machine)
+				character.on_command(command)
 
 	def on_update(self, dt):
 		for character in self.characters:
