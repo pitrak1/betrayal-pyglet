@@ -5,6 +5,11 @@ class AddCharacterCommand():
 		self.grid_x = grid_x
 		self.grid_y = grid_y
 
+class MoveCharacterCommand():
+	def __init__(self, character, room):
+		self.character = character
+		self.room = room
+
 class AddRoomCommand():
 	def __init__(self, img, img_selected, grid_x, grid_y):
 		self.img = img

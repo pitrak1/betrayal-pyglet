@@ -38,7 +38,20 @@ class RoomNode():
 					if not hit_flag:
 						self.state_machine.select(self)
 				elif command.button == window.mouse.RIGHT:
-					pass
+					hit_flag = False
+					for character in self.characters:
+						if character.on_command(command):
+							hit_flag = True
+
+					if not hit_flag:
+						self.state_machine.move(self)
+		elif isinstance(command, commands.MoveCharacterCommand):
+			if command.room == self:
+				if command.character not in self.characters:
+					self.__place_character(command)
+			else:
+				if command.character in self.characters:
+					self.characters.remove(command.character)
 		else:
 			for character in self.characters:
 				character.on_command(command)
@@ -52,6 +65,13 @@ class RoomNode():
 		y = self.sprite.y
 		character = character_node.CharacterNode(command.img, command.img_selected, self.grid_x, self.grid_y, x, y, self.state_machine)
 		self.characters.append(character)
+
+	def __place_character(self, command):
+		command.character.grid_x = self.grid_x
+		command.character.grid_y = self.grid_y
+		command.character.sprite.update(x=self.sprite.x, y=self.sprite.y)
+		command.character.sprite_selected.update(x=self.sprite.x, y=self.sprite.y)
+		self.characters.append(command.character)
 
 	def __within_bounds(self, x, y):
 		valid_x = x > self.sprite.x - ROOM_SIZE // 2 and x < self.sprite.x + ROOM_SIZE // 2

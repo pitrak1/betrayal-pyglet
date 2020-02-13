@@ -30,6 +30,7 @@ def make_stubbed_state_machine(make_state_machine):
 	def _make_stubbed_state_machine(mocker):
 		state_machine = make_state_machine(mocker)
 		mocker.patch.object(state_machine, 'select')
+		mocker.patch.object(state_machine, 'move')
 		return state_machine
 	return _make_stubbed_state_machine
 

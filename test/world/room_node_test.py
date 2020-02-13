@@ -82,6 +82,23 @@ class TestRoomNode():
 						node.characters[1].on_command.return_value = False
 						node.on_command(command)
 						node.state_machine.select.assert_not_called()
+
+				class TestWhenButtonIsRightMouseButton():
+					def test_calls_move_on_state_machine_if_characters_return_false(self, mocker, make_stubbed_state_machine, make_room_node_with_stubbed_characters):
+						node = make_room_node_with_stubbed_characters(mocker)
+						command = commands.MousePressCommand(x=0, y=0, button=window.mouse.RIGHT, modifiers='modifiers')
+						node.characters[0].on_command.return_value = False
+						node.characters[1].on_command.return_value = False
+						node.on_command(command)
+						node.state_machine.move.assert_called_once_with(node)
+
+					def test_does_not_call_move_on_state_machine_if_a_character_returns_true(self, mocker, make_stubbed_state_machine, make_room_node_with_stubbed_characters):
+						node = make_room_node_with_stubbed_characters(mocker)
+						command = commands.MousePressCommand(x=0, y=0, button=window.mouse.RIGHT, modifiers='modifiers')
+						node.characters[0].on_command.return_value = True
+						node.characters[1].on_command.return_value = False
+						node.on_command(command)
+						node.state_machine.move.assert_not_called()
 			class TestWhenNotWithinBounds():
 				def test_passes_to_characters(self, mocker, make_room_node_with_stubbed_characters):
 					node = make_room_node_with_stubbed_characters(mocker)
@@ -89,6 +106,29 @@ class TestRoomNode():
 					node.on_command(command)
 					node.characters[0].on_command.assert_called_once_with(command)
 					node.characters[1].on_command.assert_called_once_with(command)
+
+		class TestWithMoveCommand():
+			def test_adds_character_if_node_matches(self, mocker, make_room_node, make_character_node):
+				node = make_room_node(mocker)
+				character1 = make_character_node(mocker)
+				character2 = make_character_node(mocker)
+				node.characters.append(character1)
+				command = commands.MoveCharacterCommand(character2, node)
+				node.on_command(command)
+				assert len(node.characters) == 2
+				assert character2 in node.characters
+
+			def test_removes_character_if_node_does_not_match_and_character_is_present(self, mocker, make_room_node, make_character_node):
+				node = make_room_node(mocker)
+				other_node = make_room_node(mocker)
+				character1 = make_character_node(mocker)
+				character2 = make_character_node(mocker)
+				node.characters.append(character1)
+				node.characters.append(character2)
+				command = commands.MoveCharacterCommand(character2, other_node)
+				node.on_command(command)
+				assert len(node.characters) == 1
+				assert character2 not in node.characters
 
 		class TestWithOtherCommand():
 			def test_passes_to_characters(self, mocker, make_room_node_with_stubbed_characters):
