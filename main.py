@@ -1,9 +1,10 @@
 import pyglet
 from pyglet.gl import *
-from src.world import world_node
-from src.state import state_machine
+from src.nodes import world_node, room_node
+from src.states import state_machine
 from src.commands import commands
-from src import camera, assets, room_tile_stack, character_tile_stack
+from src.tiles import room_tile_stack, character_tile_stack
+from src import camera, assets
 
 game_window = pyglet.window.Window(800, 600)
 images = assets.load_images()
@@ -16,7 +17,6 @@ command_queue.append(commands.AddCharacterCommand(character_stack.get_by_name('B
 
 game_state_machine = state_machine.StateMachine(command_queue)
 game_world_node = world_node.WorldNode(game_state_machine)
-
 
 keys = pyglet.window.key.KeyStateHandler()
 game_window.push_handlers(keys)
