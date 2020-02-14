@@ -1,7 +1,6 @@
 class AddCharacterCommand():
-	def __init__(self, img, img_selected, grid_x, grid_y):
-		self.img = img
-		self.img_selected = img_selected
+	def __init__(self, character_tile, grid_x, grid_y):
+		self.character_tile = character_tile
 		self.grid_x = grid_x
 		self.grid_y = grid_y
 
@@ -11,9 +10,8 @@ class MoveCharacterCommand():
 		self.room = room
 
 class AddRoomCommand():
-	def __init__(self, img, img_selected, grid_x, grid_y):
-		self.img = img
-		self.img_selected = img_selected
+	def __init__(self, room_tile, grid_x, grid_y):
+		self.room_tile = room_tile
 		self.grid_x = grid_x
 		self.grid_y = grid_y
 

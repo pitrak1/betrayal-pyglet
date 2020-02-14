@@ -1,24 +1,20 @@
 from pyglet import sprite, window
 from src.commands import commands
 from src.world import character_node
-
-ROOM_SIZE = 512
+from src import room_tile
 
 class RoomNode():
-	def __init__(self, img, img_selected, grid_x, grid_y, state_machine):
+	def __init__(self, room_tile, grid_x, grid_y, state_machine):
 		self.grid_x = grid_x
 		self.grid_y = grid_y
-		self.sprite = sprite.Sprite(img, grid_x * ROOM_SIZE, grid_y * ROOM_SIZE)
-		self.sprite_selected = sprite.Sprite(img_selected, grid_x * ROOM_SIZE, grid_y * ROOM_SIZE)
+		self.room_tile = room_tile
+		self.room_tile.set_position(grid_x, grid_y)
 		self.state_machine = state_machine
 		self.characters = []
 
 
 	def on_draw(self):
-		if self.state_machine.is_selected(self):
-			self.sprite_selected.draw() 
-		else:
-			self.sprite.draw()
+		self.room_tile.on_draw(self.state_machine.is_selected(self))
 
 		for character in self.characters:
 			character.on_draw()
@@ -28,7 +24,7 @@ class RoomNode():
 				and self.grid_x == command.grid_x and self.grid_y == command.grid_y:
 			self.__add_character(command)
 		elif isinstance(command, commands.MousePressCommand) \
-			and self.__within_bounds(command.x, command.y):
+			and self.room_tile.within_bounds(command.x, command.y):
 				if command.button == window.mouse.LEFT:
 					hit_flag = False
 					for character in self.characters:
@@ -61,19 +57,11 @@ class RoomNode():
 			character.on_update(dt)
 
 	def __add_character(self, command):
-		x = self.sprite.x
-		y = self.sprite.y
-		character = character_node.CharacterNode(command.img, command.img_selected, self.grid_x, self.grid_y, x, y, self.state_machine)
+		character = character_node.CharacterNode(command.character_tile, self.grid_x, self.grid_y, self.state_machine)
 		self.characters.append(character)
 
 	def __place_character(self, command):
 		command.character.grid_x = self.grid_x
 		command.character.grid_y = self.grid_y
-		command.character.sprite.update(x=self.sprite.x, y=self.sprite.y)
-		command.character.sprite_selected.update(x=self.sprite.x, y=self.sprite.y)
+		command.character.character_tile.set_position(self.grid_x, self.grid_y)
 		self.characters.append(command.character)
-
-	def __within_bounds(self, x, y):
-		valid_x = x > self.sprite.x - ROOM_SIZE // 2 and x < self.sprite.x + ROOM_SIZE // 2
-		valid_y = y > self.sprite.y - ROOM_SIZE // 2 and y < self.sprite.y + ROOM_SIZE // 2
-		return valid_x and valid_y

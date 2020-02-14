@@ -11,7 +11,6 @@ def load_images():
 	images = {}
 	# images['blue_characters'] = pyglet.resource.image('blue_characters.jpg')
 	images['brandon_jaspers'] = pyglet.resource.image('brandon_jaspers.png')
-	images['brandon_jaspers_selected'] = pyglet.resource.image('brandon_jaspers_selected.png')
 	images['darrin_williams'] = pyglet.resource.image('darrin_williams.png')
 	entrance = pyglet.resource.image('entrance.jpg')
 	images['entrance'] = pyglet.image.ImageGrid(entrance, 1, 3)
@@ -34,12 +33,13 @@ def load_images():
 	# images['red_characters'] = pyglet.resource.image('red_characters.jpg')
 	rooms = pyglet.resource.image('rooms.jpg')
 	images['rooms'] = pyglet.image.ImageGrid(rooms, 8, 8)
-	rooms_selected = pyglet.resource.image('rooms_selected.png')
-	images['rooms_selected'] = pyglet.image.ImageGrid(rooms_selected, 8, 8)
 	images['vivian_lopez'] = pyglet.resource.image('vivian_lopez.png')
 	# images['white_characters'] = pyglet.resource.image('white_characters.jpg')
 	# images['yellow_characters'] = pyglet.resource.image('yellow_characters.jpg')
 	images['zoe_ingstrom'] = pyglet.resource.image('zoe_ingstrom.png')
+	images['door'] = pyglet.resource.image('door.png')
+	images['room_selected'] = pyglet.resource.image('room_selected.png')
+	images['character_selected'] = pyglet.resource.image('character_selected.png')
 
 	for key, value in images.items():
 		if value.__class__.__name__ == 'ImageGrid':
