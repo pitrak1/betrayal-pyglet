@@ -1,12 +1,14 @@
 import pyglet
 from pyglet.window import key
 from pyglet.gl import *
+from src.tiles import tile
+from src.nodes import world_node
 
 CAMERA_PAN_COEFF = 100
 
 class Camera():
     def __init__(self, keys):
-        self.x, self.y = 0, 0
+        self.x, self.y = world_node.MAP_WIDTH * tile.GRID_SIZE // 4, world_node.MAP_HEIGHT * tile.GRID_SIZE // 4
         self.width = 800
         self.height = 600
         self.zoom_factor = 1.0

@@ -10,19 +10,20 @@ game_window = pyglet.window.Window(800, 600)
 images = assets.load_images()
 room_stack = room_tile_stack.RoomTileStack(images)
 character_stack = character_tile_stack.CharacterTileStack(images)
-command_queue = []
-command_queue.append(commands.AddRoomCommand(room_stack.draw(), 0, 0))
-command_queue.append(commands.AddRoomCommand(room_stack.draw(), 0, 1))
-command_queue.append(commands.AddCharacterCommand(character_stack.get_by_name('Brandon Jaspers'), 0, 1))
 
-game_state_machine = state_machine.StateMachine(command_queue)
+command_queue = []
+command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Entrance Hall'), 10, 10, 1))
+command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Foyer'), 10, 11, 0))
+command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Grand Staircase'), 10, 12, 2))
+command_queue.append(commands.AddCharacterCommand(character_stack.get_by_name('Brandon Jaspers'), 10, 10))
+
+game_state_machine = state_machine.StateMachine(command_queue, room_stack, character_stack)
 game_world_node = world_node.WorldNode(game_state_machine)
 
 keys = pyglet.window.key.KeyStateHandler()
 game_window.push_handlers(keys)
 game_camera = camera.Camera(keys)
 game_window.push_handlers(game_camera)
-
 
 @game_window.event
 def on_draw():

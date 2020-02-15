@@ -1,6 +1,11 @@
 from pyglet import sprite, text
 from src.tiles import tile
 
+UP = 0
+RIGHT = 1
+DOWN = 2
+LEFT = 3
+
 DOOR_OFFSET = 18
 
 PATTERN_ONE_DOOR = 0
@@ -17,9 +22,25 @@ PATTERNS = [
 	[True, True, True, True]
 ]
 
+def find_pattern(pattern):
+	count = pattern.count(True)
+
+	if count == 1:
+		return PATTERN_ONE_DOOR
+	elif count == 2:
+		if pattern[0] != pattern[1] and pattern[1] != pattern[2]:
+			return PATTERN_ACROSS
+		else:
+			return PATTERN_RIGHT_ANGLE
+	elif count == 3:
+		return PATTERN_ONE_WALL
+	else:
+		return PATTERN_NO_WALLS
+
 class RoomTile(tile.Tile):
 	def __init__(self, name, images, room_number, pattern):
 		super().__init__(name, images['rooms'][room_number], images['room_selected'])
+		self.pattern = pattern
 		self.door_presence = PATTERNS[pattern].copy()
 		self.doors = [
 			sprite.Sprite(images['door']),
@@ -38,10 +59,13 @@ class RoomTile(tile.Tile):
 		self.doors[2].update(x=x, y=y - (tile.GRID_SIZE // 2) + DOOR_OFFSET, rotation=180)
 		self.doors[3].update(x=x - (tile.GRID_SIZE // 2) + DOOR_OFFSET, y=y, rotation=270)
 
-
+	def rotate(self, rotation):
+		for i in range(rotation):
+			self.door_presence.append(self.door_presence.pop(0))
 
 	def on_draw(self, is_selected):
 		super().on_draw(is_selected)
+
 		for i in range(4):
 			if self.door_presence[i]: self.doors[i].draw()
 
