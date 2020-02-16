@@ -7,7 +7,7 @@ class TileStack():
 		random.shuffle(self.stack)
 
 	def create_tiles(self, images):
-		raise NotImplementedError('__create_tiles must be overridden')
+		raise NotImplementedError('create_tiles must be overridden')
 
 	def draw(self):
 		return self.stack.pop(0)

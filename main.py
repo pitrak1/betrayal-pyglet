@@ -5,6 +5,7 @@ from src.states import state_machine
 from src.commands import commands
 from src.tiles import room_tile_stack, character_tile_stack
 from src import camera, assets
+from src.utils import grid_position
 
 game_window = pyglet.window.Window(800, 600)
 images = assets.load_images()
@@ -12,10 +13,10 @@ room_stack = room_tile_stack.RoomTileStack(images)
 character_stack = character_tile_stack.CharacterTileStack(images)
 
 command_queue = []
-command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Entrance Hall'), 10, 10, 1))
-command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Foyer'), 10, 11, 0))
-command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Grand Staircase'), 10, 12, 2))
-command_queue.append(commands.AddCharacterCommand(character_stack.get_by_name('Brandon Jaspers'), 10, 10))
+command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Entrance Hall'), grid_position.GridPosition(10, 10), 1))
+command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Foyer'), grid_position.GridPosition(10, 11), 0))
+command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Grand Staircase'), grid_position.GridPosition(10, 12), 2))
+command_queue.append(commands.AddCharacterCommand(character_stack.get_by_name('Brandon Jaspers'), grid_position.GridPosition(10, 10)))
 
 game_state_machine = state_machine.StateMachine(command_queue, room_stack, character_stack)
 game_world_node = world_node.WorldNode(game_state_machine)
@@ -37,8 +38,8 @@ def on_key_press(symbol, modifiers):
 
 @game_window.event
 def on_mouse_press(x, y, button, modifiers):
-    coordinates = game_camera.translate_window_to_absolute_coordinates(x, y)
-    command_queue.append(commands.MousePressCommand(coordinates[0], coordinates[1], button, modifiers))
+    position = game_camera.translate_window_to_absolute_coordinates(x, y)
+    command_queue.append(commands.MousePressCommand(position, button, modifiers))
 
 @game_window.event
 def on_update(dt):

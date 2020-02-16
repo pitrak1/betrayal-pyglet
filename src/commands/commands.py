@@ -1,7 +1,6 @@
 class MousePressCommand():
-	def __init__(self, x, y, button, modifiers):
-		self.x = x
-		self.y = y
+	def __init__(self, position, button, modifiers):
+		self.position = position
 		self.button = button
 		self.modifiers = modifiers
 
@@ -11,20 +10,17 @@ class KeyPressCommand():
 		self.modifiers = modifiers
 
 class AddRoomCommand():
-	def __init__(self, room_tile, grid_x, grid_y, rotation):
+	def __init__(self, room_tile, grid_position, rotation):
 		self.room_tile = room_tile
-		self.grid_x = grid_x
-		self.grid_y = grid_y
+		self.grid_position = grid_position
 		self.rotation = rotation
 
 class AddCharacterCommand():
-	def __init__(self, character_tile, grid_x, grid_y):
+	def __init__(self, character_tile, grid_position):
 		self.character_tile = character_tile
-		self.grid_x = grid_x
-		self.grid_y = grid_y
+		self.grid_position = grid_position
 
 class MoveCharacterCommand():
-	def __init__(self, character, grid_x, grid_y):
+	def __init__(self, character, grid_position):
 		self.character = character
-		self.grid_x = grid_x
-		self.grid_y = grid_y
+		self.grid_position = grid_position

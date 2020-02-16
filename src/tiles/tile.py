@@ -1,6 +1,5 @@
 from pyglet import sprite, text
-
-GRID_SIZE = 512
+from src.utils import grid_position
 
 class Tile():
 	def __init__(self, name, image, image_selected):
@@ -8,21 +7,20 @@ class Tile():
 		self.label = text.Label(name)
 		self.sprite = sprite.Sprite(image)
 		self.selected = sprite.Sprite(image_selected)
+		self.grid_position = grid_position.GridPosition(0, 0)
 
-	def set_position(self, grid_x, grid_y):
-		x = grid_x * GRID_SIZE
-		y = grid_y * GRID_SIZE
+	def set_position(self, grid_position):
+		self.grid_position = grid_position
+		self.sprite.update(x=grid_position.x, y=grid_position.y)
+		self.selected.update(x=grid_position.x, y=grid_position.y)
 
-		self.sprite.update(x=x, y=y)
-		self.selected.update(x=x, y=y)
-
-		self.label.x = x
-		self.label.y = y
+		self.label.x = grid_position.x
+		self.label.y = grid_position.y
 
 	def on_draw(self, is_selected):
 		self.sprite.draw()
 		if is_selected: self.selected.draw()
 		self.label.draw()
 
-	def within_bounds(self, x, y):
+	def within_bounds(self, position):
 		raise NotImplementedError('within_bounds must be overridden')

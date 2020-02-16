@@ -1,114 +1,62 @@
 import pyglet
 from src import assets
-from src.nodes import node, room_node, grid_node
+from src.nodes import node, room_node, grid_node, room_grid
 from src.commands import commands
-from src.tiles import room_tile
-
-MAP_WIDTH = 20
-MAP_HEIGHT = 20
+from src.tiles import room_tile, door_pattern
+from src.utils import grid_position
 
 class WorldNode(node.Node):
 	def __init__(self, state_machine):
 		super().__init__(state_machine)
-		self.rooms = []
-		for i in range(MAP_WIDTH):
-			room_row = []
-			for j in range(MAP_HEIGHT):
-				room_row.append(grid_node.GridNode(state_machine, i, j, self))
-			self.rooms.append(room_row)
+		self.rooms = room_grid.RoomGrid(self, state_machine)
 		self.characters = []
 
-	def is_valid(self, grid_x, grid_y, direction):
-		room_doors = self.rooms[grid_x][grid_y].tile.door_presence
-		room_pattern = self.rooms[grid_x][grid_y].tile.pattern
+	def is_room_rotation_valid(self, grid_pos, direction):
+		room_doors = self.rooms.get_doors(grid_pos)
+		existing_doors = door_pattern.DoorPattern([
+			self.__has_door_in_direction(grid_pos.up(), grid_position.DOWN),
+			self.__has_door_in_direction(grid_pos.right(), grid_position.LEFT),
+			self.__has_door_in_direction(grid_pos.down(), grid_position.UP),
+			self.__has_door_in_direction(grid_pos.left(), grid_position.RIGHT)
+		])
+		required_common_count = room_doors.get_required_doors_in_common(existing_doors)
+		common_count = room_doors.get_doors_in_common(existing_doors)
+		return required_common_count == common_count and room_doors[grid_position.reverse_direction(direction)]
 
-		existing_doors = [
-			self.rooms[grid_x][grid_y + 1].tile.door_presence[2] if isinstance(self.rooms[grid_x][grid_y + 1], room_node.RoomNode) else False,
-			self.rooms[grid_x + 1][grid_y].tile.door_presence[3] if isinstance(self.rooms[grid_x + 1][grid_y], room_node.RoomNode) else False,
-			self.rooms[grid_x][grid_y - 1].tile.door_presence[0] if isinstance(self.rooms[grid_x][grid_y - 1], room_node.RoomNode) else False,
-			self.rooms[grid_x - 1][grid_y].tile.door_presence[1] if isinstance(self.rooms[grid_x - 1][grid_y], room_node.RoomNode) else False
-		]
-		existing_doors_pattern = room_tile.find_pattern(existing_doors)
-		existing_doors_count = existing_doors.count(True)
-
-		if room_pattern == 0:
-			required = 1
-		elif room_pattern == 1:
-			if existing_doors_pattern == 0:
-				required = 1
-			elif existing_doors_pattern == 1:
-				required = 2
-			elif existing_doors_pattern == 2:
-				required = 1
-			else:
-				required = 2
-		elif room_pattern == 2:
-			if existing_doors_pattern == 0:
-				required = 1
-			elif existing_doors_pattern == 1:
-				required = 1
-			elif existing_doors_pattern == 2:
-				required = 2
-			else:
-				required = 2
-		elif room_pattern == 3:
-			required = min([3, existing_doors_count])
-		elif room_pattern == 4:
-			required = min([3, existing_doors_count])
-
-		common_count = 0
-		for i in range(4):
-			if room_doors[i] and room_doors[i] == existing_doors[i]: common_count = common_count + 1
-
-		return common_count == required and room_doors[(direction + 2) % 4]
-
-	def __doors_in_common(self, doors1, doors2):
-		count = 0
-		for i in range(4):
-			if doors1[i] and doors1[i] == doors2[i]: count = count + 1
-		return count
-
-	def can_move(self, start_x, start_y, end_x, end_y):
-		direction = self.move_direction(start_x, start_y, end_x, end_y)
-		start_doors = self.rooms[start_x][start_y].tile.door_presence
-		end_doors = self.rooms[end_x][end_y].tile.door_presence if isinstance(self.rooms[end_x][end_y], room_node.RoomNode) else []
-
-		if direction == 0:
-			return start_doors[0] and not (end_doors and not end_doors[2])
-		if direction == 1:
-			return start_doors[1] and not (end_doors and not end_doors[3])
-		if direction == 2:
-			return start_doors[2] and not (end_doors and not end_doors[0])
-		if direction == 3:
-			return start_doors[3] and not (end_doors and not end_doors[1])
-		else:
+	def __has_door_in_direction(self, grid_position, direction):
+		try:
+			return self.rooms.get_doors(grid_position)[direction]
+		except:
 			return False
 
-	def move_direction(self, start_x, start_y, end_x, end_y):
-		if abs(start_x - end_x) + abs(start_y - end_y) > 1: return -1
+	def can_move(self, start_grid_position, end_grid_position):
+		try:
+			direction = start_grid_position.grid_direction(end_grid_position)
+		except Exception as e:
+			return False
 
-		if start_x == end_x:
-			return 2 if start_y > end_y else 0
+		if not self.rooms.is_room(end_grid_position): return True
+
+		start_doors = self.rooms.get_doors(start_grid_position)
+		end_doors = self.rooms.get_doors(end_grid_position)
+
+		if direction == grid_position.UP:
+			return start_doors[grid_position.UP] and end_doors[grid_position.DOWN]
+		if direction == grid_position.RIGHT:
+			return start_doors[grid_position.RIGHT] and end_doors[grid_position.LEFT]
+		if direction == grid_position.DOWN:
+			return start_doors[grid_position.DOWN] and end_doors[grid_position.UP]
 		else:
-			return 3 if start_x > end_x else 1
+			return start_doors[grid_position.LEFT] and end_doors[grid_position.RIGHT]
 		
 	def on_draw(self):
-		for room_row in self.rooms:
-			for room in room_row:
-				if isinstance(room, room_node.RoomNode):
-					room.on_draw()
+		self.rooms.on_draw()
 
 	def add_room_handler(self, command):
-		self.rooms[command.grid_x][command.grid_y] = room_node.RoomNode(self.state_machine, command.room_tile, command.grid_x, command.grid_y, self)
-		self.rooms[command.grid_x][command.grid_y].tile.rotate(command.rotation)
+		self.rooms.add_room(command)
 
 	def default_handler(self, command):
-		for room_row in self.rooms:
-			for room in room_row:
-				room.on_command(command)
+		self.rooms.default_handler(lambda room : room.on_command(command))
 
 	def on_update(self, dt):
-		for room_row in self.rooms:
-			for room in room_row:
-				if isinstance(room, room_node.RoomNode):
-					room.on_update(dt)
+		self.rooms.on_update(lambda room : room.on_update(dt))
