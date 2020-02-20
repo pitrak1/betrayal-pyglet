@@ -1,8 +1,7 @@
 import pyglet
 from pyglet.gl import *
 from src.nodes import world_node, room_node
-from src.states import state_machine
-from src.commands import commands
+from src.states import state_machine, commands
 from src.tiles import room_tile_stack, character_tile_stack
 from src import camera, assets
 from src.utils import grid_position
@@ -19,7 +18,7 @@ command_queue.append(commands.AddRoomCommand(room_stack.get_by_name('Grand Stair
 command_queue.append(commands.AddCharacterCommand(character_stack.get_by_name('Brandon Jaspers'), grid_position.GridPosition(10, 10)))
 
 game_state_machine = state_machine.StateMachine(command_queue, room_stack, character_stack)
-game_world_node = world_node.WorldNode(game_state_machine)
+game_world_node = world_node.WorldNode()
 
 keys = pyglet.window.key.KeyStateHandler()
 game_window.push_handlers(keys)
@@ -30,7 +29,7 @@ game_window.push_handlers(game_camera)
 def on_draw():
     game_window.clear()
     game_camera.apply()
-    game_world_node.on_draw()
+    game_world_node.on_draw(game_state_machine.current_state)
 
 @game_window.event
 def on_key_press(symbol, modifiers):
@@ -44,9 +43,9 @@ def on_mouse_press(x, y, button, modifiers):
 @game_window.event
 def on_update(dt):
     while command_queue:
-        game_world_node.on_command(command_queue.pop(0))
+        game_world_node.on_command(command_queue.pop(0), game_state_machine.current_state)
 
-    game_world_node.on_update(dt)
+    game_world_node.on_update(dt, game_state_machine.current_state)
     game_camera.on_update(dt)
 
 if __name__ == "__main__":

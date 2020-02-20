@@ -1,14 +1,12 @@
 import pyglet
 from src import assets
 from src.nodes import node, room_node, grid_node, room_grid
-from src.commands import commands
 from src.tiles import room_tile, door_pattern
 from src.utils import grid_position
 
 class WorldNode(node.Node):
-	def __init__(self, state_machine):
-		super().__init__(state_machine)
-		self.rooms = room_grid.RoomGrid(self, state_machine)
+	def __init__(self, ):
+		self.rooms = room_grid.RoomGrid(self)
 		self.characters = []
 
 	def is_room_rotation_valid(self, grid_pos, direction):
@@ -49,14 +47,14 @@ class WorldNode(node.Node):
 		else:
 			return start_doors[grid_position.LEFT] and end_doors[grid_position.RIGHT]
 		
-	def on_draw(self):
-		self.rooms.on_draw()
+	def on_draw(self, state):
+		self.rooms.on_draw(state)
 
-	def add_room_handler(self, command):
+	def add_room_handler(self, command, state):
 		self.rooms.add_room(command)
 
-	def default_handler(self, command):
-		self.rooms.default_handler(lambda room : room.on_command(command))
+	def default_handler(self, command, state):
+		self.rooms.default_handler(lambda room : room.on_command(command, state))
 
-	def on_update(self, dt):
-		self.rooms.on_update(lambda room : room.on_update(dt))
+	def on_update(self, dt, state):
+		self.rooms.on_update(lambda room : room.on_update(dt, state))

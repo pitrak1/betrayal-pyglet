@@ -1,4 +1,4 @@
-from pyglet import sprite, text
+import pyglet
 from src.tiles import tile, door_pattern
 from src.utils import grid_position
 
@@ -7,10 +7,10 @@ class RoomTile(tile.Tile):
 		super().__init__(name, images['rooms'][room_number], images['room_selected'])
 		self.doors = door_pattern.DoorPattern(code)
 		self.door_sprites = [
-			sprite.Sprite(images['door']),
-			sprite.Sprite(images['door']), 
-			sprite.Sprite(images['door']), 
-			sprite.Sprite(images['door'])
+			pyglet.sprite.Sprite(images['door']),
+			pyglet.sprite.Sprite(images['door']), 
+			pyglet.sprite.Sprite(images['door']), 
+			pyglet.sprite.Sprite(images['door'])
 		]
 
 	def set_position(self, grid_position):

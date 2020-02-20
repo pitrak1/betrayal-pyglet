@@ -1,13 +1,13 @@
-from pyglet import sprite, text
-from src.utils import grid_position
+import pyglet
+from src.utils import grid_position as grid_position_module
 
 class Tile():
 	def __init__(self, name, image, image_selected):
 		self.name = name
-		self.label = text.Label(name)
-		self.sprite = sprite.Sprite(image)
-		self.selected = sprite.Sprite(image_selected)
-		self.grid_position = grid_position.GridPosition(0, 0)
+		self.label = pyglet.text.Label(name)
+		self.sprite = pyglet.sprite.Sprite(image)
+		self.selected = pyglet.sprite.Sprite(image_selected)
+		self.grid_position = grid_position_module.GridPosition(0, 0)
 
 	def set_position(self, grid_position):
 		self.grid_position = grid_position

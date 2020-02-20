@@ -14,6 +14,6 @@ class TileStack():
 
 	def get_by_name(self, name):
 		tile = [x for x in self.stack if x.name == name]
-		if len(tile):
-			self.stack.remove(tile[0])
-			return tile[0]
+		if not len(tile): raise Exception('get_by_name failed because element by name was not in stack')
+		self.stack.remove(tile[0])
+		return tile[0]
