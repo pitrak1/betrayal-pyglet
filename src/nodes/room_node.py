@@ -5,10 +5,11 @@ from pyglet.window import key
 from src.states import selected_state as selected_state_module, rotating_room_state as rotating_room_state_module
 
 class RoomNode(visible_node.VisibleNode):
-	def __init__(self, tile, grid_position, world):
+	def __init__(self, tile, grid_position, can_move, is_room_rotation_valid):
 		super().__init__(tile, grid_position)
 		self.characters = []
-		self.world = world
+		self.can_move = can_move
+		self.is_room_rotation_valid = is_room_rotation_valid
 
 	def on_draw(self, state):
 		super().on_draw(state)
@@ -23,7 +24,7 @@ class RoomNode(visible_node.VisibleNode):
 			elif command.symbol == key.E:
 				self.tile.doors.rotate(3)
 			elif command.symbol == key.ENTER:
-				if self.world.is_room_rotation_valid(self.grid_position, state.entering_direction): 
+				if self.is_room_rotation_valid(self.grid_position, state.entering_direction): 
 					state.place_room()
 
 	def mouse_press_handler(self, command, state):
@@ -33,7 +34,7 @@ class RoomNode(visible_node.VisibleNode):
 					state.select(self)
 			elif command.button == window.mouse.RIGHT:
 				if not self.default_handler(command, state):
-					if state.__class__ == selected_state_module.SelectedState and self.world.can_move(state.selected.grid_position, self.grid_position):
+					if state.__class__ == selected_state_module.SelectedState and self.can_move(state.selected.grid_position, self.grid_position):
 						state.move(self.grid_position)
 
 	def add_character_handler(self, command, state):
