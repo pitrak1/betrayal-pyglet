@@ -26,7 +26,7 @@ class RoomNode(visible_node.VisibleNode):
 				if self.world.is_room_rotation_valid(self.grid_position, state.entering_direction): 
 					state.place_room()
 
-	def mouse_press_handler(self, command, state):
+	def translated_mouse_press_handler(self, command, state):
 		if state.__class__ != rotating_room_state_module.RotatingRoomState and self.tile.within_bounds(command.position):
 			if command.button == window.mouse.LEFT:
 				if not self.default_handler(command, state):

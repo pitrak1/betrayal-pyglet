@@ -12,12 +12,19 @@ class TestNode():
 			assert str(exception.value) == 'on_draw must be overridden'
 
 	class TestOnCommand():
-		def test_calls_mouse_press_handler_on_command(self, mocker):
+		def test_calls_raw_mouse_press_handler_on_command(self, mocker):
 			node = node_module.Node()
-			mocker.patch.object(node, 'mouse_press_handler')
-			command = commands_module.MousePressCommand('position', 'button', 'modifiers')
+			mocker.patch.object(node, 'raw_mouse_press_handler')
+			command = commands_module.RawMousePressCommand('x', 'y', 'button', 'modifiers')
 			node.on_command(command, 'state')
-			node.mouse_press_handler.assert_called_once_with(command, 'state')
+			node.raw_mouse_press_handler.assert_called_once_with(command, 'state')
+
+		def test_calls_translated_mouse_press_handler_on_command(self, mocker):
+			node = node_module.Node()
+			mocker.patch.object(node, 'translated_mouse_press_handler')
+			command = commands_module.TranslatedMousePressCommand('position', 'button', 'modifiers')
+			node.on_command(command, 'state')
+			node.translated_mouse_press_handler.assert_called_once_with(command, 'state')
 
 		def test_calls_key_press_handler_on_command(self, mocker):
 			node = node_module.Node()

@@ -5,7 +5,7 @@ from src.states import no_selection_state as no_selection_state_module, selected
 CHARACTER_SIZE = 150
 
 class CharacterNode(visible_node.VisibleNode):
-	def mouse_press_handler(self, command, state):
+	def translated_mouse_press_handler(self, command, state):
 		if state.__class__ == no_selection_state_module.NoSelectionState or state.__class__ == selected_state_module.SelectedState:
 			if command.button == window.mouse.LEFT and self.tile.within_bounds(command.position):
 				state.select(self)

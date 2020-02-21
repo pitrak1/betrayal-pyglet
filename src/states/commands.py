@@ -1,8 +1,22 @@
-class MousePressCommand():
+class RawMousePressCommand():
+	def __init__(self, x, y, button, modifiers):
+		self.x = x
+		self.y = y
+		self.button = button
+		self.modifiers = modifiers
+
+class TranslatedMousePressCommand():
 	def __init__(self, position, button, modifiers):
 		self.position = position
 		self.button = button
 		self.modifiers = modifiers
+
+class MouseScrollCommand():
+	def __init__(self, x, y, dx, dy):
+		self.x = x
+		self.y = y
+		self.dx = dx
+		self.dy = dy
 
 class KeyPressCommand():
 	def __init__(self, symbol, modifiers):

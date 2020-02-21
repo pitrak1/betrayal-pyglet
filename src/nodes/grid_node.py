@@ -9,7 +9,7 @@ class GridNode(node.Node):
 		self.grid_position = grid_position
 		self.world = world
 
-	def mouse_press_handler(self, command, state):
+	def translated_mouse_press_handler(self, command, state):
 		if state.__class__ == selected_state_module.SelectedState:
 			if command.button == window.mouse.RIGHT and self.within_bounds(command.position) and self.world.can_move(state.selected.grid_position, self.grid_position):
 				state.move_into_new_room(self.grid_position, state.selected.grid_position.grid_direction(self.grid_position))

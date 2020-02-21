@@ -3,11 +3,13 @@ from pyglet.gl import *
 from src.nodes import world_node, room_node
 from src.states import state_machine, commands
 from src.tiles import room_tile_stack, character_tile_stack
-from src import camera, assets
-from src.utils import grid_position
+from src.assets import asset_manager as asset_manager_module
+from src.camera import camera
+from src.utils import grid_position, constants
 
-game_window = pyglet.window.Window(800, 600)
-images = assets.load_images()
+game_window = pyglet.window.Window(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)
+asset_manager = asset_manager_module.AssetManager()
+images = asset_manager.images
 room_stack = room_tile_stack.RoomTileStack(images)
 character_stack = character_tile_stack.CharacterTileStack(images)
 
@@ -19,16 +21,12 @@ command_queue.append(commands.AddCharacterCommand(character_stack.get_by_name('B
 
 game_state_machine = state_machine.StateMachine(command_queue, room_stack, character_stack)
 game_world_node = world_node.WorldNode()
-
-keys = pyglet.window.key.KeyStateHandler()
-game_window.push_handlers(keys)
-game_camera = camera.Camera(keys)
-game_window.push_handlers(game_camera)
+game_camera = camera.Camera()
 
 @game_window.event
 def on_draw():
     game_window.clear()
-    game_camera.apply()
+    game_camera.on_draw(game_state_machine.current_state)
     game_world_node.on_draw(game_state_machine.current_state)
 
 @game_window.event
@@ -37,16 +35,24 @@ def on_key_press(symbol, modifiers):
 
 @game_window.event
 def on_mouse_press(x, y, button, modifiers):
-    position = game_camera.translate_window_to_absolute_coordinates(x, y)
-    command_queue.append(commands.MousePressCommand(position, button, modifiers))
+    command_queue.append(commands.RawMousePressCommand(x, y, button, modifiers))
+
+@game_window.event
+def on_mouse_scroll(x, y, dx, dy):
+    command_queue.append(commands.MouseScrollCommand(x, y, dx, dy))
 
 @game_window.event
 def on_update(dt):
     while command_queue:
-        game_world_node.on_command(command_queue.pop(0), game_state_machine.current_state)
+        command = command_queue.pop(0)
+        game_world_node.on_command(command, game_state_machine.current_state)
+        game_camera.on_command(command, game_state_machine.current_state)
 
     game_world_node.on_update(dt, game_state_machine.current_state)
-    game_camera.on_update(dt)
+    game_camera.on_update(dt, game_state_machine.current_state, key_handler)
+
+key_handler = pyglet.window.key.KeyStateHandler()
+game_window.push_handlers(key_handler)
 
 if __name__ == "__main__":
     pyglet.clock.schedule_interval(on_update, 1 / 120.0)

@@ -5,8 +5,12 @@ class Node():
 		raise NotImplementedError('on_draw must be overridden')
 
 	def on_command(self, command, state):	
-		if isinstance(command, commands.MousePressCommand):
-			return self.mouse_press_handler(command, state)
+		if isinstance(command, commands.RawMousePressCommand):
+			return self.raw_mouse_press_handler(command, state)
+		if isinstance(command, commands.TranslatedMousePressCommand):
+			return self.translated_mouse_press_handler(command, state)
+		if isinstance(command, commands.MouseScrollCommand):
+			return self.mouse_scroll_handler(command, state)
 		elif isinstance(command, commands.KeyPressCommand):
 			return self.key_press_handler(command, state)
 		elif isinstance(command, commands.AddRoomCommand):
@@ -16,7 +20,13 @@ class Node():
 		elif isinstance(command, commands.MoveCharacterCommand):
 			return self.move_character_handler(command, state)
 
-	def mouse_press_handler(self, command, state):
+	def raw_mouse_press_handler(self, command, state):
+		self.default_handler(command, state)
+
+	def translated_mouse_press_handler(self, command, state):
+		self.default_handler(command, state)
+
+	def mouse_scroll_handler(self, command, state):
 		self.default_handler(command, state)
 
 	def key_press_handler(self, command, state):
