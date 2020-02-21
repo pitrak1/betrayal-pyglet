@@ -1,6 +1,6 @@
 import pyglet
-from src import assets
-from src.nodes import node, room_node, grid_node, room_grid
+from src import assets, node
+from src.nodes import room_node, grid_node, room_grid
 from src.tiles import room_tile, door_pattern
 from src.utils import grid_position
 

@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from src.nodes import node as node_module
+from src import node as node_module
 from src.states import commands as  commands_module
 
 class TestNode():

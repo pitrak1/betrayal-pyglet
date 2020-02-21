@@ -1,5 +1,5 @@
 from pyglet import window
-from src.nodes import node
+from src import node
 from src.tiles import tile, room_tile
 from src.utils import grid_position
 from src.states import selected_state as selected_state_module

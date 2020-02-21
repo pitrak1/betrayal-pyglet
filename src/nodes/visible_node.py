@@ -1,4 +1,4 @@
-from src.nodes import node
+from src import node
 from src.states import selected_state as selected_state_module
 
 class VisibleNode(node.Node):
