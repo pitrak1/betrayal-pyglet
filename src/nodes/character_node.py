@@ -7,10 +7,10 @@ CHARACTER_SIZE = 150
 class CharacterNode(visible_node.VisibleNode):
 	def mouse_press_handler(self, command, state):
 		if state.__class__ == no_selection_state_module.NoSelectionState or state.__class__ == selected_state_module.SelectedState:
-			if command.button == window.mouse.LEFT:
-				if self.tile.within_bounds(command.position):
-					state.select(self)
-					return True
+			if command.button == window.mouse.LEFT and self.tile.within_bounds(command.position):
+				state.select(self)
+				return True
+			else:
 				return False
 
 	def default_handler(self, command, state):

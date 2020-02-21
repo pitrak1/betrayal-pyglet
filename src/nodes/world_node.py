@@ -5,7 +5,7 @@ from src.tiles import room_tile, door_pattern
 from src.utils import grid_position
 
 class WorldNode(node.Node):
-	def __init__(self, ):
+	def __init__(self):
 		self.rooms = room_grid.RoomGrid(self)
 		self.characters = []
 

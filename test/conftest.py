@@ -2,12 +2,15 @@ import pytest
 import types
 
 pytest_plugins = [
-   'fixtures.tiles.character_tile_fixture',
-   'fixtures.tiles.character_tile_stack_fixture',
-   'fixtures.tiles.door_pattern_fixture',
-   'fixtures.tiles.room_tile_fixture',
-   'fixtures.tiles.room_tile_stack_fixture',
-   'fixtures.tiles.tile_fixture',
+	'fixtures.nodes.character_node_fixture',
+	'fixtures.nodes.world_node_fixture',
+	'fixtures.states.selected_state_fixture',
+	'fixtures.tiles.character_tile_fixture',
+	'fixtures.tiles.character_tile_stack_fixture',
+	'fixtures.tiles.door_pattern_fixture',
+	'fixtures.tiles.room_tile_fixture',
+	'fixtures.tiles.room_tile_stack_fixture',
+	'fixtures.tiles.tile_fixture',
 ]
 
 @pytest.fixture
