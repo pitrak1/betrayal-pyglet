@@ -3,7 +3,7 @@ from pyglet.window import key
 from pyglet.gl import *
 from src.tiles import tile
 from src import node as node_module
-from src.utils import constants, position
+from src.utils import constants
 from src.states import commands as commands_module
 
 class Camera(node_module.Node):
@@ -32,8 +32,7 @@ class Camera(node_module.Node):
 	def raw_mouse_press_handler(self, command, state):
 		adjusted_x = self.x * 2 + (command.x - self.width // 2) * self.zoom_factor
 		adjusted_y = self.y * 2 + (command.y - self.height // 2) * self.zoom_factor
-		position = position.Position(adjusted_x, adjusted_y)
-		state.translate_mouse_press(position, command.button, command.modifiers)
+		state.trigger_translated_mouse_press(adjusted_x, adjusted_y, command.button, command.modifiers)
 
 	def mouse_scroll_handler(self, command, state):
 		if command.dy > 0:
