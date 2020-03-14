@@ -2,15 +2,18 @@ import pytest
 import types
 
 pytest_plugins = [
-	'fixtures.nodes.character_node_fixture',
-	'fixtures.nodes.world_node_fixture',
-	'fixtures.states.selected_state_fixture',
-	'fixtures.tiles.character_tile_fixture',
-	'fixtures.tiles.character_tile_stack_fixture',
-	'fixtures.tiles.door_pattern_fixture',
-	'fixtures.tiles.room_tile_fixture',
-	'fixtures.tiles.room_tile_stack_fixture',
-	'fixtures.tiles.tile_fixture',
+	# 'fixtures.nodes.character_node_fixture',
+	# 'fixtures.nodes.world_node_fixture',
+	# 'fixtures.states.selected_state_fixture',
+	# 'fixtures.tiles.character_tile_fixture',
+	# 'fixtures.tiles.character_tile_stack_fixture',
+	# 'fixtures.tiles.door_pattern_fixture',
+	# 'fixtures.tiles.room_tile_fixture',
+	# 'fixtures.tiles.room_tile_stack_fixture',
+	# 'fixtures.tiles.tile_fixture',
+	'fixtures.server.states.character_selection_state_fixture',
+	'fixtures.server.states.lobby_state_fixture',
+	'fixtures.server.core_fixture'
 ]
 
 @pytest.fixture
@@ -36,3 +39,22 @@ def make_label():
 		label.y = y
 		return label
 	return _make_label
+
+@pytest.fixture
+def make_connection():
+	def _make_connection(mocker):
+		connection = types.SimpleNamespace()
+		connection.send = mocker.stub()
+		return connection
+	return _make_connection
+
+@pytest.fixture
+def make_node():
+	def _make_node(mocker):
+		node = types.SimpleNamespace()
+		node.on_command = mocker.stub()
+		node.on_update = mocker.stub()
+		node.draw = mocker.stub()
+		return node
+	return _make_node
+
