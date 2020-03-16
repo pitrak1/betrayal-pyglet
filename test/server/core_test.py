@@ -87,12 +87,12 @@ class TestCore():
 				core.network_create_game_handler(command)
 				command_module.update_and_send.assert_called_once_with(command, { 'status': 'invalid_game_name' })
 
-	class TestNetworkGetLobbiesHandler():
+	class TestNetworkGetGamesHandler():
 		def test_sends_success_response(self, mocker, make_core):
 			core = make_core(mocker, 4)
-			command = command_module.Command('network_get_lobbies', {})
-			core.network_get_lobbies_handler(command)
-			command_module.update_and_send.assert_called_once_with(command, { 'status': 'success', 'lobbies': [('variable player game', 4), ('fixed player game', 2), ('empty game', 0)] })
+			command = command_module.Command('network_get_games', {})
+			core.network_get_games_handler(command)
+			command_module.update_and_send.assert_called_once_with(command, { 'status': 'success', 'games': [('variable player game', 4), ('fixed player game', 2), ('empty game', 0)] })
 
 	class TestNetworkJoinGameHandler():
 		class TestIfGameExists():
@@ -121,36 +121,12 @@ class TestCore():
 				core.network_join_game_handler(command)
 				command_module.update_and_send.assert_called_once_with(command, { 'status': 'invalid_game_name' })
 
-	class TestNetworkLeaveGameHandler():
-		def test_sends_success_response(self, mocker, make_core):
-			core = make_core(mocker, 2)
-			command = command_module.Command('network_leave_game', { 'connection': 'variable player connection 0' })
-			core.network_leave_game_handler(command)
-			command_module.update_and_send.assert_called_once_with(command, { 'status': 'success' })
-
-		def test_removes_player_game_association(self, mocker, make_core):
-			core = make_core(mocker, 2)
-			command = command_module.Command('network_leave_game', { 'connection': 'variable player connection 0' })
-			core.network_leave_game_handler(command)
-			assert core.players[0].game == None
-
-		def test_removes_player_from_game(self, mocker, make_core):
-			core = make_core(mocker, 2)
-			command = command_module.Command('network_leave_game', { 'connection': 'variable player connection 0' })
-			core.network_leave_game_handler(command)
-			assert len(core.games['variable player game'].players) == 1
-
-		def test_destroys_game_if_last_person_in_game_leaves(self, mocker, make_core):
-			core = make_core(mocker, 1)
-			command = command_module.Command('network_leave_game', { 'connection': 'variable player connection 0' })
-			core.network_leave_game_handler(command)
+	class TestServerDestroyGameHandler():
+		def test_destroys_game(self, mocker, make_core):
+			core = make_core(mocker)
+			command = command_module.Command('server_destroy_game', { 'game_name': 'variable player game' })
+			core.server_destroy_game_handler(command)
 			assert 'variable player game' not in core.games.keys()
-
-		def test_broadcasts_players_in_game_if_still_players_in_game(self, mocker, make_core):
-			core = make_core(mocker, 2)
-			command = command_module.Command('network_leave_game', { 'connection': 'variable player connection 0' })
-			core.network_leave_game_handler(command)
-			assert core.games['variable player game'].command_queue.pop_front().type == 'server_broadcast_players'
 
 	class TestNetworkLogoutHandler():
 		class TestWhenPlayerIsInAGame():

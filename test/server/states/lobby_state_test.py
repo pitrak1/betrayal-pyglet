@@ -16,7 +16,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 1' 
 					}
@@ -25,7 +24,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 2' 
 					}
@@ -41,7 +39,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 0' 
 					}
@@ -50,7 +47,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 1' 
 					}
@@ -59,7 +55,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 2' 
 					}
@@ -76,7 +71,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 1' 
 					}
@@ -85,7 +79,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 2' 
 					}
@@ -101,7 +94,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 0' 
 					}
@@ -110,7 +102,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 1' 
 					}
@@ -119,7 +110,6 @@ class TestLobbyState():
 					'network_get_players_in_game',
 					{ 
 						'status': 'success', 
-						'game_name': 'game name', 
 						'players': [('player 0', True), ('player 1', False), ('player 2', False)],
 						'connection': 'player connection 2' 
 					}
