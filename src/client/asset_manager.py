@@ -57,7 +57,7 @@ class AssetManager():
 		entrance = pyglet.resource.image('entrance.jpg')
 		self.rooms = list(pyglet.image.ImageGrid(entrance, 3, 1))
 		rooms = pyglet.resource.image('rooms.jpg')
-		self.rooms = self.rooms + list(pyglet.image.ImageGrid(rooms, 8, 8))
+		self.rooms = self.rooms + list(pyglet.image.ImageGrid(rooms, 9, 8))
 
 		for value in self.rooms:
 			self.__center_image(value)

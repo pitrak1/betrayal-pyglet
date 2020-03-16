@@ -44,7 +44,6 @@ class CharacterSelectionState(state_module.State):
 		self.elements.append(self.title)
 
 	def select_character(self, character):
-		print(character)
 		if self.current_player:
 			self.add_command(command_module.Command('network_select_character', { 'status': 'pending', 'character': character }))
 

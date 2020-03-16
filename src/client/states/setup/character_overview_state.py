@@ -1,4 +1,5 @@
 from src.client.states import state as state_module
+from src.client.states.game import game_state as game_state_module
 from src.client.world.common import button as button_module, label as label_module
 from src.shared import constants, command as command_module
 
@@ -45,4 +46,4 @@ class CharacterOverviewState(state_module.State):
 			self.add_command(command_module.Command('network_confirm_character_selections', { 'status': 'pending' }))
 
 	def next(self):
-		print('got here')
+		self.set_state(game_state_module.GameState({ 'assets': self.asset_manager }, self.set_state, self.add_command))

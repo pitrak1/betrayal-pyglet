@@ -1,7 +1,7 @@
 import pyglet
 from pyglet.gl import *
 from src.shared import constants, node
-# from src.client.states.menu import menu_state
+from src.client.states.game import game_state as game_state_module
 
 class Camera(node.Node):
 	def __init__(self):
@@ -36,25 +36,25 @@ class Camera(node.Node):
 		adjusted_y = self.y * 2 + (command.data['y'] - self.height // 2) * self.zoom_factor
 		state.trigger_translated_mouse_press(adjusted_x, adjusted_y, command.data['button'], command.data['modifiers'])
 
-	# def key_press_handler(self, command, state):
-	# 	if not isinstance(state, menu_state.MenuState):
-	# 		if command.symbol == pyglet.window.key.W:
-	# 			self.y += constants.CAMERA_PAN_COEFF * self.zoom_factor
-	# 		elif command.symbol == pyglet.window.key.S:
-	# 			self.y -= constants.CAMERA_PAN_COEFF * self.zoom_factor
-	# 		elif command.symbol == pyglet.window.key.A:
-	# 			self.x -= constants.CAMERA_PAN_COEFF * self.zoom_factor
-	# 		elif command.symbol == pyglet.window.key.D:
-	# 			self.x += constants.CAMERA_PAN_COEFF * self.zoom_factor
+	def client_key_press_handler(self, command, state):
+		if isinstance(state, game_state_module.GameState):
+			if command.data['symbol'] == pyglet.window.key.W:
+				self.y += constants.CAMERA_PAN_COEFF * self.zoom_factor
+			elif command.data['symbol'] == pyglet.window.key.S:
+				self.y -= constants.CAMERA_PAN_COEFF * self.zoom_factor
+			elif command.data['symbol'] == pyglet.window.key.A:
+				self.x -= constants.CAMERA_PAN_COEFF * self.zoom_factor
+			elif command.data['symbol'] == pyglet.window.key.D:
+				self.x += constants.CAMERA_PAN_COEFF * self.zoom_factor
 
-	# def mouse_scroll_handler(self, command, state):
-	# 	if not isinstance(state, menu_state.MenuState):
-	# 		if command.dy > 0:
-	# 			if self.zoom_factor < constants.CAMERA_MAX_ZOOM_FACTOR: 
-	# 				self.zoom_factor *= 1 + constants.CAMERA_ZOOM_COEFF
-	# 		else:
-	# 			if self.zoom_factor > constants.CAMERA_MIN_ZOOM_FACTOR: 
-	# 				self.zoom_factor *= 1 - constants.CAMERA_ZOOM_COEFF
+	def client_mouse_scroll_handler(self, command, state):
+		if isinstance(state, game_state_module.GameState):
+			if command.data['dy'] > 0:
+				if self.zoom_factor < constants.CAMERA_MAX_ZOOM_FACTOR: 
+					self.zoom_factor *= 1 + constants.CAMERA_ZOOM_COEFF
+			else:
+				if self.zoom_factor > constants.CAMERA_MIN_ZOOM_FACTOR: 
+					self.zoom_factor *= 1 - constants.CAMERA_ZOOM_COEFF
 
 
 	

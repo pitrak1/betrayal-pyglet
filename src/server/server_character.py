@@ -1,7 +1,9 @@
-import config
+from src.shared import node as node_module
 
-class ServerCharacter():
+class ServerCharacter(node_module.Node):
 	def __init__(self, entry):
+		super().__init__()
+		self.entry = entry
 		for key, value in entry.items():
 			setattr(self, key, value)
 

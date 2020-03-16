@@ -1,6 +1,6 @@
 import random
 from src.server import server_character
-from src.server.states import state
+from src.server.states import state, game_state as game_state_module
 from src.shared import command as command_module, threaded_sync
 import config
 
@@ -21,7 +21,6 @@ class CharacterSelectionState(state.State):
 	def network_confirm_player_order_handler(self, command, state=None):
 		self.waiting.count()
 		if self.waiting.done():
-			print('next state')
 			for player in self.players:
 				command_module.update_and_send(command, { 'status': 'success', 'connection': player.connection })
 
@@ -68,5 +67,10 @@ class CharacterSelectionState(state.State):
 	def network_confirm_character_selections_handler(self, command, state=None):
 		self.waiting.count()
 		if self.waiting.done():
+			self.set_state(game_state_module.GameState(
+				{ 'players': self.players, 'rooms': self.rooms }, 
+				self.set_state, 
+				self.add_command
+			))
 			for player in self.players:
 				command_module.update_and_send(command, { 'status': 'success', 'connection': player.connection })

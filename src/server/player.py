@@ -5,6 +5,8 @@ class Player():
 		self.connection = connection
 		self.game = None
 		self.character = None
+		self.grid_x = None
+		self.grid_y = None
 
 	def __eq__(self, obj):
 		if self.connection == None:

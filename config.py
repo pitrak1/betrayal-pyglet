@@ -171,3 +171,42 @@ STARTING_CHARACTERS = [
 		'related': ['professor_longfellow']
 	}
 ]
+
+STARTING_ROOMS = [
+	{
+		'display_name': 'Entrance Hall',
+		'variable_name': 'entrance_hall',
+		'asset_index': 5,
+		'doors': [True, True, False, True],
+		'floor': 1,
+		'grid_x': 0,
+		'grid_y': 0,
+		'sprite_rotation': 1
+	},
+	{
+		'display_name': 'Foyer',
+		'variable_name': 'foyer',
+		'asset_index': 4,
+		'doors': [True, True, True, True],
+		'floor': 1,
+		'grid_x': 0,
+		'grid_y': 1,
+		'sprite_rotation': 1
+	},
+	{
+		'display_name': 'Grand Staircase',
+		'variable_name': 'grand_staircase',
+		'asset_index': 3,
+		'doors': [False, False, True, False],
+		'floor': 1,
+		'grid_x': 0,
+		'grid_y': 2,
+		'sprite_rotation': 1
+	}
+]
+
+ONE_DOOR = 0
+RIGHT_ANGLE = 1
+ACROSS = 2
+ONE_WALL = 3
+NO_WALLS = 4

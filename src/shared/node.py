@@ -85,6 +85,9 @@
 
 # 	# status
 # 	'network_confirm_character_selections'
+
+	# # players
+	# 'network_get_player_positions'
 # ]
 
 class Node():
@@ -98,100 +101,103 @@ class Node():
 				self.command_callbacks[entry[:-8]] = getattr(self, entry)
 
 	def on_command(self, command, state=None):
-		self.command_callbacks[command.type](command, state)
+		return self.command_callbacks[command.type](command, state)
 
 	def client_raw_mouse_press_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_translated_mouse_press_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_mouse_scroll_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_key_press_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_text_entered_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_move_character_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_select_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_place_character_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_place_room_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_get_selected_character_move_valid_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_get_room_rotation_valid_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_get_character_tile_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def client_get_room_tile_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def server_broadcast_players_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def server_destroy_game_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_create_player_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_create_game_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_leave_game_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_get_players_in_game_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_get_games_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_join_game_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_logout_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_start_game_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_get_player_order_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def network_confirm_player_order_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_get_available_characters_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_get_current_player_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_select_character_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 		
 	def network_all_characters_selected_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_get_character_selections_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
 
 	def network_confirm_character_selections_handler(self, command, state=None):
-		self.default_handler(command, state)
+		return self.default_handler(command, state)
+
+	def network_get_player_positions_handler(self, command, state=None):
+		return self.default_handler(command, state)
 
 	def default_handler(self, command, state=None):
 		pass

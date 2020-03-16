@@ -120,3 +120,9 @@ class Client(node.Node):
 			self.socket.send(stringify.stringify(command))
 		elif command.data['status'] == 'success':
 			state.next()
+
+	def network_get_player_positions_handler(self, command, state):
+		if command.data['status'] == 'pending':
+			self.socket.send(stringify.stringify(command))
+		elif command.data['status'] == 'success':
+			state.set_player_positions(command.data['players'])

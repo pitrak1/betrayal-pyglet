@@ -33,7 +33,10 @@ class Game():
 		))
 
 	def on_mouse_scroll(self, x, y, dx, dy):
-		pass
+		self.command_queue.append(command_module.Command(
+			'client_mouse_scroll', 
+			{ 'x': x, 'y': y, 'dx': dx, 'dy': dy }
+		))
 
 	def on_update(self, dt):
 		while self.command_queue.has_elements():
