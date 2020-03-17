@@ -13,13 +13,13 @@ class ClientRoom(server_room_module.ServerRoom):
 		self.sprite = pyglet.sprite.Sprite(asset_manager.rooms[entry['asset_index']])
 		self.sprite.update(rotation=90 * self.sprite_rotation)
 		self.door_sprites = [
-			pyglet.sprite.Sprite(asset_manager.misc['door']),
-			pyglet.sprite.Sprite(asset_manager.misc['door']), 
-			pyglet.sprite.Sprite(asset_manager.misc['door']), 
-			pyglet.sprite.Sprite(asset_manager.misc['door'])
+			pyglet.sprite.Sprite(asset_manager.common['door']),
+			pyglet.sprite.Sprite(asset_manager.common['door']), 
+			pyglet.sprite.Sprite(asset_manager.common['door']), 
+			pyglet.sprite.Sprite(asset_manager.common['door'])
 		]
 		self.label = pyglet.text.Label(entry['display_name'])
-		self.selected_sprite = pyglet.sprite.Sprite(asset_manager.misc['room_selected'])
+		self.selected_sprite = pyglet.sprite.Sprite(asset_manager.common['room_selected'])
 		self.selected = False
 
 	def set_position(self, grid_x, grid_y):

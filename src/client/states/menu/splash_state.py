@@ -7,7 +7,7 @@ class SplashState(state_module.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
 		self.elements = [
-			background_module.Background(self.asset_manager.menu['menu_background']),
+			background_module.Background(self.asset_manager.common['menu_background']),
 			area_module.Area(
 				self.asset_manager.common['white_button'],
 				constants.WINDOW_CENTER_X, 

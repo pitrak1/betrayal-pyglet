@@ -11,7 +11,7 @@ class LobbyState(state_module.State):
 		super().__init__(data, set_state, add_command)
 		self.lobby_name = data['lobby_name']
 		self.base_ui = [
-			background_module.Background(self.asset_manager.menu['menu_background']),
+			background_module.Background(self.asset_manager.common['menu_background']),
 			area_module.Area(
 				self.asset_manager.common['white_button'], 
 				constants.WINDOW_CENTER_X, 

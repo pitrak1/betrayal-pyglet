@@ -19,25 +19,25 @@ class CharacterTile(node_module.Node):
 		for value in entry['speed']:
 			speed_text += f'{value} '
 		self.speed_label = label_module.Label(speed_text, x=x, y=y - 35, anchor_x='center', anchor_y='center', align='center', font_size=8, color=(0, 0, 0, 255), batch=self.batch)
-		self.speed_indicator = pyglet.sprite.Sprite(asset_manager.misc['attribute_highlight'], x - 23 + 9 * entry['speed_index'], y - 35, batch=self.batch)
+		self.speed_indicator = pyglet.sprite.Sprite(asset_manager.common['attribute_highlight'], x - 23 + 9 * entry['speed_index'], y - 35, batch=self.batch)
 
 		might_text = 'MGT: '
 		for value in entry['might']:
 			might_text += f'{value} '
 		self.might_label = label_module.Label(might_text, x=x, y=y - 55, anchor_x='center', anchor_y='center', align='center', font_size=8, color=(0, 0, 0, 255), batch=self.batch)
-		self.might_indicator = pyglet.sprite.Sprite(asset_manager.misc['attribute_highlight'], x - 23 + 9 * entry['might_index'], y - 55, batch=self.batch)
+		self.might_indicator = pyglet.sprite.Sprite(asset_manager.common['attribute_highlight'], x - 23 + 9 * entry['might_index'], y - 55, batch=self.batch)
 
 		sanity_text = 'SAN: '
 		for value in entry['sanity']:
 			sanity_text += f'{value} '
 		self.sanity_label = label_module.Label(sanity_text, x=x, y=y - 75, anchor_x='center', anchor_y='center', align='center', font_size=8, color=(0, 0, 0, 255), batch=self.batch)
-		self.sanity_indicator = pyglet.sprite.Sprite(asset_manager.misc['attribute_highlight'], x - 23 + 9 * entry['sanity_index'], y - 75, batch=self.batch)
+		self.sanity_indicator = pyglet.sprite.Sprite(asset_manager.common['attribute_highlight'], x - 23 + 9 * entry['sanity_index'], y - 75, batch=self.batch)
 
 		knowledge_text = 'KNW: '
 		for value in entry['knowledge']:
 			knowledge_text += f'{value} '
 		self.knowledge_label = label_module.Label(knowledge_text, x=x, y=y - 95, anchor_x='center', anchor_y='center', align='center', font_size=8, color=(0, 0, 0, 255), batch=self.batch)
-		self.knowledge_indicator = pyglet.sprite.Sprite(asset_manager.misc['attribute_highlight'], x - 23 + 9 * entry['knowledge_index'], y - 95, batch=self.batch)
+		self.knowledge_indicator = pyglet.sprite.Sprite(asset_manager.common['attribute_highlight'], x - 23 + 9 * entry['knowledge_index'], y - 95, batch=self.batch)
 
 	def draw(self):
 		self.area.draw()

@@ -22,7 +22,7 @@ class CreateLobbyState(state_module.State):
 			'Password (optional)'
 		)
 		self.elements = [
-			background_module.Background(self.asset_manager.menu['menu_background']),
+			background_module.Background(self.asset_manager.common['menu_background']),
 			area_module.Area(
 				self.asset_manager.common['white_button'], 
 				constants.WINDOW_CENTER_X, 
