@@ -2,7 +2,7 @@ import pyglet
 from src.shared import node as node_module
 from src.client.world.common import area as area_module, button as button_module, label as label_module
 
-class LobbyListing(button_module.Button):
+class LobbyListing(node_module.Node):
 	def __init__(self, asset_manager, name, players, x, y, on_click):
 		super().__init__()
 		self.players = players
@@ -15,3 +15,7 @@ class LobbyListing(button_module.Button):
 		self.area.draw()
 		self.lobby_name.draw()
 		self.player_count.draw()
+
+	def client_translated_mouse_press_handler(self, command, state=None):
+		if self.area.within_bounds(command.data['x'], command.data['y']):
+			self.on_click()	
