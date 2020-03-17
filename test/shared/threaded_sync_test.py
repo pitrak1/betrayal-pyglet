@@ -3,6 +3,10 @@ import pyglet
 from src.shared import threaded_sync
 
 class TestThreadedSync():
+	def test_assertion_fails_when_given_value_less_than_2(self):
+		with pytest.raises(AssertionError):
+			threaded_sync.ThreadedSync(1)
+
 	def test_done_returns_true_on_initialization(self):
 		sync = threaded_sync.ThreadedSync(3)
 		assert sync.done()
