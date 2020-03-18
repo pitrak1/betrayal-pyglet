@@ -26,10 +26,22 @@ class Game():
 	def on_text(self, text):
 		self.command_queue.append(command_module.Command('client_text_entered', { 'text': text }))
 
+	def on_text_motion(self, motion):
+		self.command_queue.append(command_module.Command('client_text_motion', { 'motion': motion }))
+
+	def on_text_motion_select(self, motion):
+		self.command_queue.append(command_module.Command('client_text_motion_select', { 'motion': motion }))
+
 	def on_mouse_press(self, x, y, button, modifiers):
 		self.command_queue.append(command_module.Command(
 			'client_raw_mouse_press', 
 			{ 'x': x, 'y': y, 'button': button, 'modifiers': modifiers }
+		))
+
+	def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+		self.command_queue.append(command_module.Command(
+			'client_raw_mouse_drag', 
+			{ 'x': x, 'y': y, 'dx': dx, 'dy': dy, 'buttons': buttons, 'modifiers': modifiers }
 		))
 
 	def on_mouse_scroll(self, x, y, dx, dy):

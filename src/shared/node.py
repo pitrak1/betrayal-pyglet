@@ -18,6 +18,14 @@ class Node():
 	# x, y, button, modifiers
 	def client_translated_mouse_press_handler(self, command, state=None):
 		return self.default_handler(command, state)
+
+	# x, y, dx, dy, buttons, modifiers
+	def client_raw_mouse_drag_handler(self, command, state=None):
+		return self.default_handler(command, state)
+		
+	# x, y, dx, dy, buttons, modifiers
+	def client_translated_mouse_drag_handler(self, command, state=None):
+		return self.default_handler(command, state)
 		
 	# x, y, dx, dy
 	def client_mouse_scroll_handler(self, command, state=None):
@@ -29,6 +37,14 @@ class Node():
 		
 	# text
 	def client_text_entered_handler(self, command, state=None):
+		return self.default_handler(command, state)
+
+	# motion
+	def client_text_motion_handler(self, command, state=None):
+		return self.default_handler(command, state)
+
+	# motion
+	def client_text_motion_selected_handler(self, command, state=None):
 		return self.default_handler(command, state)
 		
 	# selected

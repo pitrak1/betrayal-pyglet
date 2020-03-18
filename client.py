@@ -13,10 +13,6 @@ def on_draw():
 def on_update(dt):
 	game.on_update(dt)
 
-@window.event
-def on_close():
-	pass
-
 game = game_module.Game()
 window.push_handlers(game)
 

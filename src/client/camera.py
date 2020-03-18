@@ -36,6 +36,11 @@ class Camera(node.Node):
 		adjusted_y = self.y * 2 + (command.data['y'] - self.height // 2) * self.zoom_factor
 		state.trigger_translated_mouse_press(adjusted_x, adjusted_y, command.data['button'], command.data['modifiers'])
 
+	def client_raw_mouse_drag_handler(self, command, state):
+		adjusted_x = self.x * 2 + (command.data['x'] - self.width // 2) * self.zoom_factor
+		adjusted_y = self.y * 2 + (command.data['y'] - self.height // 2) * self.zoom_factor
+		state.trigger_translated_mouse_drag(adjusted_x, adjusted_y, command.data['dx'], command.data['dy'], command.data['buttons'], command.data['modifiers'])
+
 	def client_key_press_handler(self, command, state):
 		if isinstance(state, game_state_module.GameState):
 			if command.data['symbol'] == pyglet.window.key.W:

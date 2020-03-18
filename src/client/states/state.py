@@ -27,6 +27,12 @@ class State(node.Node):
 			{ 'x': x, 'y': y, 'button': button, 'modifiers': modifiers }
 		))
 
+	def trigger_translated_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+		self.add_command(command.Command(
+			'client_translated_mouse_drag', 
+			{ 'x': x, 'y': y, 'dx': dx, 'dy': dy, 'buttons': buttons, 'modifiers': modifiers }
+		))
+
 	# def check_waiting(self, key):
 	# 	if self.waiting and key in self.waiting:
 	# 		self.waiting = [value for value in self.waiting if value != key]
