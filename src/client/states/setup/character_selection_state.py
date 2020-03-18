@@ -11,7 +11,7 @@ class CharacterSelectionState(state_module.State):
 
 		self.character_tiles = {}
 		count = 0
-		for character in config.STARTING_CHARACTERS:
+		for character in config.CHARACTERS:
 			x = 68 + 132 * (count % 6)
 			y = 132 + 260 * (count // 6)
 			self.character_tiles[character['variable_name']] = character_tile_module.CharacterTile(self.asset_manager, character, x, y, self.select_character)

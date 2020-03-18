@@ -48,7 +48,7 @@ class PlayerOrderState(state_module.State):
 				color=(255, 255, 255, 255)
 			),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y - 140, 
 				12, 

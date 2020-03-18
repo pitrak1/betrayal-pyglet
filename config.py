@@ -1,7 +1,8 @@
 INET_ADDRESS = '0.0.0.0'
 INET_PORT = 8080
 
-STARTING_CHARACTERS = [
+# Recommended that assets are 150 pixels wide and circular
+CHARACTERS = [
 	{
 		'display_name': 'Heather Granville',
 		'variable_name': 'heather_granville',
@@ -204,6 +205,24 @@ STARTING_ROOMS = [
 		'sprite_rotation': 1
 	}
 ]
+
+COMMON_ASSETS = {
+	'button': { 'asset_type': 'multiple', 'asset': 'brown_button.png', 'rows': 3, 'columns': 3 },
+	'area': { 'asset_type': 'multiple', 'asset': 'white_button.png', 'rows': 3, 'columns': 3 },
+	'text_box': { 'asset_type': 'multiple', 'asset': 'brown_button.png', 'rows': 3, 'columns': 3 },
+	'host_marker': { 'asset_type': 'single', 'asset': 'crown.png' },
+	'menu_background': { 'asset_type': 'single', 'asset': 'menu_background.jpg' },
+	'door': { 'asset_type': 'single', 'asset': 'door.png' },
+	'room_selected': { 'asset_type': 'single', 'asset': 'room_selected.png' },
+	'character_selected': { 'asset_type': 'single', 'asset': 'character_selected.png' },
+	'attribute_highlight': { 'asset_type': 'single', 'asset': 'attribute_highlight.png' }
+}
+
+ROOMS_ASSET = {
+	'asset': 'rooms.jpg',
+	'rows': 9,
+	'columns': 8
+}
 
 ONE_DOOR = 0
 RIGHT_ANGLE = 1

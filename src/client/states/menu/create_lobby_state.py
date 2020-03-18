@@ -8,14 +8,14 @@ class CreateLobbyState(state_module.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
 		self.lobby_name_text_box = text_box_module.TextBox(
-			self.asset_manager.common['brown_button'], 
+			self.asset_manager.common['text_box'], 
 			constants.WINDOW_CENTER_X - 200, 
 			constants.WINDOW_CENTER_Y + 50, 
 			26, 
 			'Lobby Name'
 		)
 		self.password_text_box = text_box_module.TextBox(
-			self.asset_manager.common['brown_button'], 
+			self.asset_manager.common['text_box'], 
 			constants.WINDOW_CENTER_X - 200, 
 			constants.WINDOW_CENTER_Y - 50, 
 			26, 
@@ -24,7 +24,7 @@ class CreateLobbyState(state_module.State):
 		self.elements = [
 			background_module.Background(self.asset_manager.common['menu_background']),
 			area_module.Area(
-				self.asset_manager.common['white_button'], 
+				self.asset_manager.common['area'], 
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y, 
 				40, 
@@ -44,7 +44,7 @@ class CreateLobbyState(state_module.State):
 			self.lobby_name_text_box,
 			self.password_text_box,
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				250, 
 				115, 
 				12, 
@@ -53,7 +53,7 @@ class CreateLobbyState(state_module.State):
 				lambda : self.back()
 			),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				550, 
 				115, 
 				12, 

@@ -39,7 +39,7 @@ class TestLobbyState():
 			state = make_character_selection_state(mocker, 3)
 			command = command_module.Command('network_get_available_characters')
 			state.network_get_available_characters_handler(command)
-			command_module.update_and_send.assert_called_once_with(command, { 'status': 'success', 'characters': [character['variable_name'] for character in config.STARTING_CHARACTERS] })
+			command_module.update_and_send.assert_called_once_with(command, { 'status': 'success', 'characters': [character['variable_name'] for character in config.CHARACTERS] })
 
 	class TestNetworkGetCurrentPlayerHandler():
 		class TestWhenCalledByCurrentPlayer():

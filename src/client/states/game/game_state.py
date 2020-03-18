@@ -11,7 +11,7 @@ class GameState(state_module.State):
 		self.elements = [self.rooms]
 		self.players = []
 		self.characters = {}
-		for character in config.STARTING_CHARACTERS:
+		for character in config.CHARACTERS:
 			self.characters[character['variable_name']] = client_character_module.ClientCharacter(character, self.asset_manager)
 		self.add_command(command_module.Command('network_get_player_positions', { 'status': 'pending' }))
 

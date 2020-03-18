@@ -9,7 +9,7 @@ class SplashState(state_module.State):
 		self.elements = [
 			background_module.Background(self.asset_manager.common['menu_background']),
 			area_module.Area(
-				self.asset_manager.common['white_button'],
+				self.asset_manager.common['area'],
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y, 
 				20, 
@@ -27,13 +27,13 @@ class SplashState(state_module.State):
 				color=(0, 0, 0, 255)
 			),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y + 50,
 				12,
 				3,
 				'Begin', 
-				lambda : self.next()
+				self.next
 			)
 		]
 

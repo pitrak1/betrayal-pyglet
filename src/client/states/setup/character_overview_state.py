@@ -9,7 +9,7 @@ class CharacterOverviewState(state_module.State):
 		self.base_ui = [
 			label_module.Label('The players\' selected characters are:', x=constants.WINDOW_CENTER_X, y=constants.WINDOW_HEIGHT - 40, anchor_x='center', anchor_y='center', align='center', font_size=25, color=(255, 255, 255, 255)),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y - 200, 
 				12, 

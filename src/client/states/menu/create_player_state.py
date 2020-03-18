@@ -8,7 +8,7 @@ class CreatePlayerState(state_module.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
 		self.player_name_text_box = text_box_module.TextBox(
-			self.asset_manager.common['brown_button'], 
+			self.asset_manager.common['text_box'], 
 			constants.WINDOW_CENTER_X - 120, 
 			constants.WINDOW_CENTER_Y + 50, 
 			16,
@@ -17,7 +17,7 @@ class CreatePlayerState(state_module.State):
 		self.elements = [
 			background_module.Background(self.asset_manager.common['menu_background']),
 			area_module.Area(
-				self.asset_manager.common['white_button'],
+				self.asset_manager.common['area'],
 				constants.WINDOW_CENTER_X,
 				constants.WINDOW_CENTER_Y,
 				20,
@@ -36,7 +36,7 @@ class CreatePlayerState(state_module.State):
 			),
 			self.player_name_text_box,
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y - 50, 
 				12, 
@@ -45,7 +45,7 @@ class CreatePlayerState(state_module.State):
 				lambda : self.submit()
 			),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y - 110, 
 				12, 

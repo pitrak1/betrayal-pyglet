@@ -12,18 +12,12 @@ class AssetManager():
 
 	def __load_common(self):
 		self.common = {}
-		brown_button = pyglet.resource.image('brown_button.png')
-		self.common['brown_button'] = list(pyglet.image.ImageGrid(brown_button, 3, 3))
-		grey_button = pyglet.resource.image('grey_button.png')
-		self.common['grey_button'] = list(pyglet.image.ImageGrid(grey_button, 3, 3))
-		white_button = pyglet.resource.image('white_button.png')
-		self.common['white_button'] = list(pyglet.image.ImageGrid(white_button, 3, 3))
-		self.common['crown'] = pyglet.resource.image('crown.png')
-		self.common['menu_background'] = pyglet.resource.image('menu_background.jpg')
-		self.common['door'] = pyglet.resource.image('door.png')
-		self.common['room_selected'] = pyglet.resource.image('room_selected.png')
-		self.common['character_selected'] = pyglet.resource.image('character_selected.png')
-		self.common['attribute_highlight'] = pyglet.resource.image('attribute_highlight.png')
+		for key, value in config.COMMON_ASSETS.items():
+			if value['asset_type'] == 'single':
+				self.common[key] = pyglet.resource.image(value['asset'])
+			else:
+				image = pyglet.resource.image(value['asset'])
+				self.common[key] = list(pyglet.image.ImageGrid(image, value['rows'], value['columns']))
 
 		for key, value in self.common.items():
 			if isinstance(value, list):
@@ -34,13 +28,13 @@ class AssetManager():
 
 	def __load_characters(self):
 		self.characters = {}
-		for character in config.STARTING_CHARACTERS:
+		for character in config.CHARACTERS:
 			self.characters[character['variable_name']] = pyglet.resource.image(character['portrait_asset'])
 			self.__center_image(self.characters[character['variable_name']])
 
 	def __load_rooms(self):
-		rooms = pyglet.resource.image('rooms.jpg')
-		self.rooms = list(pyglet.image.ImageGrid(rooms, 9, 8))
+		rooms = pyglet.resource.image(config.ROOMS_ASSET['asset'])
+		self.rooms = list(pyglet.image.ImageGrid(rooms, config.ROOMS_ASSET['rows'], config.ROOMS_ASSET['columns']))
 
 		for value in self.rooms:
 			self.__center_image(value)

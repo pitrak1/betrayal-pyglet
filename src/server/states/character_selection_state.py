@@ -11,7 +11,7 @@ class CharacterSelectionState(state.State):
 		self.waiting = threaded_sync.ThreadedSync(len(self.players))
 		self.current_player_index = len(self.players) - 1
 		self.characters = []
-		for character in config.STARTING_CHARACTERS:
+		for character in config.CHARACTERS:
 			self.characters.append(server_character.ServerCharacter(character))
 
 	def network_get_player_order_handler(self, command, state=None):

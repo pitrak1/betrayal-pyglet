@@ -7,7 +7,7 @@ class CharacterTile(node_module.Node):
 	def __init__(self, asset_manager, entry, x, y, on_click):
 		super().__init__()
 		self.entry = entry
-		self.area = area_module.Area(asset_manager.common['white_button'], x, y, 8, 16)
+		self.area = area_module.Area(asset_manager.common['area'], x, y, 8, 16)
 		self.on_click = on_click
 		self.batch = pyglet.graphics.Batch()
 		self.name_label = label_module.Label(entry['display_name'], x=x, y=y + 115, anchor_x='center', anchor_y='center', align='center', font_size=10, color=(0, 0, 0, 255), batch=self.batch)

@@ -10,7 +10,7 @@ class LobbyListState(state_module.State):
 		self.starting_ui = [
 			background_module.Background(self.asset_manager.common['menu_background']),
 			area_module.Area(
-				self.asset_manager.common['white_button'], 
+				self.asset_manager.common['area'], 
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y, 
 				40, 
@@ -28,7 +28,7 @@ class LobbyListState(state_module.State):
 				color=(0, 0, 0, 255)
 			),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X - 150, 
 				constants.WINDOW_CENTER_Y - 185, 
 				12, 
@@ -37,7 +37,7 @@ class LobbyListState(state_module.State):
 				lambda : self.back()
 			),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X + 150, 
 				constants.WINDOW_CENTER_Y - 185, 
 				12, 

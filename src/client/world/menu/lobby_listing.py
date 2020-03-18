@@ -6,7 +6,7 @@ class LobbyListing(node_module.Node):
 	def __init__(self, asset_manager, name, players, x, y, on_click):
 		super().__init__()
 		self.players = players
-		self.area = area_module.Area(asset_manager.common['brown_button'], x, y, 26, 2, 'left')
+		self.area = area_module.Area(asset_manager.common['button'], x, y, 26, 2, 'left')
 		self.lobby_name = label_module.Label(name, x=x, y=y, anchor_x='left', anchor_y='center', align='left', font_size=15)
 		self.player_count = label_module.Label(f'{players}/6', x=x + 390, y=y, anchor_x='right', anchor_y='center', align='right', font_size=15)
 		self.on_click = on_click

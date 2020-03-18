@@ -13,7 +13,7 @@ class LobbyState(state_module.State):
 		self.base_ui = [
 			background_module.Background(self.asset_manager.common['menu_background']),
 			area_module.Area(
-				self.asset_manager.common['white_button'], 
+				self.asset_manager.common['area'], 
 				constants.WINDOW_CENTER_X, 
 				constants.WINDOW_CENTER_Y, 
 				40, 
@@ -31,7 +31,7 @@ class LobbyState(state_module.State):
 				color=(0, 0, 0, 255)
 			),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X - 150, 
 				constants.WINDOW_CENTER_Y - 185, 
 				12, 
@@ -40,7 +40,7 @@ class LobbyState(state_module.State):
 				lambda : self.leave_lobby()
 			),
 			button_module.Button(
-				self.asset_manager.common['brown_button'], 
+				self.asset_manager.common['button'], 
 				constants.WINDOW_CENTER_X + 150, 
 				constants.WINDOW_CENTER_Y - 185, 
 				12, 
