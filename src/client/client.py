@@ -51,7 +51,7 @@ class Client(node.Node):
 		if command.data['status'] == 'pending':
 			self.socket.send(stringify.stringify(command))
 		elif command.data['status'] == 'success':
-			state.set_lobbies(command.data['games'])
+			state.set_games(command.data['games'])
 
 	def network_join_game_handler(self, command, state):
 		if command.data['status'] == 'pending':

@@ -1,7 +1,7 @@
 import sys
 from src.client.world.common import background as background_module, button as button_module, area as area_module, label as label_module
 from src.client.states import state as state_module
-from src.client.states.menu import create_lobby_state as create_lobby_state_module, lobby_list_state as lobby_list_state_module
+from src.client.states.menu import create_game_state as create_game_state_module, game_list_state as game_list_state_module
 from src.shared import constants, command as command_module
 
 class MainMenuState(state_module.State):
@@ -34,7 +34,7 @@ class MainMenuState(state_module.State):
 				12, 
 				3, 
 				'Create Game', 
-				lambda : self.create_lobby()
+				self.create_game
 			),
 			button_module.Button(
 				self.asset_manager.common['button'], 
@@ -43,7 +43,7 @@ class MainMenuState(state_module.State):
 				12, 
 				3, 
 				'Join Game', 
-				lambda : self.join_lobby()
+				self.join_game
 			),
 			button_module.Button(
 				self.asset_manager.common['button'], 
@@ -52,7 +52,7 @@ class MainMenuState(state_module.State):
 				12, 
 				3, 
 				'Exit', 
-				lambda : self.start_exit()
+				self.start_exit
 			)
 		]
 
@@ -62,15 +62,15 @@ class MainMenuState(state_module.State):
 	def exit(self):
 		sys.exit()
 
-	def create_lobby(self):
-		self.set_state(create_lobby_state_module.CreateLobbyState(
+	def create_game(self):
+		self.set_state(create_game_state_module.CreateGameState(
 			{ 'assets': self.asset_manager },
 			self.set_state, 
 			self.add_command
 		))
 
-	def join_lobby(self):
-		self.set_state(lobby_list_state_module.LobbyListState(
+	def join_game(self):
+		self.set_state(game_list_state_module.GameListState(
 			{ 'assets': self.asset_manager },
 			self.set_state, 
 			self.add_command

@@ -33,11 +33,11 @@ class SplashState(state_module.State):
 				12,
 				3,
 				'Begin', 
-				self.next
+				self.begin
 			)
 		]
 
-	def next(self):
+	def begin(self):
 		self.set_state(create_player_state_module.CreatePlayerState(
 			{ 'assets': self.asset_manager },
 			self.set_state, 
