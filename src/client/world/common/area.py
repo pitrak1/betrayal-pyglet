@@ -1,9 +1,9 @@
 import pyglet
-from src.shared import node
+from src.shared import node as node_module, bounds
 
 ASSET_TILE_SIZE = 16
 
-class Area(node.Node):
+class Area(node_module.Node):
 	def __init__(self, asset, x, y, width, height, align='center', opacity=255):
 		super().__init__()
 		self.x = x
@@ -12,6 +12,7 @@ class Area(node.Node):
 		self.height = height
 		self.sprites = []
 		self.batch = pyglet.graphics.Batch()
+		self.background = pyglet.graphics.OrderedGroup(0)
 
 		if align == 'center':
 			base_x_offset = (width - 1) / 2 * ASSET_TILE_SIZE
@@ -38,7 +39,7 @@ class Area(node.Node):
 					sprite_index = base_sprite_index + 2
 				else:
 					sprite_index = base_sprite_index + 1
-				self.sprites.append(pyglet.sprite.Sprite(asset[sprite_index], batch=self.batch))
+				self.sprites.append(pyglet.sprite.Sprite(asset[sprite_index], batch=self.batch, group=self.background))
 				self.sprites[j * width + i].update(
 					x=x - base_x_offset + ASSET_TILE_SIZE * i, 
 					y=y - base_y_offset + ASSET_TILE_SIZE * j,
@@ -49,8 +50,4 @@ class Area(node.Node):
 		self.batch.draw()
 
 	def within_bounds(self, x, y):
-		base_x_offset = self.width / 2 * ASSET_TILE_SIZE
-		base_y_offset = self.height / 2 * ASSET_TILE_SIZE
-		x_valid = x > self.x - base_x_offset and x < self.x + base_x_offset
-		y_valid = y > self.y - base_y_offset and y < self.y + base_y_offset
-		return x_valid and y_valid	
+		return bounds.within_rect_bounds(self.x, self.y, x, y, self.width * ASSET_TILE_SIZE, self.height * ASSET_TILE_SIZE)

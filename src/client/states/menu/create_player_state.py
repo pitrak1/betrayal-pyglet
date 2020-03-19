@@ -12,7 +12,8 @@ class CreatePlayerState(state_module.State):
 			constants.WINDOW_CENTER_X - 120, 
 			constants.WINDOW_CENTER_Y + 50, 
 			16,
-			'Player Name'
+			'Player Name',
+			25
 		)
 		self.elements = [
 			background_module.Background(self.asset_manager.common['menu_background']),
