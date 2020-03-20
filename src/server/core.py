@@ -1,6 +1,6 @@
 import socket
 import threading
-from src.shared import command as command_module, threaded_queue, node
+from src.shared import command as command_module, threaded_queue, node, constants
 from src.server import player as player_module, game as game_module
 
 class Core(node.Node):
@@ -23,19 +23,27 @@ class Core(node.Node):
 		del self.games[command.data['game_name']]
 
 	def network_create_player_handler(self, command, state=None):
-		if any(value for value in self.players if value.name == command.data['player_name']):
+		if len(command.data['player_name']) < 6:
+			command_module.update_and_send(command, { 'status': 'name_too_short' })
+		elif len(command.data['player_name']) > 25:
+			command_module.update_and_send(command, { 'status': 'name_too_long' })
+		elif any(value for value in self.players if value.name == command.data['player_name']):
 			command_module.update_and_send(command, { 'status': 'invalid_player_name' })
 		else:
 			self.players.append(player_module.Player(command.data['player_name'], False, command.data['connection']))
 			command_module.update_and_send(command, { 'status': 'success' })
 
 	def network_create_game_handler(self, command, state=None):
-		if command.data['game_name'] in self.games:
+		if len(command.data['game_name']) < 6:
+			command_module.update_and_send(command, { 'status': 'name_too_short' })
+		elif len(command.data['game_name']) > 40:
+			command_module.update_and_send(command, { 'status': 'name_too_long' })
+		elif command.data['game_name'] in self.games:
 			command_module.update_and_send(command, { 'status': 'invalid_game_name' })
 		else:
 			player = next(player for player in self.players if player == command.data['connection'])
 			player.host = True
-			game = game_module.Game(command.data['game_name'], command.data['password'])
+			game = game_module.Game(command.data['game_name'])
 			self.games[command.data['game_name']] = game
 			player.game = game
 			game.players.append(player)
@@ -45,8 +53,9 @@ class Core(node.Node):
 		command_module.update_and_send(command, { 'status': 'success', 'games': [(name, len(game.players)) for name, game in self.games.items()] })
 
 	def network_join_game_handler(self, command, state=None):
-		if not command.data['game_name'] in self.games.keys():
-			command_module.update_and_send(command, { 'status': 'invalid_game_name' })
+		game = self.games[command.data['game_name']]
+		if len(game.players) > constants.PLAYERS_PER_GAME:
+			command_module.update_and_send(command, { 'status': 'game_full' })
 		else:
 			player = next(player for player in self.players if player == command.data['connection'])
 			game = self.games[command.data['game_name']]

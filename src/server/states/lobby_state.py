@@ -5,7 +5,6 @@ class LobbyState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
 		self.name = data['name']
-		self.password = data['password']
 
 	def network_get_players_in_game_handler(self, command, state=None):
 		self.__send_players_in_game(command.data['exception'])
@@ -15,7 +14,9 @@ class LobbyState(state.State):
 
 	def network_start_game_handler(self, command, state=None):
 		player = next(p for p in self.players if command.data['connection'] == p)
-		if player.host:
+		if len(self.players) < 2:
+			command_module.update_and_send(command, { 'status': 'not_enough_players' })
+		else:
 			self.set_state(character_selection_state.CharacterSelectionState(
 				{ 'players': self.players, 'rooms': self.rooms }, 
 				self.set_state, 
@@ -23,8 +24,6 @@ class LobbyState(state.State):
 			))
 			for game_player in self.players:
 				command_module.update_and_send(command, { 'status': 'success', 'connection': game_player.connection })
-		else:
-			command_module.update_and_send(command, { 'status': 'not_host' })
 
 	def network_leave_game_handler(self, command, state=None):
 		player = next(p for p in self.players if command.data['connection'] == p)

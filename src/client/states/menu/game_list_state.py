@@ -1,88 +1,175 @@
-from src.client.world.common import background as background_module, button as button_module, area as area_module, label as label_module
-from src.client.world.menu import game_listing as game_listing_module
-from src.client.states.menu import main_menu_state as main_menu_state_module, game_state as game_state_module
-from src.client.states import state as state_module
-from src.shared import constants, command as command_module
+import pyglet
+from src.client.world.common import background, button, area, label
+from src.client.world.menu import game_listing 
+from src.client.states.menu import main_menu_state, game_state
+from src.client.states import state
+from src.shared import constants, command
 
-class GameListState(state_module.State):
+class GameListState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
-		self.starting_ui = [
-			background_module.Background(self.asset_manager.common['menu_background']),
-			area_module.Area(
-				self.asset_manager.common['area'], 
-				constants.WINDOW_CENTER_X, 
-				constants.WINDOW_CENTER_Y, 
-				40, 
-				30, 
-				opacity=192
+		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
+		self._elements = self.__create_base_elements(data['assets'])
+		self._add_command(command.Command('network_get_games', { 'status': 'pending' }))
+
+	def __create_base_elements(self, asset_manager):
+		self.__error_text = label.Label(
+			text='',
+			font_size=15,
+			x=constants.WINDOW_CENTER_X + 150, 
+			y=constants.WINDOW_CENTER_Y - 220,
+			anchor_x='center',
+			anchor_y='center',
+			align='center',
+			color=(255, 0, 0, 255),
+			batch=self._batch,
+			group=self.__layers[2]
+		)
+		return [
+			background.Background(
+				asset=asset_manager.common['menu_background'],
+				batch=self._batch,
+				group=self.__layers[0]
 			),
-			label_module.Label(
-				'Games',
+			area.Area(
+				asset=asset_manager.common['area'], 
+				x=constants.WINDOW_CENTER_X, 
+				y=constants.WINDOW_CENTER_Y, 
+				unit_width=40, 
+				unit_height=30, 
+				opacity=192,
+				batch=self._batch,
+				group=self.__layers[1]
+			),
+			label.Label(
+				text='Games',
 				font_size=25,
 				x=constants.WINDOW_CENTER_X, 
 				y=constants.WINDOW_CENTER_Y + 200,
 				anchor_x='center',
 				anchor_y='center',
 				align='center',
-				color=(0, 0, 0, 255)
+				color=(0, 0, 0, 255),
+				batch=self._batch,
+				group=self.__layers[2]
 			),
-			button_module.Button(
-				self.asset_manager.common['button'], 
-				constants.WINDOW_CENTER_X - 150, 
-				constants.WINDOW_CENTER_Y - 185, 
-				12, 
-				3, 
-				'Back', 
-				lambda : self.back()
+			button.Button(
+				asset=asset_manager.common['button'], 
+				x=constants.WINDOW_CENTER_X - 150, 
+				y=constants.WINDOW_CENTER_Y - 185, 
+				unit_width=12, 
+				unit_height=3, 
+				text='Back', 
+				on_click=self.__back,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
 			),
-			button_module.Button(
-				self.asset_manager.common['button'], 
-				constants.WINDOW_CENTER_X + 150, 
-				constants.WINDOW_CENTER_Y - 185, 
-				12, 
-				3, 
-				'Refresh', 
-				lambda : self.refresh()
-			)
+			button.Button(
+				asset=asset_manager.common['button'], 
+				x=constants.WINDOW_CENTER_X + 150, 
+				y=constants.WINDOW_CENTER_Y - 185, 
+				unit_width=12, 
+				unit_height=3, 
+				text='Refresh', 
+				on_click=self.__refresh,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
+			),
+			self.__error_text
 		]
-		self.elements = self.starting_ui
-		self.add_command(command_module.Command('network_get_games', { 'status': 'pending' }))
 
 	def set_games(self, games):
-		self.elements = self.starting_ui.copy()
+		self.__available_games = games
+		self.__available_games_count = len(games)
+		self.__current_page = 0
+		self.__update()
+
+	def __go_forward_page(self):
+		self.__current_page += 1
+		self.__update()
+
+	def __go_back_page(self):
+		self.__current_page -= 1
+		self.__update()
+
+	def __update(self):
+		self._batch = pyglet.graphics.Batch()
+		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
+		self._elements = self.__create_base_elements(self._data['assets'])
+
+		min_ = self.__current_page * constants.GAME_LIST_PAGE_SIZE
+		max_ = min(self.__current_page * constants.GAME_LIST_PAGE_SIZE + constants.GAME_LIST_PAGE_SIZE, self.__available_games_count)
+
 		count = 0
-		for game in games:
-			self.elements.append(game_listing_module.GameListing(
-				self.asset_manager, 
-				game[0], 
-				game[1], 
-				constants.WINDOW_CENTER_X - 200, 
-				constants.WINDOW_CENTER_Y + 120 - 30 * count, 
-				lambda : self.join(game[0])
+		for game in self.__available_games[min_:max_]:
+			self._elements.append(game_listing.GameListing(
+				asset_manager=self._data['assets'], 
+				name=game[0], 
+				players=game[1], 
+				x=constants.WINDOW_CENTER_X - 200, 
+				y=constants.WINDOW_CENTER_Y + 120 - 40 * (count % constants.GAME_LIST_PAGE_SIZE), 
+				on_click=lambda : self.__join(game[0], int(game[1])),
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
 			))
 			count += 1
-			if count == 8: break
 
-	def refresh(self):
-		self.add_command(command_module.Command('network_get_games', { 'status': 'pending' }))
+		if self.__current_page * constants.GAME_LIST_PAGE_SIZE + constants.GAME_LIST_PAGE_SIZE < self.__available_games_count:
+			self._elements.append(button.Button(
+				asset=self._data['assets'].common['button'], 
+				x=constants.WINDOW_CENTER_X + 250, 
+				y=constants.WINDOW_CENTER_Y - 50, 
+				unit_width=3, 
+				unit_height=5, 
+				text='Down', 
+				on_click=self.__go_forward_page,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
+			))
 
-	def back(self):
-		self.set_state(main_menu_state_module.MainMenuState(
-			{ 'assets': self.asset_manager },
-			self.set_state, 
-			self.add_command
+		if self.__current_page != 0:
+			self._elements.append(button.Button(
+				asset=self._data['assets'].common['button'], 
+				x=constants.WINDOW_CENTER_X + 250, 
+				y=constants.WINDOW_CENTER_Y + 50, 
+				unit_width=3, 
+				unit_height=5, 
+				text='Up', 
+				on_click=self.__go_back_page,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
+			))
+
+	def __refresh(self):
+		self._add_command(command.Command('network_get_games', { 'status': 'pending' }))
+
+	def __back(self):
+		self._set_state(main_menu_state.MainMenuState(
+			self._data,
+			self._set_state, 
+			self._add_command
 		))
 
-	def join(self, game):
-		password = 'password'
-		self.add_command(command_module.Command('network_join_game', { 'status': 'pending', 'game_name': game, 'password': password }))
+	def __join(self, game, number_of_players):
+		if number_of_players >= constants.PLAYERS_PER_GAME:
+			self.__error_text.text = 'Game is full'
+		else:
+			self._add_command(command.Command('network_join_game', { 'status': 'pending', 'game_name': game }))
+
+	def game_full(self):
+		self.__error_text.text = 'Game is full'
 
 	def next(self, game_name):
-		self.set_state(game_state_module.GameState(
-			{ 'assets': self.asset_manager, 'game_name': game_name },
-			self.set_state, 
-			self.add_command
+		self._data.update({ 'game_name': game_name, 'host': False })
+		self._set_state(game_state.GameState(
+			self._data,
+			self._set_state, 
+			self._add_command		
 		))
 
 

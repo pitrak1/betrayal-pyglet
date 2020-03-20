@@ -5,14 +5,13 @@ from src.shared import threaded_queue, stringify, threaded_sync, node
 import config
 
 class Game(node.Node):
-	def __init__(self, name, password):
+	def __init__(self, name):
 		super().__init__()
 		self.name = name
-		self.password = password
 		self.players = []
 		self.rooms = []
 		self.command_queue = threaded_queue.ThreadedQueue()
-		data = { 'players': self.players, 'rooms': self.rooms, 'name': name, 'password': password }
+		data = { 'players': self.players, 'rooms': self.rooms, 'name': name }
 		self.current_state = lobby_state.LobbyState(data, self.set_state, self.command_queue.append)
 
 	def set_state(self, state):

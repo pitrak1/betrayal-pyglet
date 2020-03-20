@@ -1,86 +1,135 @@
 import sys
-from src.client.world.menu import game_player as game_player_module
-from src.client.world.common import background as background_module, button as button_module, area as area_module, label as label_module
-from src.client.states.menu import main_menu_state as main_menu_state_module
-from src.client.states.setup import player_order_state as player_order_state_module
-from src.client.states import state as state_module
-from src.shared import constants, command as command_module
+import pyglet
+from src.client.world.menu import game_player
+from src.client.world.common import background, button, area, label
+from src.client.states.menu import main_menu_state
+from src.client.states.setup import player_order_state
+from src.client.states import state
+from src.shared import constants, command
 
-class GameState(state_module.State):
+class GameState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
-		self.game_name = data['game_name']
-		self.base_ui = [
-			background_module.Background(self.asset_manager.common['menu_background']),
-			area_module.Area(
-				self.asset_manager.common['area'], 
-				constants.WINDOW_CENTER_X, 
-				constants.WINDOW_CENTER_Y, 
-				40, 
-				30, 
-				opacity=192
+		self.__game_name = data['game_name']
+		self.__host = data['host']
+		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
+		self._elements = self.__create_base_elements(data['assets'], self.__game_name, self.__host)
+		self._add_command(command.Command('network_get_players_in_game', { 'status': 'pending', 'exception': None }))
+		self.__players = []
+
+	def __create_base_elements(self, asset_manager, game_name, host):
+		self.__error_text = label.Label(
+			text='',
+			font_size=15,
+			x=constants.WINDOW_CENTER_X + 150, 
+			y=constants.WINDOW_CENTER_Y - 220,
+			anchor_x='center',
+			anchor_y='center',
+			align='center',
+			color=(255, 0, 0, 255),
+			batch=self._batch,
+			group=self.__layers[2]
+		)
+		elements = [
+			background.Background(
+				asset=asset_manager.common['menu_background'],
+				batch=self._batch,
+				group=self.__layers[0]
 			),
-			label_module.Label(
-				self.game_name,
+			area.Area(
+				asset=asset_manager.common['area'], 
+				x=constants.WINDOW_CENTER_X, 
+				y=constants.WINDOW_CENTER_Y, 
+				unit_width=40, 
+				unit_height=30, 
+				opacity=192,
+				batch=self._batch,
+				group=self.__layers[1]
+			),
+			label.Label(
+				text=game_name,
 				font_size=25,
 				x=constants.WINDOW_CENTER_X, 
 				y=constants.WINDOW_CENTER_Y + 200,
 				anchor_x='center',
 				anchor_y='center',
 				align='center',
-				color=(0, 0, 0, 255)
+				color=(0, 0, 0, 255),
+				batch=self._batch,
+				group=self.__layers[2]
 			),
-			button_module.Button(
-				self.asset_manager.common['button'], 
-				constants.WINDOW_CENTER_X - 150, 
-				constants.WINDOW_CENTER_Y - 185, 
-				12, 
-				3, 
-				'Back', 
-				lambda : self.leave_game()
+			button.Button(
+				asset=asset_manager.common['button'], 
+				x=constants.WINDOW_CENTER_X - 150, 
+				y=constants.WINDOW_CENTER_Y - 185, 
+				unit_width=12, 
+				unit_height=3, 
+				text='Back', 
+				on_click=self.__leave_game,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
 			),
-			button_module.Button(
-				self.asset_manager.common['button'], 
-				constants.WINDOW_CENTER_X + 150, 
-				constants.WINDOW_CENTER_Y - 185, 
-				12, 
-				3, 
-				'Start', 
-				lambda : self.start_game()
-			)
+			self.__error_text
 		]
-		self.elements = self.base_ui
-		self.add_command(command_module.Command('network_get_players_in_game', { 'status': 'pending', 'exception': None }))
 
-	def leave_game(self):
-		self.add_command(command_module.Command('network_leave_game', { 'status': 'pending' }))
+		if host:
+			elements.append(button.Button(
+				asset=asset_manager.common['button'], 
+				x=constants.WINDOW_CENTER_X + 150, 
+				y=constants.WINDOW_CENTER_Y - 185, 
+				unit_width=12, 
+				unit_height=3, 
+				text='Start', 
+				on_click=self.__start_game,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
+			))
+
+		return elements
+
+	def __leave_game(self):
+		self._add_command(command.Command('network_leave_game', { 'status': 'pending' }))
 
 	def back(self):
-		self.set_state(main_menu_state_module.MainMenuState(
-			{ 'assets': self.asset_manager }, 
-			self.set_state, 
-			self.add_command
+		self._set_state(main_menu_state.MainMenuState(
+			self._data, 
+			self._set_state, 
+			self._add_command
 		))
 
-	def start_game(self):
-		self.add_command(command_module.Command('network_start_game', { 'status': 'pending' }))
+	def __start_game(self):
+		if len(self.__players) < 2:
+			self.__error_text.text = 'Two or more players are required'
+		else:
+			self._add_command(command.Command('network_start_game', { 'status': 'pending' }))
+
+	def not_enough_players(self):
+		self.__error_text.text = 'Two or more players are required'
 
 	def next(self):
-		self.set_state(player_order_state_module.PlayerOrderState(
-			{ 'assets': self.asset_manager },
-			self.set_state, 
-			self.add_command
+		self._set_state(player_order_state.PlayerOrderState(
+			self._data,
+			self._set_state, 
+			self._add_command
 		))
 
 	def set_players(self, players):
-		self.elements = self.base_ui.copy()
+		self._batch = pyglet.graphics.Batch()
+		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
+		self._elements = self.__create_base_elements(self._data['assets'], self.__game_name, self.__host)
+		self.__players = players
 		count = 0
 		for player in players:
-			self.elements.append(game_player_module.GamePlayer(
-				self.asset_manager, 
-				player[0], 
-				True if player[1] == 'True' else False, 
-				constants.WINDOW_CENTER_X - 200, 
-				constants.WINDOW_CENTER_Y + 120 - 40 * count
+			self._elements.append(game_player.GamePlayer(
+				asset_manager=self._data['assets'], 
+				name=player[0], 
+				host=True if player[1] == 'True' else False, 
+				x=constants.WINDOW_CENTER_X - 200, 
+				y=constants.WINDOW_CENTER_Y + 120 - 40 * count,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
 			))
 			count += 1

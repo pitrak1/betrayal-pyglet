@@ -1,91 +1,107 @@
 import sys
-from src.client.world.common import button as button_module, text_box as text_box_module, area as area_module, background as background_module, label as label_module
-from src.client.states import state as state_module
-from src.client.states.menu import main_menu_state as main_menu_state_module, game_state as game_state_module
-from src.shared import constants, command as command_module
+import pyglet
+from src.client.world.common import button, text_box, area, background, label
+from src.client.states import state
+from src.client.states.menu import main_menu_state, game_state
+from src.shared import constants, command
 
-class CreateGameState(state_module.State):
+class CreateGameState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
-		self.game_name_text_box = text_box_module.TextBox(
-			self.asset_manager.common['text_box'], 
-			constants.WINDOW_CENTER_X - 200, 
-			constants.WINDOW_CENTER_Y + 50, 
-			26, 
-			'Game Name'
+		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
+		self.__game_name_text_box = text_box.TextBox(
+			asset=data['assets'].common['text_box'], 
+			x=constants.WINDOW_CENTER_X - 200, 
+			y=constants.WINDOW_CENTER_Y + 50, 
+			unit_width=26, 
+			label_text='Game Name',
+			max_length=40,
+			batch=self._batch,
+			area_group=self.__layers[2],
+			text_group=self.__layers[3]
 		)
-		self.password_text_box = text_box_module.TextBox(
-			self.asset_manager.common['text_box'], 
-			constants.WINDOW_CENTER_X - 200, 
-			constants.WINDOW_CENTER_Y - 50, 
-			26, 
-			'Password (optional)'
-		)
-		self.elements = [
-			background_module.Background(self.asset_manager.common['menu_background']),
-			area_module.Area(
-				self.asset_manager.common['area'], 
-				constants.WINDOW_CENTER_X, 
-				constants.WINDOW_CENTER_Y, 
-				40, 
-				30, 
-				opacity=192
+		self._elements = [
+			background.Background(
+				asset=data['assets'].common['menu_background'],
+				batch=self._batch,
+				group=self.__layers[0]
 			),
-			label_module.Label(
-				'Create Game', 
+			area.Area(
+				asset=data['assets'].common['area'], 
+				x=constants.WINDOW_CENTER_X, 
+				y=constants.WINDOW_CENTER_Y, 
+				unit_width=40, 
+				unit_height=30, 
+				opacity=192,
+				batch=self._batch,
+				group=self.__layers[1]
+			),
+			label.Label(
+				text='Create Game', 
 				x=constants.WINDOW_CENTER_X,
 				y=constants.WINDOW_CENTER_Y + 200,
 				anchor_x='center', 
 				anchor_y='center', 
 				align='center', 
 				font_size=25, 
-				color=(0, 0, 0, 255)
+				color=(0, 0, 0, 255),
+				batch=self._batch,
+				group=self.__layers[2]
 			),
-			self.game_name_text_box,
-			self.password_text_box,
-			button_module.Button(
-				self.asset_manager.common['button'], 
-				250, 
-				115, 
-				12, 
-				3, 
-				'Back', 
-				lambda : self.back()
+			self.__game_name_text_box,
+			button.Button(
+				asset=data['assets'].common['button'], 
+				x=constants.WINDOW_CENTER_X - 150, 
+				y=constants.WINDOW_CENTER_Y - 100, 
+				unit_width=12, 
+				unit_height=3, 
+				text='Back', 
+				on_click=self.__back,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
 			),
-			button_module.Button(
-				self.asset_manager.common['button'], 
-				550, 
-				115, 
-				12, 
-				3, 
-				'Create', 
-				lambda : self.create()
+			button.Button(
+				asset=data['assets'].common['button'], 
+				x=constants.WINDOW_CENTER_X + 150, 
+				y=constants.WINDOW_CENTER_Y - 100, 
+				unit_width=12, 
+				unit_height=3, 
+				text='Create', 
+				on_click=self.__create,
+				batch=self._batch,
+				area_group=self.__layers[2],
+				text_group=self.__layers[3]
 			)
 		]
 
-	def back(self):
-		self.set_state(main_menu_state_module.MainMenuState(
-			{ 'assets': self.asset_manager }, 
-			self.set_state, 
-			self.add_command
+	def __back(self):
+		self._set_state(main_menu_state.MainMenuState(
+			self._data,
+			self._set_state, 
+			self._add_command
 		))
 
 	def invalid_game_name(self):
-		self.game_name_text_box.set_error_text('name is already in use')
+		self.__game_name_text_box.set_error_text('name is already in use')
 
-	def create(self):
-		game_name = self.game_name_text_box.get_text()
+	def name_too_short(self):
+		self.__game_name_text_box.set_error_text('must be 6 characters or more')
+
+	def name_too_long(self):
+		self.__game_name_text_box.set_error_text('must be 40 characters or less')
+
+	def __create(self):
+		game_name = self.__game_name_text_box.get_text()
 		if len(game_name) < 6:
-			self.game_name_text_box.set_error_text('must be 6 characters or more')
-		elif len(game_name) > 40:
-			self.game_name_text_box.set_error_text('must be 40 characters or less')
-
-		password = self.password_text_box.get_text()
-		self.add_command(command_module.Command('network_create_game', { 'status': 'pending', 'game_name': game_name, 'password': password }))
+			self.__game_name_text_box.set_error_text('must be 6 characters or more')
+		else:
+			self._add_command(command.Command('network_create_game', { 'status': 'pending', 'game_name': game_name }))
 
 	def next(self, game_name):
-		self.set_state(game_state_module.GameState(
-			{ 'assets': self.asset_manager, 'game_name': game_name }, 
-			self.set_state, 
-			self.add_command
+		self._data.update({ 'game_name': game_name, 'host': True })
+		self._set_state(game_state.GameState(
+			self._data,
+			self._set_state, 
+			self._add_command
 		))

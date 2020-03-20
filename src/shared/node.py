@@ -63,7 +63,7 @@ class Node():
 	def network_create_player_handler(self, command, state=None):
 		return self.default_handler(command, state)
 
-	# status, game_name, password
+	# status, game_name
 	def network_create_game_handler(self, command, state=None):
 		return self.default_handler(command, state)
 
@@ -79,7 +79,7 @@ class Node():
 	def network_get_games_handler(self, command, state=None):
 		return self.default_handler(command, state)
 
-	# status, game_name, password
+	# status, game_name
 	def network_join_game_handler(self, command, state=None):
 		return self.default_handler(command, state)
 
@@ -131,7 +131,4 @@ class Node():
 		pass
 
 	def on_update(self, dt=None, state=None):
-		pass
-
-	def draw(self):
 		pass
