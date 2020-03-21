@@ -110,8 +110,6 @@ class Client(node.Node):
 	def network_select_character_handler(self, command, state=None):
 		if command.data['status'] == 'pending':
 			self.__socket.send(stringify.stringify(command))
-		elif command.data['status'] == 'success':
-			state.set_character(command.data['character'])
 
 	def network_all_characters_selected_handler(self, command, state=None):
 		if command.data['status'] == 'success':

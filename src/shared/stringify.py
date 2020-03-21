@@ -18,12 +18,18 @@ def __stringify_data_item(data_item_key, data_item_value):
 
 def __stringify_list(list_value):
 	result_string = '['
+	elements = False
 	for value in list_value:
+		elements = True
 		if isinstance(value, tuple):
 			result_string += f'{__stringify_tuple(value)}|'
 		elif isinstance(value, str):
 			result_string += f'{value}|'
-	return result_string[:-1] + ']'
+
+	if elements:
+		return result_string[:-1] + ']'
+	else:
+		return '[]'
 
 def __stringify_tuple(tuple_value):
 	result_string = ''

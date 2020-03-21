@@ -1,4 +1,5 @@
 import random
+import pyglet
 from src.server import server_character
 from src.server.states import state, game_state as game_state_module
 from src.shared import command as command_module, threaded_sync
@@ -38,7 +39,6 @@ class CharacterSelectionState(state.State):
 		if command.data['connection'] == self.players[self.current_player_index]:
 			self.players[self.current_player_index].character = next(character for character in self.characters if character.variable_name == command.data['character'])
 			self.characters = [x for x in self.characters if x.variable_name != command.data['character'] and command.data['character'] not in x.related]
-			command_module.update_and_send(command, { 'status': 'success' })
 
 			self.current_player_index -= 1
 			if self.current_player_index < 0:
@@ -57,8 +57,6 @@ class CharacterSelectionState(state.State):
 						'network_get_available_characters',
 						{ 'status': 'success', 'characters': [character.variable_name for character in self.characters], 'connection': player.connection }
 					)
-		else:
-			command_module.update_and_send(command, { 'status': 'not_current_player' })
 
 	def network_get_character_selections_handler(self, command, state=None):
 		selections = [(p.name, p.character.display_name if p.character else None) for p in self.players]

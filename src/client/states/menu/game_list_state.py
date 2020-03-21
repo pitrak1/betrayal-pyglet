@@ -104,6 +104,7 @@ class GameListState(state.State):
 
 		count = 0
 		for game in self.__available_games[min_:max_]:
+			if game == '': break
 			self._elements.append(game_listing.GameListing(
 				asset_manager=self._data['assets'], 
 				name=game[0], 
