@@ -8,11 +8,12 @@ from src.shared import constants, command
 class GameListState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
-		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
-		self._elements = self.__create_base_elements(data['assets'])
+		self._elements = self.__create_base_elements()
 		self._add_command(command.Command('network_get_games', { 'status': 'pending' }))
 
-	def __create_base_elements(self, asset_manager):
+	def __create_base_elements(self):
+		self._batch = pyglet.graphics.Batch()
+		self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
 		self.__error_text = label.Label(
 			text='',
 			font_size=15,
@@ -23,23 +24,23 @@ class GameListState(state.State):
 			align='center',
 			color=(255, 0, 0, 255),
 			batch=self._batch,
-			group=self.__layers[2]
+			group=self.__groups[2]
 		)
 		return [
 			background.Background(
-				asset=asset_manager.common['menu_background'],
+				asset=self._data['assets'].common['menu_background'],
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			area.Area(
-				asset=asset_manager.common['area'], 
+				asset=self._data['assets'].common['area'], 
 				x=constants.WINDOW_CENTER_X, 
 				y=constants.WINDOW_CENTER_Y, 
 				unit_width=40, 
 				unit_height=30, 
 				opacity=192,
 				batch=self._batch,
-				group=self.__layers[1]
+				group=self.__groups[1]
 			),
 			label.Label(
 				text='Games',
@@ -51,10 +52,10 @@ class GameListState(state.State):
 				align='center',
 				color=(0, 0, 0, 255),
 				batch=self._batch,
-				group=self.__layers[2]
+				group=self.__groups[2]
 			),
 			button.Button(
-				asset=asset_manager.common['button'], 
+				asset=self._data['assets'].common['button'], 
 				x=constants.WINDOW_CENTER_X - 150, 
 				y=constants.WINDOW_CENTER_Y - 185, 
 				unit_width=12, 
@@ -62,11 +63,11 @@ class GameListState(state.State):
 				text='Back', 
 				on_click=self.__back,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			),
 			button.Button(
-				asset=asset_manager.common['button'], 
+				asset=self._data['assets'].common['button'], 
 				x=constants.WINDOW_CENTER_X + 150, 
 				y=constants.WINDOW_CENTER_Y - 185, 
 				unit_width=12, 
@@ -74,8 +75,8 @@ class GameListState(state.State):
 				text='Refresh', 
 				on_click=self.__refresh,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			),
 			self.__error_text
 		]
@@ -95,9 +96,7 @@ class GameListState(state.State):
 		self.__update()
 
 	def __update(self):
-		self._batch = pyglet.graphics.Batch()
-		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
-		self._elements = self.__create_base_elements(self._data['assets'])
+		self._elements = self.__create_base_elements()
 
 		min_ = self.__current_page * constants.GAME_LIST_PAGE_SIZE
 		max_ = min(self.__current_page * constants.GAME_LIST_PAGE_SIZE + constants.GAME_LIST_PAGE_SIZE, self.__available_games_count)
@@ -113,8 +112,8 @@ class GameListState(state.State):
 				y=constants.WINDOW_CENTER_Y + 120 - 40 * (count % constants.GAME_LIST_PAGE_SIZE), 
 				on_click=lambda : self.__join(game[0], int(game[1])),
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			))
 			count += 1
 
@@ -128,8 +127,8 @@ class GameListState(state.State):
 				text='Down', 
 				on_click=self.__go_forward_page,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			))
 
 		if self.__current_page != 0:
@@ -142,8 +141,8 @@ class GameListState(state.State):
 				text='Up', 
 				on_click=self.__go_back_page,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			))
 
 	def __refresh(self):

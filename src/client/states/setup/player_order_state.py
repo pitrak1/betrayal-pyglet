@@ -7,12 +7,14 @@ from src.shared import constants, command
 class PlayerOrderState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
-		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(2)]
-		self._elements = self.__create_base_elements(data['assets'])
+		self._elements = self.__create_base_elements()
 		self._add_command(command.Command('network_get_player_order', { 'status': 'pending' }))
 		self.__waiting = False
 
-	def __create_base_elements(self, asset_manager):
+	def __create_base_elements(self):
+		self._batch = pyglet.graphics.Batch()
+		self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(2)]
+
 		return [
 			label.Label(
 				text='Welcome to Betrayal Online',
@@ -24,7 +26,7 @@ class PlayerOrderState(state.State):
 				align='center',
 				color=(255, 255, 255, 255),
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			label.Label(
 				text='Turn order will be randomly determined', 
@@ -36,7 +38,7 @@ class PlayerOrderState(state.State):
 				font_size=15, 
 				color=(255, 255, 255, 255),
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			label.Label(
 				text='First player in the order will play first.', 
@@ -48,7 +50,7 @@ class PlayerOrderState(state.State):
 				font_size=15, 
 				color=(255, 255, 255, 255),
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			label.Label(
 				text='Last player in the order will choose their character first.', 
@@ -60,10 +62,10 @@ class PlayerOrderState(state.State):
 				font_size=15, 
 				color=(255, 255, 255, 255),
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			button.Button(
-				asset=asset_manager.common['button'], 
+				asset=self._data['assets'].common['button'], 
 				x=constants.WINDOW_CENTER_X, 
 				y=constants.WINDOW_CENTER_Y - 140, 
 				unit_width=12, 
@@ -71,15 +73,15 @@ class PlayerOrderState(state.State):
 				text='Continue', 
 				on_click=self.__confirm_order,
 				batch=self._batch,
-				area_group=self.__layers[0],
-				text_group=self.__layers[1]
+				area_group=self.__groups[0],
+				text_group=self.__groups[1]
 			)
 		]
 
 	def set_player_order(self, players):
 		self._batch = pyglet.graphics.Batch()
-		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(2)]
-		self._elements = self.__create_base_elements(self._data['assets'])
+		self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(2)]
+		self._elements = self.__create_base_elements()
 		self._elements.append(label.Label(
 			text='The player order is:', 
 			x=constants.WINDOW_CENTER_X - 220, 
@@ -90,7 +92,7 @@ class PlayerOrderState(state.State):
 			font_size=15, 
 			color=(255, 255, 255, 255),
 			batch=self._batch,
-			group=self.__layers[0]
+			group=self.__groups[0]
 		))
 		player_text = ''
 		for player in players:
@@ -106,7 +108,7 @@ class PlayerOrderState(state.State):
 			font_size=15, 
 			color=(255, 255, 255, 255),
 			batch=self._batch,
-			group=self.__layers[0]
+			group=self.__groups[0]
 		))
 
 	def __confirm_order(self):
@@ -122,7 +124,7 @@ class PlayerOrderState(state.State):
 				font_size=15, 
 				color=(255, 255, 255, 255),
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			))
 			self._add_command(command.Command('network_confirm_player_order', { 'status': 'pending' }))
 

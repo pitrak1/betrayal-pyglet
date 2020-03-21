@@ -8,7 +8,8 @@ from src.shared import constants, command
 class CreateGameState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
-		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
+		self._batch = pyglet.graphics.Batch()
+		self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
 		self.__game_name_text_box = text_box.TextBox(
 			asset=data['assets'].common['text_box'], 
 			x=constants.WINDOW_CENTER_X - 200, 
@@ -17,14 +18,14 @@ class CreateGameState(state.State):
 			label_text='Game Name',
 			max_length=40,
 			batch=self._batch,
-			area_group=self.__layers[2],
-			text_group=self.__layers[3]
+			area_group=self.__groups[2],
+			text_group=self.__groups[3]
 		)
 		self._elements = [
 			background.Background(
 				asset=data['assets'].common['menu_background'],
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			area.Area(
 				asset=data['assets'].common['area'], 
@@ -34,7 +35,7 @@ class CreateGameState(state.State):
 				unit_height=30, 
 				opacity=192,
 				batch=self._batch,
-				group=self.__layers[1]
+				group=self.__groups[1]
 			),
 			label.Label(
 				text='Create Game', 
@@ -46,7 +47,7 @@ class CreateGameState(state.State):
 				font_size=25, 
 				color=(0, 0, 0, 255),
 				batch=self._batch,
-				group=self.__layers[2]
+				group=self.__groups[2]
 			),
 			self.__game_name_text_box,
 			button.Button(
@@ -58,8 +59,8 @@ class CreateGameState(state.State):
 				text='Back', 
 				on_click=self.__back,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			),
 			button.Button(
 				asset=data['assets'].common['button'], 
@@ -70,8 +71,8 @@ class CreateGameState(state.State):
 				text='Create', 
 				on_click=self.__create,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			)
 		]
 

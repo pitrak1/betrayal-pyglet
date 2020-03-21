@@ -8,12 +8,13 @@ from src.shared import constants, command
 class MainMenuState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
-		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
+		self._batch = pyglet.graphics.Batch()
+		self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
 		self._elements = [
 			background.Background(
 				asset=data['assets'].common['menu_background'],
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			area.Area(
 				asset=data['assets'].common['area'], 
@@ -22,7 +23,7 @@ class MainMenuState(state.State):
 				unit_width=20, 
 				unit_height=30,
 				batch=self._batch,
-				group=self.__layers[1],
+				group=self.__groups[1],
 				opacity=192
 			),
 			label.Label(
@@ -35,7 +36,7 @@ class MainMenuState(state.State):
 				align='center',
 				color=(0, 0, 0, 255),
 				batch=self._batch,
-				group=self.__layers[2]
+				group=self.__groups[2]
 			),
 			button.Button(
 				asset=data['assets'].common['button'],
@@ -46,8 +47,8 @@ class MainMenuState(state.State):
 				text='Create Game', 
 				on_click=self.__create_game,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			),
 			button.Button(
 				asset=data['assets'].common['button'], 
@@ -58,8 +59,8 @@ class MainMenuState(state.State):
 				text='Join Game', 
 				on_click=self.__join_game,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			),
 			button.Button(
 				asset=data['assets'].common['button'], 
@@ -70,8 +71,8 @@ class MainMenuState(state.State):
 				text='Exit', 
 				on_click=self.__start_exit,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			)
 		]
 

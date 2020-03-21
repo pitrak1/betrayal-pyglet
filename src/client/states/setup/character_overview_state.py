@@ -13,7 +13,7 @@ class CharacterOverviewState(state.State):
 
 	def __create_base_elements(self):
 		self._batch = pyglet.graphics.Batch()
-		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(2)]
+		self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(2)]
 
 		return [
 			label.Label(
@@ -26,7 +26,7 @@ class CharacterOverviewState(state.State):
 				font_size=25, 
 				color=(255, 255, 255, 255),
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			button.Button(
 				asset=self._data['assets'].common['button'], 
@@ -37,8 +37,8 @@ class CharacterOverviewState(state.State):
 				text='Begin', 
 				on_click=self.__confirm_characters,
 				batch=self._batch,
-				area_group=self.__layers[0],
-				text_group=self.__layers[1]
+				area_group=self.__groups[0],
+				text_group=self.__groups[1]
 			)
 		]
 
@@ -57,7 +57,7 @@ class CharacterOverviewState(state.State):
 				font_size=18, 
 				color=(255, 255, 255, 255),
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			))
 			count += 1
 
@@ -74,7 +74,7 @@ class CharacterOverviewState(state.State):
 				font_size=15, 
 				color=(255, 255, 255, 255),
 				batch=self._batch,
-				group=self.__layers[0]
+				group=self.__groups[0]
 			))
 			self._add_command(command.Command('network_confirm_character_selections', { 'status': 'pending' }))
 

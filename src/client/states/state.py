@@ -7,7 +7,6 @@ class State(node.Node):
 		self._data = data
 		self._set_state = set_state
 		self._add_command = add_command
-		self._batch = pyglet.graphics.Batch()
 
 	def default_handler(self, command_, state=None):
 		for element in self._elements:

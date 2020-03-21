@@ -7,12 +7,13 @@ from src.shared import constants
 class SplashState(state.State):
 	def __init__(self, data, set_state, add_command):
 		super().__init__(data, set_state, add_command)
-		self.__layers = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
+		self._batch = pyglet.graphics.Batch()
+		self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(4)]
 		self._elements = [
 			background.Background(
 				asset=self._data['assets'].common['menu_background'],
 				batch=self._batch, 
-				group=self.__layers[0]
+				group=self.__groups[0]
 			),
 			area.Area(
 				asset=data['assets'].common['area'],
@@ -21,7 +22,7 @@ class SplashState(state.State):
 				unit_width=20, 
 				unit_height=30,
 				batch=self._batch,
-				group=self.__layers[1],
+				group=self.__groups[1],
 				opacity=192
 			),
 			label.Label(
@@ -34,7 +35,7 @@ class SplashState(state.State):
 				align='center',
 				color=(0, 0, 0, 255),
 				batch=self._batch,
-				group=self.__layers[2]
+				group=self.__groups[2]
 			),
 			button.Button(
 				asset=data['assets'].common['button'], 
@@ -45,8 +46,8 @@ class SplashState(state.State):
 				text='Begin', 
 				on_click=self.__begin,
 				batch=self._batch,
-				area_group=self.__layers[2],
-				text_group=self.__layers[3]
+				area_group=self.__groups[2],
+				text_group=self.__groups[3]
 			)
 		]
 
