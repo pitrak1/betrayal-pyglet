@@ -1,7 +1,8 @@
 import pyglet
 from src.client.states import state
 from src.client.states.game import game_state
-from src.client.world.common import button, label 
+from src.client.world.common import button, label
+from src.client.world.game import client_player
 from src.shared import constants, command
 
 class CharacterOverviewState(state.State):
@@ -44,6 +45,7 @@ class CharacterOverviewState(state.State):
 
 	def set_character_selections(self, selections):
 		self._elements = self.__create_base_elements()
+		self.__players = selections
 		count = 0
 		for selection in selections:
 			label_text = f'{selection[0]}: {selection[1]}'
@@ -79,4 +81,5 @@ class CharacterOverviewState(state.State):
 			self._add_command(command.Command('network_confirm_character_selections', { 'status': 'pending' }))
 
 	def next(self):
+		self._data.update({ 'players': self.__players })
 		self._set_state(game_state.GameState(self._data, self._set_state, self._add_command))

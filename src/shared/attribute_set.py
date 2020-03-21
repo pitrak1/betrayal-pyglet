@@ -1,11 +1,13 @@
-from src.shared import node as node_module
-
-class ServerCharacter(node_module.Node):
-	def __init__(self, entry):
-		super().__init__()
-		self.entry = entry
-		for key, value in entry.items():
-			setattr(self, key, value)
+class AttributeSet():
+	def __init__(self, speed, speed_index, might, might_index, sanity, sanity_index, knowledge, knowledge_index):
+		self.__speed = speed
+		self.__speed_index = speed_index
+		self.__might = might
+		self.__might_index = might_index
+		self.__sanity = sanity
+		self.__sanity_index = sanity_index
+		self.__knowledge = knowledge
+		self.__knowledge_index = knowledge_index
 
 	def get_attribute_value(self, attribute):
 		return getattr(self, attribute)[getattr(self, f'{attribute}_index')]

@@ -11,6 +11,10 @@ class Node():
 	def on_command(self, command, state=None):
 		return self.__command_callbacks[command.type](command, state)
 
+	# asset_manager, batch, groups
+	def client_redraw_handler(self, command, state=None):
+		return self.default_handler(command, state)
+
 	# x, y, button, modifiers
 	def client_raw_mouse_press_handler(self, command, state=None):
 		return self.default_handler(command, state)
