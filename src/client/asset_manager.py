@@ -1,9 +1,11 @@
 import pyglet
 import config
+import os
+import definitions
 
 class AssetManager():
 	def __init__(self):
-		pyglet.resource.path = ['assets']
+		pyglet.resource.path = [os.path.join(definitions.ROOT_DIR,'assets')]
 		pyglet.resource.reindex()
 
 		self.__load_common()

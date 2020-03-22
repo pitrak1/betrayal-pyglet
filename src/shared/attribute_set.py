@@ -1,13 +1,13 @@
 class AttributeSet():
 	def __init__(self, speed, speed_index, might, might_index, sanity, sanity_index, knowledge, knowledge_index):
-		self.__speed = speed
-		self.__speed_index = speed_index
-		self.__might = might
-		self.__might_index = might_index
-		self.__sanity = sanity
-		self.__sanity_index = sanity_index
-		self.__knowledge = knowledge
-		self.__knowledge_index = knowledge_index
+		self.speed = speed
+		self.speed_index = speed_index
+		self.might = might
+		self.might_index = might_index
+		self.sanity = sanity
+		self.sanity_index = sanity_index
+		self.knowledge = knowledge
+		self.knowledge_index = knowledge_index
 
 	def get_attribute_value(self, attribute):
 		return getattr(self, attribute)[getattr(self, f'{attribute}_index')]
