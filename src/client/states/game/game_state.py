@@ -35,6 +35,6 @@ class GameState(state.State):
 			self._add_command(command.Command('client_redraw'))
 
 
-	# def select(self, node):
-	# 	self._add_command(command.Command('client_select', { 'selected': node }))
-	# 	self._add_command(command.Command('client_redraw'))
+	def select(self, node):
+		self._add_command(command.Command('client_select', { 'selected': node }))
+		self._add_command(command.Command('client_redraw'))

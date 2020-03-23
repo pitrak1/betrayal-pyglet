@@ -77,7 +77,13 @@ class ClientRoom(server_room.ServerRoom):
 		)
 
 		if self.__selected:
-			self.__selected_sprite = pyglet.sprite.Sprite(command.data['asset_manager'].common['room_selected'], batch=command.data['batch'], group=command.data['groups'][constants.HIGHLIGHTS_GROUP])
+			self.__selected_sprite = pyglet.sprite.Sprite(
+				command.data['asset_manager'].common['room_selected'], 
+				x=self._grid_x * constants.GRID_SIZE, 
+				y=self._grid_y * constants.GRID_SIZE,
+				batch=command.data['batch'], 
+				group=command.data['groups'][constants.HIGHLIGHTS_GROUP]
+			)
 
 		return self.default_handler(command, state)
 
@@ -92,22 +98,28 @@ class ClientRoom(server_room.ServerRoom):
 		else:
 			return { 'x': grid_x * constants.GRID_SIZE - offset, 'y': grid_y * constants.GRID_SIZE }
 
-	# def client_translated_mouse_press_handler(self, command, state):
-	# 	if self.within_bounds(command.data['x'], command.data['y']):
-	# 		if command.data['button'] == pyglet.window.mouse.LEFT:
-	# 			if not self.default_handler(command, state):
-	# 				state.select(self)
-	# 			return True
+	def client_translated_mouse_press_handler(self, command, state):
+		if self.within_bounds(command.data['x'], command.data['y']):
+			if command.data['button'] == pyglet.window.mouse.LEFT:
+				if not self.default_handler(command, state):
+					state.select(self)
+				return True
 			# elif command.data['button'] == window.mouse.RIGHT and state.name('SelectedState'):
 			# 	if not self.default_handler(command, state):
 			# 		state.trigger_selected_character_move(self.grid_x, self.grid_y, True)
 
-	# def client_select_handler(self, command, state):
-	# 	self.selected = command.data['selected'] == self
-	# 	self.default_handler(command, state)
+	def client_select_handler(self, command, state):
+		self.__selected = command.data['selected'] == self
+		self.default_handler(command, state)
 
-	# def within_bounds(self, x, y):
-	# 	return bounds.within_square_bounds(self.grid_x * constants.GRID_SIZE, self.grid_y * constants.GRID_SIZE, x, y, constants.GRID_SIZE)
+	def within_bounds(self, x, y):
+		return bounds.within_square_bounds(
+			self._grid_x * constants.GRID_SIZE, 
+			self._grid_y * constants.GRID_SIZE, 
+			x, 
+			y, 
+			constants.GRID_SIZE
+		)
 
 	def default_handler(self, command, state):
 		return any(player.on_command(command, state) for player in self.__players)

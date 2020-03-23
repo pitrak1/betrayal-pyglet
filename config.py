@@ -177,7 +177,7 @@ STARTING_ROOMS = [
 	{
 		'display_name': 'Entrance Hall',
 		'variable_name': 'entrance_hall',
-		'asset_index': 0,
+		'asset_index': 2,
 		'doors': [True, True, False, True],
 		'floor': 1,
 		'grid_x': 0,
@@ -197,7 +197,7 @@ STARTING_ROOMS = [
 	{
 		'display_name': 'Grand Staircase',
 		'variable_name': 'grand_staircase',
-		'asset_index': 2,
+		'asset_index': 0,
 		'doors': [False, False, True, False],
 		'floor': 1,
 		'grid_x': 0,

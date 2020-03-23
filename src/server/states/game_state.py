@@ -11,7 +11,6 @@ class GameState(state_module.State):
 			self.rooms.add_player(0, 0, player)
 			player.set_position(0, 0)
 
-
 	def network_get_player_positions_handler(self, command, state=None):
 		parsed_players = [(player.name, player.variable_name, player.grid_x, player.grid_y) for player in self.players]
 		command_module.update_and_send(command, { 'status': 'success', 'players': parsed_players })
