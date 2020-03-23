@@ -6,7 +6,6 @@ class ServerPlayer():
 		self.host = host
 		self.connection = connection
 		self.game = None
-		self.character = None
 		self.grid_x = None
 		self.grid_y = None
 
@@ -32,3 +31,7 @@ class ServerPlayer():
 		self.display_name = entry['display_name']
 		self.variable_name = entry['variable_name']
 		self.related = entry['related']
+
+	def set_position(self, grid_x, grid_y):
+		self.grid_x = grid_x
+		self.grid_y = grid_y

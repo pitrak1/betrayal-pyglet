@@ -19,6 +19,10 @@ class ClientRoomGrid(server_room_grid.ServerRoomGrid):
 	# 		if not self.default_handler(command, state):
 	# 			state.select(None)
 
+	def add_player(self, grid_x, grid_y, player):
+		if isinstance(self._rooms[grid_x][grid_y], client_room.ClientRoom):
+			self._rooms[grid_x][grid_y].add_player(player)
+
 	def default_handler(self, command, state=None):
 		result = False
 		for row in self._rooms:

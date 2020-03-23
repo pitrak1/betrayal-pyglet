@@ -41,8 +41,9 @@ class ServerRoomGrid(node.Node):
 			room.add_link(left_room)
 			left_room.add_link(room)
 
-	# def add_player(self, grid_x, grid_y, player):
-	# 	self._rooms[grid_x][grid_y].add_player(player)
+	def add_player(self, grid_x, grid_y, player):
+		if isinstance(self._rooms[grid_x][grid_y], server_room.ServerRoom):
+			self._rooms[grid_x][grid_y].add_player(player)
 
 	# def can_move(self, start_x, start_y, end_x, end_y):
 	# 	start_room = self._rooms[start_x][start_y]
