@@ -9,18 +9,9 @@ class ClientRoomGrid(server_room_grid.ServerRoomGrid):
 		for room in config.STARTING_ROOMS:
 			self._add_room(room['grid_x'], room['grid_y'], client_room.ClientRoom(room))
 
-	# def add_player(self, grid_x, grid_y, player):
-	# 	self.rooms[grid_x][grid_y].players.append(player)
-	# 	player.portrait_sprite.update(x=grid_x * constants.GRID_SIZE, y=grid_y * constants.GRID_SIZE)
-	# 	player.selected_sprite.update(x=grid_x * constants.GRID_SIZE, y=grid_y * constants.GRID_SIZE)
-
-	# def client_translated_mouse_press_handler(self, command, state):
-	# 	if command.data['button'] == pyglet.window.mouse.LEFT:
-	# 		if not self.default_handler(command, state):
-	# 			state.select(None)
-
 	def add_player(self, grid_x, grid_y, player):
 		if isinstance(self._rooms[grid_x][grid_y], client_room.ClientRoom):
+			print(f'confirmed {grid_x},{grid_y} is room')
 			self._rooms[grid_x][grid_y].add_player(player)
 
 	def default_handler(self, command, state=None):
@@ -30,9 +21,3 @@ class ClientRoomGrid(server_room_grid.ServerRoomGrid):
 				if isinstance(room, client_room.ClientRoom):
 					if room.on_command(command, state): result = True
 		return result
-
-	# def on_update(self, dt=None, state=None):
-	# 	for row in self.rooms:
-	# 		for room in row:
-	# 			if isinstance(room, client_room.ClientRoom):
-	# 				room.on_update(dt, state)

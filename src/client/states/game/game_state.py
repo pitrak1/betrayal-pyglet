@@ -45,6 +45,7 @@ class GameState(state.State):
 				self._data['player_name'] == name
 			)
 			self.__players.append(player)
+			print(f'adding {player.name} at position {grid_x},{grid_y}')
 			self.__rooms.add_player(int(grid_x), int(grid_y), player)
 			self._add_command(command.Command('network_get_current_player', { 'status': 'pending' }))
 
@@ -52,6 +53,8 @@ class GameState(state.State):
 		if player_name == 'self':
 			self.__title = 'Your turn'
 			self.__current_player = True
+			p = next(play for play in self.__players if play.self_ == True)
+			self.__remaining_movement = p.attributes.get_attribute_value('speed')
 		else:
 			self.__title = f'{player_name}\'s turn'
 			self.__current_player = False
@@ -59,5 +62,14 @@ class GameState(state.State):
 		self._add_command(command.Command('client_redraw'))
 
 	def select(self, node):
+		self.__selected = node
 		self._add_command(command.Command('client_select', { 'selected': node }))
 		self._add_command(command.Command('client_redraw'))
+
+	def trigger_selected_character_move(self, grid_x, grid_y):
+		if self.__current_player and self.__selected and isinstance(self.__selected, client_player.ClientPlayer):
+			if self.__selected.self_ and self.__remaining_movement > 0 and self.__rooms.can_move(self.__selected.grid_x, self.__selected.grid_y, grid_x, grid_y):
+				self.__remaining_movement -= 1
+				self.__rooms.move(self.__selected, self.__selected.grid_x, self.__selected.grid_y, grid_x, grid_y)
+				self._add_command(command.Command('client_redraw'))
+

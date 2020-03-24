@@ -11,16 +11,16 @@ class ClientRoom(server_room.ServerRoom):
 	def __init__(self, entry):
 		super().__init__(entry)
 		self.__selected = False
-		self.__players = []
 
 	def add_player(self, player):
-		self.__players.append(player)
+		print(f'adding player {player.name} to {self.display_name}')
+		self._players.append(player)
 		self.__adjust_player_positions()
 
 	def __adjust_player_positions(self):
-		for i in range(len(self.__players)):
-			player = self.__players[i]
-			if len(self.__players) == 1:
+		for i in range(len(self._players)):
+			player = self._players[i]
+			if len(self._players) == 1:
 				player.set_position(
 					self._grid_x, 
 					self._grid_y,
@@ -28,7 +28,7 @@ class ClientRoom(server_room.ServerRoom):
 					self._grid_y * constants.GRID_SIZE,
 					1.0
 				)
-			elif len(self.__players) == 2:
+			elif len(self._players) == 2:
 				player.set_position(
 					self._grid_x, 
 					self._grid_y,
@@ -104,9 +104,8 @@ class ClientRoom(server_room.ServerRoom):
 				if not self.default_handler(command, state):
 					state.select(self)
 				return True
-			# elif command.data['button'] == window.mouse.RIGHT and state.name('SelectedState'):
-			# 	if not self.default_handler(command, state):
-			# 		state.trigger_selected_character_move(self.grid_x, self.grid_y, True)
+			elif command.data['button'] == pyglet.window.mouse.RIGHT:
+				state.trigger_selected_character_move(self._grid_x, self._grid_y)
 
 	def client_select_handler(self, command, state):
 		self.__selected = command.data['selected'] == self
@@ -122,4 +121,4 @@ class ClientRoom(server_room.ServerRoom):
 		)
 
 	def default_handler(self, command, state):
-		return any(player.on_command(command, state) for player in self.__players)
+		return any(player.on_command(command, state) for player in self._players)

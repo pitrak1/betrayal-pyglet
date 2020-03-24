@@ -12,20 +12,27 @@ class ServerRoom(node_module.Node):
 			setattr(self, key, value)
 
 		self._players = []
-		self._links = []
+		self.links = []
 
 	def set_position(self, grid_x, grid_y):
 		self._grid_x = grid_x
 		self._grid_y = grid_y
 
 	def has_door(self, direction):
-		self.doors[direction]
+		return self.doors[direction]
 
 	def add_link(self, room):
-		self._links.append(room)
+		self.links.append(room)
 
 	def has_link(self, room):
-		return room in self._links
+		return room in self.links
 
 	def add_player(self, player):
 		self._players.append(player)
+
+	def remove_player(self, player):
+		print(f'removing {player.name} from {self.display_name}')
+		print('Current players:')
+		for p in self._players:
+			print(p.name)
+		self._players.remove(player)

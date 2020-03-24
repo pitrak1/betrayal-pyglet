@@ -8,7 +8,7 @@ class ClientPlayer(node.Node):
 		self.__variable_name = entry['variable_name']
 		self.__related = entry['related']
 		self.__selected = False
-		self.__attributes = attribute_set.AttributeSet(
+		self.attributes = attribute_set.AttributeSet(
 			speed=entry['speed'],
 			speed_index=entry['speed_index'], 
 			might=entry['might'],
@@ -18,11 +18,11 @@ class ClientPlayer(node.Node):
 			knowledge=entry['knowledge'], 
 			knowledge_index=entry['knowledge_index']
 		)
-		self.__name = name
+		self.name = name
 		self.__host = host
-		self.__self_ = self_
-		self.__grid_x = None
-		self.__grid_y = None
+		self.self_ = self_
+		self.grid_x = None
+		self.grid_y = None
 		self.__x = None
 		self.__y = None
 		self.__scale = 1
@@ -45,8 +45,8 @@ class ClientPlayer(node.Node):
 			)
 
 	def set_position(self, grid_x, grid_y, x, y, scale):
-		self.__grid_x = grid_x
-		self.__grid_y = grid_y
+		self.grid_x = grid_x
+		self.grid_y = grid_y
 		self.__x = x
 		self.__y = y
 		self.__scale = scale
@@ -56,9 +56,6 @@ class ClientPlayer(node.Node):
 			if command.data['button'] == pyglet.window.mouse.LEFT:
 				state.select(self)
 				return True
-			# elif command.data['button'] == window.mouse.RIGHT and state.name('SelectedState'):
-			# 	if not self.default_handler(command, state):
-			# 		state.trigger_selected_character_move(self.grid_x, self.grid_y, True)
 
 	def client_select_handler(self, command, state):
 		self.__selected = command.data['selected'] == self
