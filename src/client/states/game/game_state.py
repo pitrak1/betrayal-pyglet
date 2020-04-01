@@ -6,15 +6,15 @@ from src.shared import constants, command
 import config
 
 class GameState(state.State):
-	def __init__(self, data, set_state, add_command):
-		super().__init__(data, set_state, add_command)
-		self._batch = pyglet.graphics.Batch()
-		self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(constants.NUMBER_OF_GROUPS)]
-		self.__rooms = client_room_grid.ClientRoomGrid()
-		self._elements = [self.__rooms]
-		self.__players = []
-		self.__current_player = False
-		self._add_command(command.Command('network_get_player_positions', { 'status': 'pending' }))
+	def __init__(self, asset_manager, set_state, add_command, player_name, game_name, host, testing=False):
+		super().__init__(asset_manager, set_state, add_command, testing)
+		# self._batch = pyglet.graphics.Batch()
+		# self.__groups = [pyglet.graphics.OrderedGroup(i) for i in range(constants.NUMBER_OF_GROUPS)]
+		# self.__rooms = client_room_grid.ClientRoomGrid()
+		# self._elements = [self.__rooms]
+		# self.__players = []
+		# self.__current_player = False
+		# self._add_command(command.Command('network_get_player_positions', { 'status': 'pending' }))
 		
 	def client_redraw_handler(self, command, state=None):
 		self._batch = pyglet.graphics.Batch()

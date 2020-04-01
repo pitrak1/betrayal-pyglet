@@ -113,7 +113,7 @@ class Client(node.Node):
 
 	def network_all_characters_selected_handler(self, command, state=None):
 		if command.data['status'] == 'success':
-			state.all_characters_selected()
+			state.next()
 
 	def network_get_character_selections_handler(self, command, state=None):
 		if command.data['status'] == 'pending':

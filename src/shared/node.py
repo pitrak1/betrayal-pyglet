@@ -3,13 +3,13 @@ class Node():
 		self.setup_callbacks()
 
 	def setup_callbacks(self):
-		self.__command_callbacks = {}
+		self.command_callbacks = {}
 		for entry in dir(self):
 			if '_handler' in entry:
-				self.__command_callbacks[entry[:-8]] = getattr(self, entry)
+				self.command_callbacks[entry[:-8]] = getattr(self, entry)
 
 	def on_command(self, command, state=None):
-		return self.__command_callbacks[command.type](command, state)
+		return self.command_callbacks[command.type](command, state)
 
 	# asset_manager, batch, groups
 	def client_redraw_handler(self, command, state=None):
