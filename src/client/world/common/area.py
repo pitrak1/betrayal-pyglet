@@ -4,11 +4,11 @@ from src.shared import node, bounds, constants
 class Area(node.Node):
 	def __init__(self, asset, x, y, unit_width, unit_height, batch, group, align='center', opacity=255):
 		super().__init__()
-		self.__x = x
-		self.__y = y
-		self.__unit_width = unit_width
-		self.__unit_height = unit_height
-		self.__sprites = []
+		self.x = x
+		self.y = y
+		self.unit_width = unit_width
+		self.unit_height = unit_height
+		self.sprites = []
 
 		if align == 'center':
 			base_x_offset = (unit_width - 1) / 2 * constants.AREA_TILE_SIZE
@@ -35,12 +35,12 @@ class Area(node.Node):
 					sprite_index = base_sprite_index + 2
 				else:
 					sprite_index = base_sprite_index + 1
-				self.__sprites.append(pyglet.sprite.Sprite(asset[sprite_index], batch=batch, group=group))
-				self.__sprites[j * unit_width + i].update(
+				self.sprites.append(pyglet.sprite.Sprite(asset[sprite_index], batch=batch, group=group))
+				self.sprites[j * unit_width + i].update(
 					x=x - base_x_offset + constants.AREA_TILE_SIZE * i, 
 					y=y - base_y_offset + constants.AREA_TILE_SIZE * j,
 				)
-				self.__sprites[j * unit_width + i].opacity = opacity
+				self.sprites[j * unit_width + i].opacity = opacity
 
 	def within_bounds(self, x, y):
-		return bounds.within_rect_bounds(self.__x, self.__y, x, y, self.__unit_width * constants.AREA_TILE_SIZE, self.__unit_height * constants.AREA_TILE_SIZE)
+		return bounds.within_rect_bounds(self.x, self.y, x, y, self.unit_width * constants.AREA_TILE_SIZE, self.unit_height * constants.AREA_TILE_SIZE)
