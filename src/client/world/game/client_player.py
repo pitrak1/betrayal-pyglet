@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import bounds, constants, node, attribute_set
+from src.shared import bounds, constants, node, attribute_set, logger
 
 class ClientPlayer(node.Node):
 	def __init__(self, entry, name, host, self_, testing=False):
@@ -49,6 +49,7 @@ class ClientPlayer(node.Node):
 
 
 	def client_redraw_handler(self, command, state=None):
+		logger.log(f'Player {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		self.redraw(command, state)
 
 	def set_position(self, grid_x, grid_y, x, y, scale):
@@ -59,12 +60,16 @@ class ClientPlayer(node.Node):
 		self.scale = scale
 
 	def client_translated_mouse_press_handler(self, command, state):
+		logger.log(f'Player {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.within_bounds(command.data['x'], command.data['y']):
+			logger.log(f'Within bounds of Player {self.variable_name}', logger.LOG_LEVEL_DEBUG)
 			if command.data['button'] == pyglet.window.mouse.LEFT:
+				logger.log(f'LMB within bounds of Player {self.variable_name}, selecting', logger.LOG_LEVEL_DEBUG)
 				state.select(self)
 				return True
 
 	def client_select_handler(self, command, state):
+		logger.log(f'Player {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		self.selected = command.data['selected'] == self
 
 	def within_bounds(self, x, y):

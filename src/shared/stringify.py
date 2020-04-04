@@ -5,7 +5,6 @@ def stringify(command):
 	for key, value in command.data.items():
 		if key == 'connection': continue
 		data_string += __stringify_data_item(key, value)
-	print(f'stringified {data_string[:-1]}*')
 	return f'{data_string[:-1]}*'.encode()
 
 def __stringify_data_item(data_item_key, data_item_value):
@@ -42,7 +41,6 @@ def destringify(received):
 	commands = received.decode().split('*')[:-1]
 	result = []
 	for command_string in commands:
-		print(f'destringified {command_string}')
 		result.append(__destringify_each(command_string))
 	return result
 

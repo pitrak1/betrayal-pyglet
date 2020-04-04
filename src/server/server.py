@@ -1,7 +1,7 @@
 import socket
 import threading
 from src.server import core
-from src.shared import stringify
+from src.shared import stringify, logger
 
 class Server():
 	def __init__(self):
@@ -21,6 +21,7 @@ class Server():
 			received = connection.recv(4096)
 			if not received: break
 			command_array = stringify.destringify(received)
+			logger.log(f'Receiving {received.decode()}', logger.LOG_LEVEL_NETWORK)
 			for command in command_array:
 				command.data['connection'] = connection
 				self.core.add_command(command)

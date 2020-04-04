@@ -1,6 +1,6 @@
 import pyglet
 from src.server import server_room
-from src.shared import constants, bounds, command
+from src.shared import constants, bounds, command, logger
 
 UP = 0
 RIGHT = 1
@@ -88,6 +88,7 @@ class ClientRoom(server_room.ServerRoom):
 
 
 	def client_redraw_handler(self, command, state=None):
+		logger.log(f'Room {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		self.redraw(command, state)
 		return self.default_handler(command, state)
 
@@ -103,15 +104,20 @@ class ClientRoom(server_room.ServerRoom):
 			return { 'x': grid_x * constants.GRID_SIZE - offset, 'y': grid_y * constants.GRID_SIZE }
 
 	def client_translated_mouse_press_handler(self, command, state):
+		logger.log(f'Room {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.within_bounds(command.data['x'], command.data['y']):
+			logger.log(f'Within bounds of Room {self.variable_name}', logger.LOG_LEVEL_DEBUG)
 			if command.data['button'] == pyglet.window.mouse.LEFT:
 				if not self.default_handler(command, state):
+					logger.log(f'LMB not within bounds of players of Room {self.variable_name}, selecting', logger.LOG_LEVEL_DEBUG)
 					state.select(self)
 				return True
 			elif command.data['button'] == pyglet.window.mouse.RIGHT:
+				logger.log(f'RMB within bounds of Room {self.variable_name}, moving', logger.LOG_LEVEL_DEBUG)
 				state.trigger_selected_character_move(self.grid_x, self.grid_y)
 
 	def client_select_handler(self, command, state):
+		logger.log(f'Room {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		self.selected = command.data['selected'] == self
 		self.default_handler(command, state)
 

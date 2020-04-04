@@ -1,10 +1,11 @@
 import pyglet
-from src.shared import node, constants
+from src.shared import node, constants, logger
 from src.client.world.common import area, button, label
 
 class GameListing(node.Node):
 	def __init__(self, asset_manager, name, players, x, y, on_click, batch, area_group, text_group):
 		super().__init__()
+		self.name = name
 		self.__area = area.Area(
 			asset=asset_manager.common['button'], 
 			x=x, 
@@ -40,5 +41,7 @@ class GameListing(node.Node):
 		self.__on_click = on_click
 
 	def client_translated_mouse_press_handler(self, command, state=None):
+		logger.log(f'Game Listing {self.name} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.__area.within_bounds(command.data['x'], command.data['y']):
+			logger.log(f'Within bounds of Game Listing {self.name}, calling on_click', logger.LOG_LEVEL_COMMAND)
 			self.__on_click()	

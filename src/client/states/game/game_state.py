@@ -2,7 +2,7 @@ import pyglet
 from src.client.states import state
 from src.client.world.game import client_room_grid, client_player
 from src.client.world.common import button, label
-from src.shared import constants, command
+from src.shared import constants, command, logger
 import config
 
 class GameState(state.State):
@@ -38,6 +38,7 @@ class GameState(state.State):
 				)
 		
 	def client_redraw_handler(self, command, state=None):
+		logger.log('Game State handling command', logger.LOG_LEVEL_COMMAND)
 		self.redraw()
 		command.data.update({ 'asset_manager': self.asset_manager, 'batch': self.batch, 'groups': self.groups })
 		self.rooms.on_command(command, state)

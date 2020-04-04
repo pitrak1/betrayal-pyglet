@@ -1,11 +1,12 @@
 import pyglet
 from src.shared import node, constants
-from src.client.world.common import label
-from src.client.world.common import area
+from src.client.world.common import label, area
+from src.shared import logger
 
 class TextBox(area.Area):
 	def __init__(self, asset, x, y, unit_width, label_text, max_length, batch, area_group, text_group):
 		super().__init__(asset, x, y, unit_width, 2, align='left', batch=batch, group=area_group)
+		self.label_text = label_text
 		self.document = pyglet.text.document.UnformattedDocument('')
 		self.document.set_style(0, 0, dict(color=(0, 0, 0, 255), font_size=15))
 
@@ -29,32 +30,43 @@ class TextBox(area.Area):
 		return self.document.text
 
 	def client_text_entered_handler(self, command, state):
+		logger.log(f'TextBox {self.label_text} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.selected:
+			logger.log(f'TextBox {self.label_text} is selected, acting', logger.LOG_LEVEL_DEBUG)
 			self.caret.on_text(command.data['text'])
 			self.enforce_length()
 
 	def client_text_motion_handler(self, command, state):
+		logger.log(f'TextBox {self.label_text} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.selected:
+			logger.log(f'TextBox {self.label_text} is selected, acting', logger.LOG_LEVEL_DEBUG)
 			self.caret.on_text_motion(command.data['motion'])
 			self.enforce_length()
 
 	def client_text_motion_select_handler(self, command, state):
+		logger.log(f'TextBox {self.label_text} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.selected:
+			logger.log(f'TextBox {self.label_text} is selected, acting', logger.LOG_LEVEL_DEBUG)
 			self.caret.on_text_motion_select(command.data['motion'])
 			self.enforce_length()
 
 	def client_translated_mouse_press_handler(self, command, state):
+		logger.log(f'TextBox {self.label_text} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.within_bounds(command.data['x'], command.data['y']):
+			logger.log(f'Within bounds of TextBox {self.label_text}, selecting', logger.LOG_LEVEL_DEBUG)
 			self.caret.visible = True
 			self.caret.on_mouse_press(command.data['x'], command.data['y'], command.data['button'], command.data['modifiers'])
 			self.selected = True
 		else:
+			logger.log(f'Not within bounds of TextBox {self.label_text}, unselecting', logger.LOG_LEVEL_DEBUG)
 			self.caret.visible = False
 			self.caret.mark = self.caret.position = 0
 			self.selected = False
 
 	def client_translated_mouse_drag_handler(self, command, state):
+		logger.log(f'TextBox {self.label_text} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.selected:
+			logger.log(f'TextBox {self.label_text} is selected, acting', logger.LOG_LEVEL_DEBUG)
 			self.caret.on_mouse_drag(command.data['x'], command.data['y'], command.data['dx'], command.data['dy'], command.data['buttons'], command.data['modifiers'])
 			self.enforce_length()
 

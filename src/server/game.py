@@ -1,7 +1,7 @@
 import random
 import threading
 from src.server.states import lobby_state
-from src.shared import threaded_queue, stringify, threaded_sync, node
+from src.shared import threaded_queue, stringify, threaded_sync, node, logger
 import config
 
 class Game(node.Node):
@@ -23,4 +23,5 @@ class Game(node.Node):
 	def on_update(self, dt=None, state=None):
 		while self.command_queue.has_elements():
 			command = self.command_queue.pop_front()
+			logger.log(f'Game {self.name} handling command {command.type} ', logger.LOG_LEVEL_COMMAND, data=command.data)
 			self.current_state.on_command(command)
