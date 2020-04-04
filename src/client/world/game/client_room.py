@@ -8,86 +8,90 @@ DOWN = 2
 LEFT = 3
 
 class ClientRoom(server_room.ServerRoom):
-	def __init__(self, entry):
+	def __init__(self, entry, testing=False):
 		super().__init__(entry)
-		self.__selected = False
+		self.testing = testing
+		self.selected = False
 
 	def add_player(self, player):
-		print(f'adding player {player.name} to {self.display_name}')
-		self._players.append(player)
-		self.__adjust_player_positions()
+		self.players.append(player)
+		self.adjust_player_positions()
 
-	def __adjust_player_positions(self):
-		for i in range(len(self._players)):
-			player = self._players[i]
-			if len(self._players) == 1:
+	def adjust_player_positions(self):
+		for i in range(len(self.players)):
+			player = self.players[i]
+			if len(self.players) == 1:
 				player.set_position(
-					self._grid_x, 
-					self._grid_y,
-					self._grid_x * constants.GRID_SIZE, 
-					self._grid_y * constants.GRID_SIZE,
+					self.grid_x, 
+					self.grid_y,
+					self.grid_x * constants.GRID_SIZE, 
+					self.grid_y * constants.GRID_SIZE,
 					1.0
 				)
-			elif len(self._players) == 2:
+			elif len(self.players) == 2:
 				player.set_position(
-					self._grid_x, 
-					self._grid_y,
-					self._grid_x * constants.GRID_SIZE - 100 + 200 * i, 
-					self._grid_y * constants.GRID_SIZE,
+					self.grid_x, 
+					self.grid_y,
+					self.grid_x * constants.GRID_SIZE - 100 + 200 * i, 
+					self.grid_y * constants.GRID_SIZE,
 					1.0
 				)
 			else:
 				player.set_position(
-					self._grid_x, 
-					self._grid_y,
-					self._grid_x * constants.GRID_SIZE - 100 + 200 * (i % 2), 
-					self._grid_y * constants.GRID_SIZE - 100 + 200 * (i // 2),
+					self.grid_x, 
+					self.grid_y,
+					self.grid_x * constants.GRID_SIZE - 100 + 200 * (i % 2), 
+					self.grid_y * constants.GRID_SIZE - 100 + 200 * (i // 2),
 					1.0
 				)
 
-	def client_redraw_handler(self, command, state=None):
-		self.__sprite = pyglet.sprite.Sprite(
-			command.data['asset_manager'].rooms[self.asset_index],
-			x=self._grid_x * constants.GRID_SIZE, 
-			y=self._grid_y * constants.GRID_SIZE,
-			batch=command.data['batch'],
-			group=command.data['groups'][constants.ROOMS_GROUP]
-		)
-		self.__sprite.update(rotation=90 * self.sprite_rotation)
-
-		self.__door_sprites = []
-		for i in range(4):
-			door_position = self.__get_door_position(self._grid_x, self._grid_y, i)
-			door_sprite = pyglet.sprite.Sprite(
-				command.data['asset_manager'].common['door'],
-				x=door_position['x'],
-				y=door_position['y'],
-				batch=command.data['batch'], 
-				group=command.data['groups'][constants.CHARACTERS_AND_DOORS_GROUP]
+	def redraw(self, command, state):
+		if not self.testing:
+			self.sprite = pyglet.sprite.Sprite(
+				command.data['asset_manager'].rooms[self.asset_index],
+				x=self.grid_x * constants.GRID_SIZE, 
+				y=self.grid_y * constants.GRID_SIZE,
+				batch=command.data['batch'],
+				group=command.data['groups'][constants.ROOMS_GROUP]
 			)
-			door_sprite.update(rotation=90 * i)
-			self.__door_sprites.append(door_sprite)
+			self.sprite.update(rotation=90 * self.sprite_rotation)
 
-		self.__label = pyglet.text.Label(
-			self.display_name, 
-			x=self._grid_x * constants.GRID_SIZE, 
-			y=self._grid_y * constants.GRID_SIZE,
-			batch=command.data['batch'], 
-			group=command.data['groups'][constants.HIGHLIGHTS_GROUP]
-		)
+			self.door_sprites = []
+			for i in range(4):
+				door_position = self.get_door_position(self.grid_x, self.grid_y, i)
+				door_sprite = pyglet.sprite.Sprite(
+					command.data['asset_manager'].common['door'],
+					x=door_position['x'],
+					y=door_position['y'],
+					batch=command.data['batch'], 
+					group=command.data['groups'][constants.CHARACTERS_AND_DOORS_GROUP]
+				)
+				door_sprite.update(rotation=90 * i)
+				self.door_sprites.append(door_sprite)
 
-		if self.__selected:
-			self.__selected_sprite = pyglet.sprite.Sprite(
-				command.data['asset_manager'].common['room_selected'], 
-				x=self._grid_x * constants.GRID_SIZE, 
-				y=self._grid_y * constants.GRID_SIZE,
+			self.label = pyglet.text.Label(
+				self.display_name, 
+				x=self.grid_x * constants.GRID_SIZE, 
+				y=self.grid_y * constants.GRID_SIZE,
 				batch=command.data['batch'], 
 				group=command.data['groups'][constants.HIGHLIGHTS_GROUP]
 			)
 
+			if self.selected:
+				self.selected_sprite = pyglet.sprite.Sprite(
+					command.data['asset_manager'].common['room_selected'], 
+					x=self.grid_x * constants.GRID_SIZE, 
+					y=self.grid_y * constants.GRID_SIZE,
+					batch=command.data['batch'], 
+					group=command.data['groups'][constants.HIGHLIGHTS_GROUP]
+				)
+
+
+	def client_redraw_handler(self, command, state=None):
+		self.redraw(command, state)
 		return self.default_handler(command, state)
 
-	def __get_door_position(self, grid_x, grid_y, direction):
+	def get_door_position(self, grid_x, grid_y, direction):
 		offset = (constants.GRID_SIZE // 2 - constants.DOOR_OFFSET)
 		if direction == constants.UP:
 			return { 'x': grid_x * constants.GRID_SIZE, 'y': grid_y * constants.GRID_SIZE + offset }
@@ -105,20 +109,20 @@ class ClientRoom(server_room.ServerRoom):
 					state.select(self)
 				return True
 			elif command.data['button'] == pyglet.window.mouse.RIGHT:
-				state.trigger_selected_character_move(self._grid_x, self._grid_y)
+				state.trigger_selected_character_move(self.grid_x, self.grid_y)
 
 	def client_select_handler(self, command, state):
-		self.__selected = command.data['selected'] == self
+		self.selected = command.data['selected'] == self
 		self.default_handler(command, state)
 
 	def within_bounds(self, x, y):
 		return bounds.within_square_bounds(
-			self._grid_x * constants.GRID_SIZE, 
-			self._grid_y * constants.GRID_SIZE, 
+			self.grid_x * constants.GRID_SIZE, 
+			self.grid_y * constants.GRID_SIZE, 
 			x, 
 			y, 
 			constants.GRID_SIZE
 		)
 
 	def default_handler(self, command, state):
-		return any(player.on_command(command, state) for player in self._players)
+		return any(player.on_command(command, state) for player in self.players)
