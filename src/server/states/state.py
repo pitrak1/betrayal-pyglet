@@ -1,10 +1,19 @@
-from src.shared import node
+from src.shared import command, logger, node
 
 class State(node.Node):
-	def __init__(self, name, players, rooms, set_state, add_command):
+	def __init__(self, game):
 		super().__init__()
-		self.name = name
-		self.players = players
-		self.rooms = rooms
-		self.set_state = set_state
-		self.add_command = add_command
+		self.game = game
+
+	def network_get_players_in_game_handler(self, command_, state=None):
+		logger.log(f'State {self.game.name} handling command', logger.LOG_LEVEL_COMMAND)
+		self.game.send_players_in_game(command_.data['exception'])
+
+	def server_broadcast_players_handler(self, command_, state=None):
+		logger.log(f'State {self.game.name} handling command', logger.LOG_LEVEL_COMMAND)
+		self.game.send_players_in_game(command_.data['exception'])
+
+	def network_leave_game_handler(self, command_, state=None):
+		logger.log(f'State {self.game.name} handling command', logger.LOG_LEVEL_COMMAND)
+		player = next(p for p in self.game.players if command_.data['connection'] == p)
+		self.game.remove_player(player)

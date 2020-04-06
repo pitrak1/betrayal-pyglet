@@ -49,8 +49,7 @@ class Core(node.Node):
 			player.host = True
 			game_ = game.Game(command_.data['game_name'])
 			self.games[command_.data['game_name']] = game_
-			player.game = game_
-			game_.players.append(player)
+			game_.add_player(player)
 			logger.log(f'Core creating game {command_.data["game_name"]}', logger.LOG_LEVEL_DEBUG)
 			command.update_and_send(command_, { 'status': 'success' })
 
@@ -74,19 +73,9 @@ class Core(node.Node):
 	def network_logout_handler(self, command_, state=None):
 		logger.log(f'Core handling command', logger.LOG_LEVEL_COMMAND)
 		player = next(p for p in self.players if p == command_.data['connection'])
-		if player.game: self.__leave_game(player)
+		if player.game: player.game.remove_player(player)
 		self.players = [p for p in self.players if p.name != player.name]
 		command.update_and_send(command_, { 'status': 'success' })
-
-	def __leave_game(self, player):
-		player.game.players.remove(player)
-		if player.game.players:
-			logger.log(f'Core broadcasting players in game {player.game.name}', logger.LOG_LEVEL_DEBUG)
-			self.add_command(command.Command('server_broadcast_players', { 'exception': None, 'connection': player.connection }))
-		else:
-			logger.log(f'Core destroying game {player.game.name}', logger.LOG_LEVEL_DEBUG)
-			del self.games[player.game.name]
-		player.game = None
 
 	def add_command(self, command_):
 		logger.log(f'Adding command {command_.type} ', logger.LOG_LEVEL_COMMAND, data=command_.data)

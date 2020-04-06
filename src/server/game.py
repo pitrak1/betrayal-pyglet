@@ -1,7 +1,7 @@
 import random
 import threading
 from src.server.states import lobby_state
-from src.shared import threaded_queue, stringify, threaded_sync, node, logger
+from src.shared import threaded_queue, stringify, threaded_sync, node, logger, command
 import config
 
 class Game(node.Node):
@@ -11,8 +11,7 @@ class Game(node.Node):
 		self.players = []
 		self.rooms = []
 		self.command_queue = threaded_queue.ThreadedQueue()
-		data = { 'players': self.players, 'rooms': self.rooms, 'name': name }
-		self.current_state = lobby_state.LobbyState(self.name, self.players, self.rooms, self.set_state, self.command_queue.append)
+		self.current_state = lobby_state.LobbyState(self, self.set_state, self.command_queue.append)
 
 	def set_state(self, state):
 		self.current_state = state
@@ -25,3 +24,22 @@ class Game(node.Node):
 			command = self.command_queue.pop_front()
 			logger.log(f'Game {self.name} handling command {command.type} ', logger.LOG_LEVEL_COMMAND, data=command.data)
 			self.current_state.on_command(command)
+
+	def add_player(self, player):
+		player.game = self
+		self.players.append(player)
+
+	def remove_player(self, player):
+		player.game = None
+		self.players.remove(player)
+		command.update_and_send(command_, { 'status': 'success' })
+		if self.players:
+			logger.log(f'Game {self.name} broadcasting players', logger.LOG_LEVEL_DEBUG)
+			self.send_players_in_game(None)
+		else:
+			self.add_command(command.Command('server_destroy_game', { 'game_name': self.name }))
+
+	def send_players_in_game(self, exception):
+		parsed_players = [(p.name, p.host) for p in self.players]
+		players = [p for p in self.players if p != exception]
+		command.create_and_send_to_all('network_get_players_in_game', { 'status': 'success', 'players': parsed_players }, players)
