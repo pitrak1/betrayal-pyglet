@@ -2,14 +2,13 @@ import pyglet
 from src.client.states.menu import splash_state
 from src.client import asset_manager, client
 from src.shared import threaded_queue, command, node, logger
-import threading
 
 class Game():
-	def __init__(self):
+	def __init__(self, testing=False):
 		self.command_queue = threaded_queue.ThreadedQueue()
 		self.asset_manager = asset_manager.AssetManager()
-		self.client = client.Client(self.add_command)
-		self.current_state = splash_state.SplashState(self.asset_manager, self.set_state, self.add_command)
+		self.client = client.Client(self.add_command, testing=testing)
+		self.current_state = splash_state.SplashState(self.asset_manager, self.set_state, self.add_command, testing=testing)
 
 	def set_state(self, state):
 		self.current_state = state
