@@ -12,7 +12,7 @@ class Game(node.Node):
 		self.rooms = []
 		self.command_queue = threaded_queue.ThreadedQueue()
 		data = { 'players': self.players, 'rooms': self.rooms, 'name': name }
-		self.current_state = lobby_state.LobbyState(data, self.set_state, self.command_queue.append)
+		self.current_state = lobby_state.LobbyState(self.name, self.players, self.rooms, self.set_state, self.command_queue.append)
 
 	def set_state(self, state):
 		self.current_state = state

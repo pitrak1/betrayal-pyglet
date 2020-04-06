@@ -2,10 +2,6 @@ from src.server.states import state, character_selection_state
 from src.shared import command as command_module, logger
 
 class LobbyState(state.State):
-	def __init__(self, data, set_state, add_command):
-		super().__init__(data, set_state, add_command)
-		self.name = data['name']
-
 	def network_get_players_in_game_handler(self, command, state=None):
 		logger.log(f'Lobby State {self.name} handling command', logger.LOG_LEVEL_COMMAND)
 		self.__send_players_in_game(command.data['exception'])
@@ -21,7 +17,9 @@ class LobbyState(state.State):
 			command_module.update_and_send(command, { 'status': 'not_enough_players' })
 		else:
 			self.set_state(character_selection_state.CharacterSelectionState(
-				{ 'players': self.players, 'rooms': self.rooms, 'name': self.name }, 
+				self.name,
+				self.players,
+				self.rooms,
 				self.set_state, 
 				self.add_command
 			))

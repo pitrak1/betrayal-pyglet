@@ -4,9 +4,8 @@ from src.shared import command as command_module, logger
 import config
 
 class GameState(state_module.State):
-	def __init__(self, data, set_state, add_command):
-		super().__init__(data, set_state, add_command)
-		self.name = data['name']
+	def __init__(self, name, players, rooms, set_state, add_command):
+		super().__init__(name, players, rooms, set_state, add_command)
 		self.current_player_index = 0
 		self.rooms = server_room_grid_module.ServerRoomGrid()
 		for player in self.players:

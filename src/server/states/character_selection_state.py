@@ -5,9 +5,8 @@ from src.shared import command as command_module, threaded_sync, logger
 import config
 
 class CharacterSelectionState(state.State):
-	def __init__(self, data, set_state, add_command):
-		super().__init__(data, set_state, add_command)
-		self.name = data['name']
+	def __init__(self, name, players, rooms, set_state, add_command):
+		super().__init__(name, players, rooms, set_state, add_command)
 		random.shuffle(self.players)
 		self.waiting = threaded_sync.ThreadedSync(len(self.players))
 		self.current_player_index = len(self.players) - 1
@@ -77,7 +76,9 @@ class CharacterSelectionState(state.State):
 		if self.waiting.done():
 			logger.log(f'Character Selection State {self.name} done waiting', logger.LOG_LEVEL_DEBUG)
 			self.set_state(game_state_module.GameState(
-				{ 'players': self.players, 'rooms': self.rooms, 'name': self.name }, 
+				self.name,
+				self.players,
+				self.rooms,
 				self.set_state, 
 				self.add_command
 			))
