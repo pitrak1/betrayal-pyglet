@@ -1,6 +1,6 @@
 import pyglet
 from src.client.states.menu import splash_state
-from src.client import asset_manager, client, camera
+from src.client import asset_manager, client
 from src.shared import threaded_queue, command, node, logger
 import threading
 
@@ -8,7 +8,6 @@ class Game():
 	def __init__(self):
 		self.command_queue = threaded_queue.ThreadedQueue()
 		self.asset_manager = asset_manager.AssetManager()
-		self.camera = camera.Camera()
 		self.client = client.Client(self.add_command)
 		self.current_state = splash_state.SplashState(self.asset_manager, self.set_state, self.add_command)
 
@@ -53,14 +52,11 @@ class Game():
 		while self.command_queue.has_elements():
 			command_ = self.command_queue.pop_front()
 			logger.log(f'Handling command {command_.type} ', logger.LOG_LEVEL_COMMAND, data=command_.data)
-			self.camera.on_command(command_, self.current_state)
 			self.client.on_command(command_, self.current_state)
 			self.current_state.on_command(command_)
 
-		self.camera.on_update(dt, self.current_state)
 		self.client.on_update(dt, self.current_state)
 		self.current_state.on_update(dt)
 
 	def draw(self):
-		self.camera.draw()
 		self.current_state.draw()
