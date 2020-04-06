@@ -1,4 +1,9 @@
-from src.shared import stringify
+from src.shared import stringify, logger
+
+def send(command, socket):
+	string_command = stringify.stringify(command)
+	logger.log(f'Sending {string_command.decode()}', logger.LOG_LEVEL_NETWORK)
+	socket.send(string_command)
 
 def update_and_send(command, data):
 	command.data.update(data)
