@@ -20,15 +20,3 @@ class State(node.Node):
 
 	def draw(self):
 		self.batch.draw()
-
-	def trigger_translated_mouse_press(self, x, y, button, modifiers):
-		self.add_command(command.Command(
-			'client_translated_mouse_press', 
-			{ 'x': x, 'y': y, 'button': button, 'modifiers': modifiers }
-		))
-
-	def trigger_translated_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
-		self.add_command(command.Command(
-			'client_translated_mouse_drag', 
-			{ 'x': x, 'y': y, 'dx': dx, 'dy': dy, 'buttons': buttons, 'modifiers': modifiers }
-		))

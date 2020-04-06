@@ -103,7 +103,7 @@ class ClientRoom(server_room.ServerRoom):
 		else:
 			return { 'x': grid_x * constants.GRID_SIZE - offset, 'y': grid_y * constants.GRID_SIZE }
 
-	def client_translated_mouse_press_handler(self, command, state):
+	def client_mouse_press_handler(self, command, state):
 		logger.log(f'Room {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.within_bounds(command.data['x'], command.data['y']):
 			logger.log(f'Within bounds of Room {self.variable_name}', logger.LOG_LEVEL_DEBUG)

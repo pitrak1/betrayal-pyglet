@@ -16,19 +16,11 @@ class Node():
 		return self.default_handler(command, state)
 
 	# x, y, button, modifiers
-	def client_raw_mouse_press_handler(self, command, state=None):
-		return self.default_handler(command, state)
-		
-	# x, y, button, modifiers
-	def client_translated_mouse_press_handler(self, command, state=None):
-		return self.default_handler(command, state)
-
-	# x, y, dx, dy, buttons, modifiers
-	def client_raw_mouse_drag_handler(self, command, state=None):
+	def client_mouse_press_handler(self, command, state=None):
 		return self.default_handler(command, state)
 		
 	# x, y, dx, dy, buttons, modifiers
-	def client_translated_mouse_drag_handler(self, command, state=None):
+	def client_mouse_drag_handler(self, command, state=None):
 		return self.default_handler(command, state)
 		
 	# x, y, dx, dy

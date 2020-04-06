@@ -59,7 +59,7 @@ class ClientPlayer(node.Node):
 		self.y = y
 		self.scale = scale
 
-	def client_translated_mouse_press_handler(self, command, state):
+	def client_mouse_press_handler(self, command, state):
 		logger.log(f'Player {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.within_bounds(command.data['x'], command.data['y']):
 			logger.log(f'Within bounds of Player {self.variable_name}', logger.LOG_LEVEL_DEBUG)

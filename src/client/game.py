@@ -31,13 +31,13 @@ class Game():
 
 	def on_mouse_press(self, x, y, button, modifiers):
 		self.add_command(command.Command(
-			'client_raw_mouse_press', 
+			'client_mouse_press', 
 			{ 'x': x, 'y': y, 'button': button, 'modifiers': modifiers }
 		))
 
 	def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
 		self.add_command(command.Command(
-			'client_raw_mouse_drag', 
+			'client_mouse_drag', 
 			{ 'x': x, 'y': y, 'dx': dx, 'dy': dy, 'buttons': buttons, 'modifiers': modifiers }
 		))
 

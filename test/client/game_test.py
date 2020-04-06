@@ -36,16 +36,16 @@ class TestGame():
 			assert game_.command_queue.pop_front().type == 'client_text_motion_select'
 
 	class TestOnMousePress():
-		def test_adds_client_raw_mouse_press_command(self, mocker):
+		def test_adds_client_mouse_press_command(self, mocker):
 			game_ = game.Game(testing=True)
 			game_.on_mouse_press('x', 'y', 'button', 'modifiers')
-			assert game_.command_queue.pop_front().type == 'client_raw_mouse_press'
+			assert game_.command_queue.pop_front().type == 'client_mouse_press'
 
 	class TestOnMouseDrag():
-		def test_adds_client_raw_mouse_drag_command(self, mocker):
+		def test_adds_client_mouse_drag_command(self, mocker):
 			game_ = game.Game(testing=True)
 			game_.on_mouse_drag('x', 'y', 'dx', 'dy', 'buttons', 'modifiers')
-			assert game_.command_queue.pop_front().type == 'client_raw_mouse_drag'
+			assert game_.command_queue.pop_front().type == 'client_mouse_drag'
 
 	class TestOnMouseScroll():
 		def test_adds_client_mouse_scroll_command(self, mocker):

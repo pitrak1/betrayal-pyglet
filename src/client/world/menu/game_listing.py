@@ -40,7 +40,7 @@ class GameListing(node.Node):
 		)
 		self.__on_click = on_click
 
-	def client_translated_mouse_press_handler(self, command, state=None):
+	def client_mouse_press_handler(self, command, state=None):
 		logger.log(f'Game Listing {self.name} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.__area.within_bounds(command.data['x'], command.data['y']):
 			logger.log(f'Within bounds of Game Listing {self.name}, calling on_click', logger.LOG_LEVEL_COMMAND)

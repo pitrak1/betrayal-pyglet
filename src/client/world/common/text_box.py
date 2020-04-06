@@ -50,7 +50,7 @@ class TextBox(area.Area):
 			self.caret.on_text_motion_select(command.data['motion'])
 			self.enforce_length()
 
-	def client_translated_mouse_press_handler(self, command, state):
+	def client_mouse_press_handler(self, command, state):
 		logger.log(f'TextBox {self.label_text} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.within_bounds(command.data['x'], command.data['y']):
 			logger.log(f'Within bounds of TextBox {self.label_text}, selecting', logger.LOG_LEVEL_DEBUG)
@@ -63,7 +63,7 @@ class TextBox(area.Area):
 			self.caret.mark = self.caret.position = 0
 			self.selected = False
 
-	def client_translated_mouse_drag_handler(self, command, state):
+	def client_mouse_drag_handler(self, command, state):
 		logger.log(f'TextBox {self.label_text} handling command', logger.LOG_LEVEL_COMMAND)
 		if self.selected:
 			logger.log(f'TextBox {self.label_text} is selected, acting', logger.LOG_LEVEL_DEBUG)
