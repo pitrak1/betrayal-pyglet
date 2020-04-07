@@ -1,8 +1,9 @@
 from src.server import server_room_grid as server_room_grid_module
+from src.server.states import state
 from src.shared import command as command_module, logger
 import config
 
-class GameState():
+class GameState(state.State):
 	def __init__(self, game):
 		super().__init__(game)
 		self.current_player_index = 0

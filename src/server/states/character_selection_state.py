@@ -75,5 +75,5 @@ class CharacterSelectionState(state.State):
 		self.waiting.count()
 		if self.waiting.done():
 			logger.log(f'Character Selection State {self.game.name} done waiting', logger.LOG_LEVEL_DEBUG)
-			self.set_state(game_state_module.GameState(self.game))
+			self.game.set_state(game_state_module.GameState(self.game))
 			command_module.update_and_send_to_all(command, { 'status': 'success' }, self.game.players)

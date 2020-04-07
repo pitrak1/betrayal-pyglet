@@ -22,7 +22,7 @@ class GameState(state.State):
 		if not self.testing:
 			self.batch = pyglet.graphics.Batch()
 			self.groups = [pyglet.graphics.OrderedGroup(i) for i in range(constants.NUMBER_OF_GROUPS)]
-			self.elements = {}
+			self.elements = { 'rooms': self.rooms }
 			if self.title:
 				self.elements['title'] = label.Label(
 					text=self.title, 
