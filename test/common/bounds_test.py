@@ -1,4 +1,4 @@
-from src.shared import bounds as bounds_module
+from src.common import bounds as bounds_module
 
 class TestBounds():
 	class TestWithinCircleBounds():

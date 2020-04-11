@@ -3,7 +3,7 @@ import pyglet
 import sys
 from src.client.menu import game_list_state, main_menu_state, game_state
 import config
-from src.shared import constants
+from src.common import constants
 import types
 
 class TestGameListState():

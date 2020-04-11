@@ -1,7 +1,7 @@
 import pytest
 import pyglet
 from src.client import client
-from src.shared import command
+from src.common import command
 import types
 
 class TestClient():
@@ -17,7 +17,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_create_player', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_create_player_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -62,7 +62,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_create_game', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_create_game_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -104,7 +104,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_leave_game', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_leave_game_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -125,7 +125,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_get_players_in_game', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_get_players_in_game_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -146,7 +146,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_get_games', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_get_games_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -168,7 +168,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_join_game', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_join_game_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -196,7 +196,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_logout', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_logout_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -218,7 +218,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_start_game', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_start_game_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -246,7 +246,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_get_player_order', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_get_player_order_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -267,7 +267,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_confirm_player_order', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_confirm_player_order_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -288,7 +288,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_get_available_characters', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_get_available_characters_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -309,7 +309,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_get_current_player', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_get_current_player_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -325,7 +325,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_select_character', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			client_.network_select_character_handler(command_, None)
 			command.send.assert_called_once_with(command_, None)
 
@@ -351,7 +351,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_get_character_selections', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_get_character_selections_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -372,7 +372,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_confirm_character_selections', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_confirm_character_selections_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)
@@ -393,7 +393,7 @@ class TestClient():
 		def test_sends_command_when_status_is_pending(self, mocker):
 			client_ = client.Client(mocker.stub(), testing=True)
 			command_ = command.Command('network_get_player_positions', { 'status': 'pending' })
-			mocker.patch('src.shared.command.send')
+			mocker.patch('src.common.command.send')
 			state = self.create_state(mocker)
 			client_.network_get_player_positions_handler(command_, state)
 			command.send.assert_called_once_with(command_, None)

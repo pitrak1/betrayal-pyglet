@@ -1,5 +1,5 @@
 from src.client.menu import main_menu_state
-from src.shared import command
+from src.common import command
 import random
 import time
 

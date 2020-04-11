@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import command, node
+from src.common import command, node
 
 class State(node.Node):
 	def __init__(self, asset_manager, set_state, add_command, testing):

@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from src.shared import threaded_queue
+from src.common import threaded_queue
 
 class TestThreadedQueue():
 	def test_has_no_elements_on_initialization(self):

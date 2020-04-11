@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from src.shared import threaded_sync
+from src.common import threaded_sync
 
 class TestThreadedSync():
 	def test_assertion_fails_when_given_value_less_than_2(self):

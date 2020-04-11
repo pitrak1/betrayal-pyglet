@@ -2,7 +2,7 @@ import sys
 import pyglet
 from src.client.common import button, text_box, area, background, label, state
 from src.client.menu import main_menu_state, game_state
-from src.shared import constants, command
+from src.common import constants, command
 
 class CreateGameState(state.State):
 	def __init__(self, asset_manager, set_state, add_command, player_name, testing=False):

@@ -1,4 +1,4 @@
-from src.shared import node as node_module
+from src.common import node as node_module
 
 UP = 0
 RIGHT = 1

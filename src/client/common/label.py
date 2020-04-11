@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import node as node_module
+from src.common import node as node_module
 
 class Label(pyglet.text.Label, node_module.Node):
 	def __init__(self, *args, **kwargs):

@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from src.shared import pagination
+from src.common import pagination
 
 class TestPagination():
 	def test_returns_correct_data_on_first_page(self):

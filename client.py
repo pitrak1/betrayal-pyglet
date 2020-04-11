@@ -1,6 +1,6 @@
 import pyglet
 from src.client import game as game_module
-from src.shared import constants
+from src.common import constants
 
 window = pyglet.window.Window(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)
 

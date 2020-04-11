@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import node, bounds, constants
+from src.common import node, bounds, constants
 
 class Area(node.Node):
 	def __init__(self, asset, x, y, unit_width, unit_height, batch, group, align='center', opacity=255):

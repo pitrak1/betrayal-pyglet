@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import node, constants, logger
+from src.common import node, constants, logger
 from src.client.common import label, area
 
 class TextBox(area.Area):

@@ -1,7 +1,7 @@
 import pytest
 import pyglet
 from src.server import server_player
-from src.shared import command
+from src.common import command
 import types
 
 class TestServerPlayer():

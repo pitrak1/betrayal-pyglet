@@ -1,7 +1,7 @@
 import pyglet
 from src.client.menu import splash_state
 from src.client import asset_manager, client
-from src.shared import threaded_queue, command, node, logger
+from src.common import threaded_queue, command, node, logger
 
 class Game():
 	def __init__(self, testing=False):

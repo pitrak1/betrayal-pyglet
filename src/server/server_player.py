@@ -1,4 +1,4 @@
-from src.shared import attribute_set
+from src.common import attribute_set
 
 class ServerPlayer():
 	def __init__(self, name, host, connection=None):

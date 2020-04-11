@@ -1,7 +1,7 @@
 import pyglet
 from src.client.game import client_room_grid, client_player
 from src.client.common import button, label, state
-from src.shared import constants, command, logger
+from src.common import constants, command, logger
 import config
 
 class GameState(state.State):

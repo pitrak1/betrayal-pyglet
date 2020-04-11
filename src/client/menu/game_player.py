@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import node
+from src.common import node
 from src.client.common import area, label
 
 class GamePlayer(node.Node):

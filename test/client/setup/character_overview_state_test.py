@@ -4,7 +4,7 @@ import sys
 from src.client.setup import character_overview_state
 from src.client.game import game_state
 import config
-from src.shared import constants
+from src.common import constants
 import types
 
 class TestCharacterOverviewState():

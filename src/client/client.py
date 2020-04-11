@@ -1,6 +1,6 @@
 import socket
 import threading
-from src.shared import stringify, node, logger, command
+from src.common import stringify, node, logger, command
 
 class Client(node.Node):
 	def __init__(self, add_command, testing=False):

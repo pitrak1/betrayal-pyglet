@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import constants, node
+from src.common import constants, node
 
 class Background(node.Node):
 	def __init__(self, asset, batch, group):

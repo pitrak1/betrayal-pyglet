@@ -1,4 +1,4 @@
-from src.shared import stringify, logger
+from src.common import stringify, logger
 
 def send(command, socket):
 	string_command = stringify.stringify(command)

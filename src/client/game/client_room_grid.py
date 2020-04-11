@@ -1,7 +1,7 @@
 import pyglet
 from src.server import server_room_grid
 from src.client.game import client_room
-from src.shared import constants
+from src.common import constants
 import config
 
 class ClientRoomGrid(server_room_grid.ServerRoomGrid):

@@ -3,7 +3,7 @@ import pyglet
 import sys
 from src.client.setup import character_selection_state, character_overview_state
 import config
-from src.shared import constants
+from src.common import constants
 import types
 
 class TestCharacterSelectionState():

@@ -1,5 +1,5 @@
 from src.server import server_room
-from src.shared import constants, node
+from src.common import constants, node
 import config
 
 class ServerRoomGrid(node.Node):
@@ -45,14 +45,14 @@ class ServerRoomGrid(node.Node):
 		if isinstance(self.rooms[grid_x][grid_y], server_room.ServerRoom):
 			self.rooms[grid_x][grid_y].add_player(player)
 
-	def can_move(self, start_x, start_y, end_x, end_y):
-		start_room = self.rooms[start_x][start_y]
-		end_room = self.rooms[end_x][end_y]
-		return start_room and end_room and start_room.has_link(end_room)
+	# def can_move(self, start_x, start_y, end_x, end_y):
+	# 	start_room = self.rooms[start_x][start_y]
+	# 	end_room = self.rooms[end_x][end_y]
+	# 	return start_room and end_room and start_room.has_link(end_room)
 
-	def move(self, player, start_x, start_y, end_x, end_y):
-		start_room = self.rooms[start_x][start_y]
-		end_room = self.rooms[end_x][end_y]
-		start_room.remove_player(player)
-		end_room.add_player(player)
+	# def move(self, player, start_x, start_y, end_x, end_y):
+	# 	start_room = self.rooms[start_x][start_y]
+	# 	end_room = self.rooms[end_x][end_y]
+	# 	start_room.remove_player(player)
+	# 	end_room.add_player(player)
 

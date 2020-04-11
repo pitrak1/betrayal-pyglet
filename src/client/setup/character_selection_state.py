@@ -1,7 +1,7 @@
 import pyglet
 from src.client.setup import character_overview_state, character_tile
 from src.client.common import label, button, state
-from src.shared import constants, command
+from src.common import constants, command
 import config
 
 class CharacterSelectionState(state.State):

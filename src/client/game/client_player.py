@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import bounds, constants, node, attribute_set, logger
+from src.common import bounds, constants, node, attribute_set, logger
 
 class ClientPlayer(node.Node):
 	def __init__(self, entry, name, host, self_, testing=False):

@@ -3,7 +3,7 @@ import pyglet
 from src.client.menu import game_player, main_menu_state
 from src.client.common import background, button, area, label, state
 from src.client.setup import player_order_state
-from src.shared import constants, command
+from src.common import constants, command
 
 class GameState(state.State):
 	def __init__(self, asset_manager, set_state, add_command, player_name, game_name, host, testing=False):

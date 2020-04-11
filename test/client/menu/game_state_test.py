@@ -4,7 +4,7 @@ import sys
 from src.client.menu import main_menu_state, game_state
 from src.client.setup import player_order_state
 import config
-from src.shared import constants
+from src.common import constants
 import types
 
 class TestGameState():

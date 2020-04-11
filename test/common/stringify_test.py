@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from src.shared import stringify, command as command_module
+from src.common import stringify, command as command_module
 
 class TestStringify():
 	class TestStringify():

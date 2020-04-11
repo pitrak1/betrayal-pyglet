@@ -1,5 +1,5 @@
 from src.server.states import character_selection_state, state
-from src.shared import command, logger
+from src.common import command, logger
 
 class LobbyState(state.State):
 	def network_start_game_handler(self, command_, state=None):

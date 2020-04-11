@@ -1,7 +1,7 @@
 import random
 import threading
 from src.server.states import lobby_state
-from src.shared import threaded_queue, stringify, threaded_sync, node, logger, command
+from src.common import threaded_queue, stringify, threaded_sync, node, logger, command
 import config
 
 class Game(node.Node):

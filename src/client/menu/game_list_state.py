@@ -1,7 +1,7 @@
 import pyglet
 from src.client.common import background, button, area, label, state
 from src.client.menu import game_listing, main_menu_state, game_state
-from src.shared import constants, command, pagination
+from src.common import constants, command, pagination
 
 class GameListState(state.State):
 	def __init__(self, asset_manager, set_state, add_command, player_name, testing=False):

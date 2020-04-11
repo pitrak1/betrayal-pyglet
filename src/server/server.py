@@ -1,7 +1,7 @@
 import socket
 import threading
 from src.server import core
-from src.shared import stringify, logger
+from src.common import stringify, logger
 
 class Server():
 	def __init__(self):

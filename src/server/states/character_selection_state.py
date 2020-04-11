@@ -1,7 +1,7 @@
 import random
 import pyglet
 from src.server.states import game_state as game_state_module, state
-from src.shared import command as command_module, threaded_sync, logger
+from src.common import command as command_module, threaded_sync, logger
 import config
 
 class CharacterSelectionState(state.State):

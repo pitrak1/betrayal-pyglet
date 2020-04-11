@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from src.shared import attribute_set
+from src.common import attribute_set
 import config
 
 class TestAttributeSet():

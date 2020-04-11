@@ -1,7 +1,7 @@
 import pyglet
 from src.client.game import game_state, client_player
 from src.client.common import button, label, state
-from src.shared import constants, command
+from src.common import constants, command
 
 class CharacterOverviewState(state.State):
 	def __init__(self, asset_manager, set_state, add_command, player_name, game_name, host, testing=False):

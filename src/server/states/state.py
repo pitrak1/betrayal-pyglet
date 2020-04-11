@@ -1,4 +1,4 @@
-from src.shared import command, logger, node
+from src.common import command, logger, node
 
 class State(node.Node):
 	def __init__(self, game):

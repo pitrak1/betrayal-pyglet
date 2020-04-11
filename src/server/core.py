@@ -1,6 +1,6 @@
 import socket
 import threading
-from src.shared import command, threaded_queue, node, constants, logger
+from src.common import command, threaded_queue, node, constants, logger
 from src.server import server_player, game
 
 class Core(node.Node):

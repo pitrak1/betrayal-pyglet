@@ -1,6 +1,6 @@
 from src.server import server_room_grid as server_room_grid_module
 from src.server.states import state
-from src.shared import command as command_module, logger
+from src.common import command as command_module, logger
 import config
 
 class GameState(state.State):

@@ -1,6 +1,6 @@
 import pyglet
 from src.server import server_room
-from src.shared import constants, bounds, command, logger
+from src.common import constants, bounds, command, logger
 
 UP = 0
 RIGHT = 1

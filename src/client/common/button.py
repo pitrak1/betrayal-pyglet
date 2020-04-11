@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import node, logger
+from src.common import node, logger
 from src.client.common import area, label
 
 class Button(node.Node):

@@ -1,7 +1,7 @@
 import pyglet
 from src.client.common import background, button, area, label, state
 from src.client.menu import create_player_state
-from src.shared import constants
+from src.common import constants
 
 class SplashState(state.State):
 	def __init__(self, asset_manager, set_state, add_command, testing=False):

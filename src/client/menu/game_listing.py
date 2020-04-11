@@ -1,5 +1,5 @@
 import pyglet
-from src.shared import node, constants, logger
+from src.common import node, constants, logger
 from src.client.common import area, button, label
 
 class GameListing(node.Node):

@@ -1,4 +1,4 @@
-from src.shared import command as command_module
+from src.common import command as command_module
 
 def stringify(command):
 	data_string = f'{command.type};'
