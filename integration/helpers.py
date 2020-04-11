@@ -1,4 +1,4 @@
-from src.client.states.menu import main_menu_state
+from src.client.menu import main_menu_state
 from src.shared import command
 import random
 import time
