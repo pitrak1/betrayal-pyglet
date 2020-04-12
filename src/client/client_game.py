@@ -3,7 +3,7 @@ from src.client.menu import splash_state
 from src.client import asset_manager, client
 from src.common import threaded_queue, command, node, logger
 
-class Game():
+class ClientGame():
 	def __init__(self, testing=False):
 		self.command_queue = threaded_queue.ThreadedQueue()
 		self.asset_manager = asset_manager.AssetManager()
