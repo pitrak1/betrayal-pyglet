@@ -4,7 +4,7 @@ from src.server.states import game_state as game_state_module, state
 from src.common import command as command_module, threaded_sync, logger
 import config
 
-class CharacterSelectionState(state.State):
+class ServerCharacterSelectionState(state.State):
 	def __init__(self, game):
 		super().__init__(game)
 		random.shuffle(self.game.players)
@@ -32,7 +32,7 @@ class CharacterSelectionState(state.State):
 
 	def network_get_current_player_handler(self, command, state=None):
 		logger.log(f'Character Selection State {self.game.name} handling command', logger.LOG_LEVEL_COMMAND)
-		if command.data['connection'] == self.game.players[self.current_player_index]:
+		if command.data['connection'] == self.game.players[self.current_player_index].connection:
 			player_name = 'self'
 		else:
 			player_name = self.game.players[self.current_player_index].name
@@ -40,7 +40,7 @@ class CharacterSelectionState(state.State):
 
 	def network_select_character_handler(self, command, state=None):
 		logger.log(f'Character Selection State {self.game.name} handling command', logger.LOG_LEVEL_COMMAND)
-		if command.data['connection'] == self.game.players[self.current_player_index]:
+		if command.data['connection'] == self.game.players[self.current_player_index].connection:
 			logger.log(f'Character Selection State {self.game.name} receiving select from current player', logger.LOG_LEVEL_DEBUG)
 			character_entry = next(character for character in config.CHARACTERS if character['variable_name'] == command.data['character'])
 			self.game.players[self.current_player_index].set_character(character_entry)
