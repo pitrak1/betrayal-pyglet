@@ -67,9 +67,9 @@ class GameState(state.State):
 		self.add_command(command.Command('client_select', { 'selected': node }))
 		self.add_command(command.Command('client_redraw'))
 
-	def trigger_selected_character_move(self, grid_x, grid_y):
-		if self.current_player and self.selected and isinstance(self.selected, client_player.ClientPlayer):
-			if self.selected.self_ and self.rooms.can_move(self.selected.grid_x, self.selected.grid_y, grid_x, grid_y):
-				self.rooms.move(self.selected, self.selected.grid_x, self.selected.grid_y, grid_x, grid_y)
-				self.add_command(command.Command('client_redraw'))
+	# def trigger_selected_character_move(self, grid_x, grid_y):
+	# 	if self.current_player and self.selected and isinstance(self.selected, client_player.ClientPlayer):
+	# 		if self.selected.self_ and self.rooms.can_move(self.selected.grid_x, self.selected.grid_y, grid_x, grid_y):
+	# 			self.rooms.move(self.selected, self.selected.grid_x, self.selected.grid_y, grid_x, grid_y)
+	# 			self.add_command(command.Command('client_redraw'))
 

@@ -58,7 +58,7 @@ class ClientRoom(server_room.ServerRoom):
 
 			self.door_sprites = []
 			for i in range(4):
-				door_position = self.get_door_position(self.grid_x, self.grid_y, i)
+				[door_x, door_y] = self.get_door_position(self.grid_x, self.grid_y, i)
 				door_sprite = pyglet.sprite.Sprite(
 					command.data['asset_manager'].common['door'],
 					x=door_position['x'],
@@ -95,13 +95,13 @@ class ClientRoom(server_room.ServerRoom):
 	def get_door_position(self, grid_x, grid_y, direction):
 		offset = (constants.GRID_SIZE // 2 - constants.DOOR_OFFSET)
 		if direction == constants.UP:
-			return { 'x': grid_x * constants.GRID_SIZE, 'y': grid_y * constants.GRID_SIZE + offset }
+			return [grid_x * constants.GRID_SIZE, grid_y * constants.GRID_SIZE + offset]
 		elif direction == constants.RIGHT:
-			return { 'x': grid_x * constants.GRID_SIZE + offset, 'y': grid_y * constants.GRID_SIZE }
+			return [grid_x * constants.GRID_SIZE + offset, grid_y * constants.GRID_SIZE]
 		elif direction == constants.DOWN:
-			return { 'x': grid_x * constants.GRID_SIZE, 'y': grid_y * constants.GRID_SIZE - offset }
+			return [grid_x * constants.GRID_SIZE, grid_y * constants.GRID_SIZE - offset]
 		else:
-			return { 'x': grid_x * constants.GRID_SIZE - offset, 'y': grid_y * constants.GRID_SIZE }
+			return [grid_x * constants.GRID_SIZE - offset, grid_y * constants.GRID_SIZE]
 
 	def client_mouse_press_handler(self, command, state):
 		logger.log(f'Room {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
@@ -112,11 +112,12 @@ class ClientRoom(server_room.ServerRoom):
 					logger.log(f'LMB not within bounds of players of Room {self.variable_name}, selecting', logger.LOG_LEVEL_DEBUG)
 					state.select(self)
 				return True
-			elif command.data['button'] == pyglet.window.mouse.RIGHT:
-				logger.log(f'RMB within bounds of Room {self.variable_name}, moving', logger.LOG_LEVEL_DEBUG)
-				state.trigger_selected_character_move(self.grid_x, self.grid_y)
+			# elif command.data['button'] == pyglet.window.mouse.RIGHT:
+			# 	logger.log(f'RMB within bounds of Room {self.variable_name}, moving', logger.LOG_LEVEL_DEBUG)
+			# 	state.trigger_selected_character_move(self.grid_x, self.grid_y)
+		return False
 
-	def client_select_handler(self, command, state):
+	def client_select_handler(self, command, state=None):
 		logger.log(f'Room {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		self.selected = command.data['selected'] == self
 		self.default_handler(command, state)
@@ -131,4 +132,5 @@ class ClientRoom(server_room.ServerRoom):
 		)
 
 	def default_handler(self, command, state):
-		return any(player.on_command(command, state) for player in self.players)
+		results = [player.on_command(command, state) for player in self.players]
+		return any(results)

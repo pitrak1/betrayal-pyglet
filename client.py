@@ -1,5 +1,5 @@
 import pyglet
-from src.client import game as game_module
+from src.client import client_game
 from src.common import constants
 
 window = pyglet.window.Window(constants.WINDOW_WIDTH, constants.WINDOW_HEIGHT)
@@ -13,7 +13,7 @@ def on_draw():
 def on_update(dt):
 	game.on_update(dt)
 
-game = game_module.Game()
+game = client_game.ClientGame()
 window.push_handlers(game)
 
 if __name__ == "__main__":

@@ -67,8 +67,9 @@ class ClientPlayer(node.Node):
 				logger.log(f'LMB within bounds of Player {self.variable_name}, selecting', logger.LOG_LEVEL_DEBUG)
 				state.select(self)
 				return True
+		return False
 
-	def client_select_handler(self, command, state):
+	def client_select_handler(self, command, state=None):
 		logger.log(f'Player {self.variable_name} handling command', logger.LOG_LEVEL_COMMAND)
 		self.selected = command.data['selected'] == self
 

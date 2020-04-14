@@ -64,6 +64,7 @@ def create_game(create_player):
 		game.set_state = mocker.stub()
 		game.remove_player = mocker.stub()
 		game.command_queue = []
+		game.rooms = None
 		return game
 	return _create_game
 
@@ -78,7 +79,18 @@ def create_player():
 		player.set_position = mocker.stub()
 		player.set_character = mocker.stub()
 		player.game = None
+		player.variable_name = f'{name}_variable_name'
+		player.grid_x = 0
+		player.grid_y = 0
 		return player
 	return _create_player
+
+@pytest.fixture
+def create_state():
+	def _create_state(mocker):
+		state = types.SimpleNamespace()
+		state.select = mocker.stub()
+		return state
+	return _create_state
 
 

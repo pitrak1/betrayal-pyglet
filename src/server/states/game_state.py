@@ -19,7 +19,7 @@ class GameState(state.State):
 
 	def network_get_current_player_handler(self, command, state=None):
 		logger.log(f'Game State {self.game.name} done waiting', logger.LOG_LEVEL_DEBUG)
-		if command.data['connection'] == self.game.players[self.current_player_index]:
+		if command.data['connection'] == self.game.players[self.current_player_index].connection:
 			player_name = 'self'
 		else:
 			player_name = self.game.players[self.current_player_index].name
