@@ -32,14 +32,13 @@ class Game(node.Node):
 	def remove_player(self, player):
 		player.game = None
 		self.players.remove(player)
-		command.update_and_send(command_, { 'status': 'success' })
 		if self.players:
 			logger.log(f'Game {self.name} broadcasting players', logger.LOG_LEVEL_DEBUG)
-			self.send_players_in_game(None)
+			self.send_players_in_game()
 		else:
 			self.add_command(command.Command('server_destroy_game', { 'game_name': self.name }))
 
-	def send_players_in_game(self, exception):
+	def send_players_in_game(self, exception=None):
 		parsed_players = [(p.name, p.host) for p in self.players]
 		players = [p for p in self.players if p != exception]
 		command.create_and_send_to_all('network_get_players_in_game', { 'status': 'success', 'players': parsed_players }, players)

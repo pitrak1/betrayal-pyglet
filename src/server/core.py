@@ -60,10 +60,10 @@ class Core(node.Node):
 	def network_join_game_handler(self, command_, state=None):
 		logger.log(f'Core handling command', logger.LOG_LEVEL_COMMAND)
 		game_ = self.games[command_.data['game_name']]
-		if len(game_.players) > constants.PLAYERS_PER_GAME:
+		if len(game_.players) >= constants.PLAYERS_PER_GAME:
 			command.update_and_send(command_, { 'status': 'game_full' })
 		else:
-			player = next(player for player in self.players if player == command_.data['connection'])
+			player = next(player for player in self.players if player.connection == command_.data['connection'])
 			player.game = game_
 			game_.players.append(player)
 			logger.log(f'Core adding player {player.name} to game {game_.name}', logger.LOG_LEVEL_DEBUG)
@@ -72,14 +72,14 @@ class Core(node.Node):
 
 	def network_logout_handler(self, command_, state=None):
 		logger.log(f'Core handling command', logger.LOG_LEVEL_COMMAND)
-		player = next(p for p in self.players if p == command_.data['connection'])
+		player = next(p for p in self.players if p.connection == command_.data['connection'])
 		if player.game: player.game.remove_player(player)
 		self.players = [p for p in self.players if p.name != player.name]
 		command.update_and_send(command_, { 'status': 'success' })
 
 	def add_command(self, command_):
 		logger.log(f'Adding command {command_.type} ', logger.LOG_LEVEL_COMMAND, data=command_.data)
-		player = [p for p in self.players if p == command_.data['connection']]
+		player = [p for p in self.players if p.connection == command_.data['connection']]
 		if player and player[0].game:
 			logger.log(f'Adding command {command_.type} to {player[0].game.name}', logger.LOG_LEVEL_COMMAND, data=command_.data)
 			player[0].game.command_queue.append(command_)

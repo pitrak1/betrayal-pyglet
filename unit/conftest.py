@@ -52,19 +52,33 @@ def create_generic_state():
 	return _create_generic_state
 
 @pytest.fixture
-def create_game():
-	def _create_game(mocker, player_count=0):
+def create_game(create_player):
+	def _create_game(mocker, name='game name', player_count=0):
 		game = types.SimpleNamespace()
-		game.name = 'game name'
+		game.name = name
 		game.players = []
 		for i in range(player_count):
-			player = types.SimpleNamespace()
-			player.name = f'player{i}'
-			player.connection = f'player{i}_connection'
-			player.display_name = f'player{i}_display_name'
-			player.set_position = mocker.stub()
-			player.set_character = mocker.stub()
+			player = create_player(mocker, f'player{i}')
+			player.game = game
 			game.players.append(player)
 		game.set_state = mocker.stub()
+		game.remove_player = mocker.stub()
+		game.command_queue = []
 		return game
 	return _create_game
+
+@pytest.fixture
+def create_player():
+	def _create_player(mocker, name):
+		player = types.SimpleNamespace()
+		player.name = f'{name}'
+		player.host = False
+		player.connection = f'{name}_connection'
+		player.display_name = f'{name}_display_name'
+		player.set_position = mocker.stub()
+		player.set_character = mocker.stub()
+		player.game = None
+		return player
+	return _create_player
+
+
