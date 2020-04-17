@@ -1,6 +1,6 @@
 import pyglet
 from src.client.common import background, button, area, label, state
-from src.client.menu import game_listing, main_menu_state, game_state
+from src.client.menu import game_listing, main_menu_state, client_lobby_state
 from src.common import constants, command, pagination
 
 class GameListState(state.State):
@@ -169,7 +169,7 @@ class GameListState(state.State):
 		self.elements['error_text'].text = 'Game is full'
 
 	def next(self, game_name):
-		self.set_state(game_state.GameState(
+		self.set_state(client_lobby_state.ClientLobbyState(
 			self.asset_manager,
 			self.set_state, 
 			self.add_command,

@@ -2,7 +2,7 @@ import pytest
 import pyglet
 import sys
 from src.client.setup import character_overview_state
-from src.client.game import game_state
+from src.client.game import client_game_state
 import config
 from src.common import constants
 import types
@@ -40,7 +40,7 @@ class TestCharacterOverviewState():
 			assert state.add_command.call_count == 2
 
 	class TestNext():
-		def test_sets_state_to_game_state(self, mocker, get_args):
+		def test_sets_state_to_client_game_state(self, mocker, get_args):
 			state = character_overview_state.CharacterOverviewState({}, mocker.stub(), mocker.stub(), 'player_name', 'game_name', True, testing=True)
 			state.next()
-			assert isinstance(get_args(stub=state.set_state, call_number=0, arg_number=0), game_state.GameState)
+			assert isinstance(get_args(stub=state.set_state, call_number=0, arg_number=0), client_game_state.ClientGameState)

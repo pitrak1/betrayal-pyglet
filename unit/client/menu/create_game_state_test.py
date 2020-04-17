@@ -1,7 +1,7 @@
 import pytest
 import pyglet
 import sys
-from src.client.menu import main_menu_state, create_game_state, game_state
+from src.client.menu import main_menu_state, create_game_state, client_lobby_state
 import config
 import types
 
@@ -61,4 +61,4 @@ class TestCreateGameState():
 		def test_sets_state_to_game_state(self, mocker, get_args):
 			state = create_game_state.CreateGameState({}, mocker.stub(), mocker.stub(), 'player_name', testing=True)
 			state.next('game_name')
-			assert isinstance(get_args(stub=state.set_state, call_number=0, arg_number=0), game_state.GameState)
+			assert isinstance(get_args(stub=state.set_state, call_number=0, arg_number=0), client_lobby_state.ClientLobbyState)

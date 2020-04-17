@@ -4,7 +4,7 @@ from src.client.common import button, label, state
 from src.common import constants, command, logger
 import config
 
-class GameState(state.State):
+class ClientGameState(state.State):
 	def __init__(self, asset_manager, set_state, add_command, player_name, game_name, host, testing=False):
 		super().__init__(asset_manager, set_state, add_command, testing)
 		self.player_name = player_name

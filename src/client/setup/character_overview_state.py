@@ -1,5 +1,5 @@
 import pyglet
-from src.client.game import game_state, client_player
+from src.client.game import client_game_state, client_player
 from src.client.common import button, label, state
 from src.common import constants, command
 
@@ -87,7 +87,7 @@ class CharacterOverviewState(state.State):
 			self.add_command(command.Command('network_confirm_character_selections', { 'status': 'pending' }))
 
 	def next(self):
-		self.set_state(game_state.GameState(
+		self.set_state(client_game_state.ClientGameState(
 			self.asset_manager, 
 			self.set_state, 
 			self.add_command, 

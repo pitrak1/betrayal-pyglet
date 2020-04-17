@@ -1,7 +1,7 @@
 import sys
 import pyglet
 from src.client.common import button, text_box, area, background, label, state
-from src.client.menu import main_menu_state, game_state
+from src.client.menu import main_menu_state, client_lobby_state
 from src.common import constants, command
 
 class CreateGameState(state.State):
@@ -105,7 +105,7 @@ class CreateGameState(state.State):
 			self.add_command(command.Command('network_create_game', { 'status': 'pending', 'game_name': game_name }))
 
 	def next(self, game_name):
-		self.set_state(game_state.GameState(
+		self.set_state(client_lobby_state.ClientLobbyState(
 			self.asset_manager,
 			self.set_state, 
 			self.add_command,

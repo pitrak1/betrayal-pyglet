@@ -5,7 +5,7 @@ from src.client.common import background, button, area, label, state
 from src.client.setup import player_order_state
 from src.common import constants, command
 
-class GameState(state.State):
+class ClientLobbyState(state.State):
 	def __init__(self, asset_manager, set_state, add_command, player_name, game_name, host, testing=False):
 		super().__init__(asset_manager, set_state, add_command, testing)
 		self.player_name = player_name
