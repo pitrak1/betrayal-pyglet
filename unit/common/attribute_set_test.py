@@ -1,11 +1,11 @@
 import pytest
 import pyglet
-from src.common import attribute_set
+from src.common.attribute_set import AttributeSet
 import config
 
 class TestAttributeSet():
 	def test_sets_attribute_values_to_defaults(self):
-		character = attribute_set.AttributeSet(
+		character = AttributeSet(
 			speed=config.CHARACTERS[0]['speed'],
 			speed_index=config.CHARACTERS[0]['speed_index'],
 			might=config.CHARACTERS[0]['might'],
@@ -25,7 +25,7 @@ class TestAttributeSet():
 		assert character.get_attribute_value('knowledge') == expected_knowledge
 
 	def test_allows_changing_attribute_value(self):
-		character = attribute_set.AttributeSet(
+		character = AttributeSet(
 			speed=config.CHARACTERS[0]['speed'],
 			speed_index=config.CHARACTERS[0]['speed_index'],
 			might=config.CHARACTERS[0]['might'],
@@ -40,7 +40,7 @@ class TestAttributeSet():
 		assert character.get_attribute_value('speed') == expected_speed
 
 	def test_allows_changing_attribute_value_negatively(self):
-		character = attribute_set.AttributeSet(
+		character = AttributeSet(
 			speed=config.CHARACTERS[0]['speed'],
 			speed_index=config.CHARACTERS[0]['speed_index'],
 			might=config.CHARACTERS[0]['might'],
@@ -55,7 +55,7 @@ class TestAttributeSet():
 		assert character.get_attribute_value('speed') == expected_speed
 
 	def test_allows_max_index_of_8(self):
-		character = attribute_set.AttributeSet(
+		character = AttributeSet(
 			speed=config.CHARACTERS[0]['speed'],
 			speed_index=config.CHARACTERS[0]['speed_index'],
 			might=config.CHARACTERS[0]['might'],
@@ -70,7 +70,7 @@ class TestAttributeSet():
 		assert character.get_attribute_value('speed') == expected_speed
 
 	def test_allows_min_index_of_0(self):
-		character = attribute_set.AttributeSet(
+		character = AttributeSet(
 			speed=config.CHARACTERS[0]['speed'],
 			speed_index=config.CHARACTERS[0]['speed_index'],
 			might=config.CHARACTERS[0]['might'],
@@ -85,7 +85,7 @@ class TestAttributeSet():
 		assert character.get_attribute_value('speed') == expected_speed
 
 	def test_is_dead_if_any_attribute_is_at_0_index(self):
-		character = attribute_set.AttributeSet(
+		character = AttributeSet(
 			speed=config.CHARACTERS[0]['speed'],
 			speed_index=config.CHARACTERS[0]['speed_index'],
 			might=config.CHARACTERS[0]['might'],

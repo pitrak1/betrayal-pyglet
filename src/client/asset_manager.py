@@ -3,14 +3,21 @@ import config
 import os
 import definitions
 
-class AssetManager():
+class InnerAssets:
+	_shared_state = {}
 	def __init__(self):
-		pyglet.resource.path = [os.path.join(definitions.ROOT_DIR,'assets')]
-		pyglet.resource.reindex()
+		self.__dict__ = self._shared_state
 
-		self.__load_common()
-		self.__load_characters()
-		self.__load_rooms()
+class Assets(InnerAssets):
+	def __init__(self):
+		super().__init__()
+		if not hasattr(self, 'common'):
+			pyglet.resource.path = [os.path.join(definitions.ROOT_DIR,'assets')]
+			pyglet.resource.reindex()
+
+			self.__load_common()
+			self.__load_characters()
+			self.__load_rooms()
 
 	def __load_common(self):
 		self.common = {}
@@ -42,5 +49,5 @@ class AssetManager():
 			self.__center_image(value)
 
 	def __center_image(self, image):
-	    image.anchor_x = image.width / 2
-	    image.anchor_y = image.height / 2
+		image.anchor_x = image.width / 2
+		image.anchor_y = image.height / 2
