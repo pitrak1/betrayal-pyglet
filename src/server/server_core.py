@@ -1,7 +1,7 @@
-from lattice2d.full.full_server import FullServer, FullServerPlayer, FullServerPlayerList, FullServerGame, FullServerGameList
+from lattice2d.full.full_server import FullServer, FullServerPlayerList, FullServerGame, FullServerGameList
 from lattice2d.network import Server
 from src.server.server_states import ServerLobbyState
-from src.server.server_grid import ServerPlayer
+from src.common.grid import Player
 
 class ServerGame(FullServerGame):
 	def __init__(self, name, destroy_game):
@@ -21,7 +21,7 @@ class ServerCore(FullServer):
 		elif self.players.find_by_name(command.data['player_name']):
 			command.update_and_send(status='invalid_name')
 		else:
-			self.players.append(ServerPlayer(command.data['player_name'], command.connection))
+			self.players.append(Player(command.data['player_name'], command.connection))
 			command.update_and_send(status='success')
 
 	def create_game_handler(self, command):

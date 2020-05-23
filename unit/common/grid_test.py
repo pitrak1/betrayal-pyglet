@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from src.common.attribute_set import AttributeSet
+from src.common.grid import AttributeSet
 import config
 
 class TestAttributeSet():

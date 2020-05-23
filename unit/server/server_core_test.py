@@ -1,7 +1,7 @@
 import pytest
 import pyglet
 from src.server.server_core import ServerCore, ServerGame
-from src.server.server_grid import ServerPlayer
+from src.common.grid import Player
 from lattice2d.network import NetworkCommand
 import types
 
@@ -26,7 +26,7 @@ class TestServerCore():
 		def test_errors_if_name_already_taken(self, mocker):
 			mocker.patch('lattice2d.network.Server')
 			server = ServerCore()
-			player = ServerPlayer('some name', None)
+			player = Player('some name', None)
 			server.players.append(player)
 			command = NetworkCommand('create_player', { 'player_name': 'some name' }, 'pending')
 			mocker.patch.object(command, 'update_and_send')
@@ -79,7 +79,7 @@ class TestServerCore():
 		def test_creates_game_if_successful(self, mocker):
 			mocker.patch('lattice2d.network.Server')
 			server = ServerCore()
-			player = ServerPlayer('some name', 'connection')
+			player = Player('some name', 'connection')
 			server.players.append(player)
 			command = NetworkCommand('create_game', { 'game_name': 'some name' }, 'pending', 'connection')
 			mocker.patch.object(command, 'update_and_send')
@@ -89,7 +89,7 @@ class TestServerCore():
 		def test_adds_player_to_game_if_successful(self, mocker):
 			mocker.patch('lattice2d.network.Server')
 			server = ServerCore()
-			player = ServerPlayer('some name', 'connection')
+			player = Player('some name', 'connection')
 			server.players.append(player)
 			command = NetworkCommand('create_game', { 'game_name': 'some name' }, 'pending', 'connection')
 			mocker.patch.object(command, 'update_and_send')
@@ -99,7 +99,7 @@ class TestServerCore():
 		def test_sends_success_if_successful(self, mocker):
 			mocker.patch('lattice2d.network.Server')
 			server = ServerCore()
-			player = ServerPlayer('some name', 'connection')
+			player = Player('some name', 'connection')
 			server.players.append(player)
 			command = NetworkCommand('create_game', { 'game_name': 'some name' }, 'pending', 'connection')
 			mocker.patch.object(command, 'update_and_send')

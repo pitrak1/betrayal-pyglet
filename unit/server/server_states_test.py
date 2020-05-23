@@ -1,7 +1,7 @@
 import pytest
 import pyglet
 from src.server.server_states import ServerLobbyState, ServerSetupState, ServerGameState
-from src.server.server_grid import ServerPlayer
+from src.common.grid import Player
 from lattice2d.network import NetworkCommand
 from lattice2d.full.full_server import FullServerGame
 
@@ -18,7 +18,7 @@ class TestServerStates():
 
 			def test_sets_state_to_setup_if_success(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player = ServerPlayer('player 1', 'connection 1')
+				player = Player('player 1', 'connection 1')
 				game.players.append(player)
 				state = ServerLobbyState(game)
 				command = NetworkCommand('network_start_game', {}, 'pending')
@@ -28,9 +28,9 @@ class TestServerStates():
 
 			def test_responds_to_each_player_if_success(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerLobbyState(game)
 				command = NetworkCommand('network_start_game', {}, 'pending')
@@ -42,9 +42,9 @@ class TestServerStates():
 		class TestNetworkGetPlayerOrderHandler():
 			def test_returns_players_in_order(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_get_player_order', {}, 'pending')
@@ -55,9 +55,9 @@ class TestServerStates():
 		class TestNetworkConfirmPlayerOrderHandler():
 			def test_does_not_respond_if_not_called_for_each_player(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_confirm_player_order', {}, 'pending')
@@ -67,9 +67,9 @@ class TestServerStates():
 
 			def test_responds_if_called_for_each_player(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_confirm_player_order', {}, 'pending')
@@ -91,9 +91,9 @@ class TestServerStates():
 			def test_sets_character_for_player(self, mocker):
 				mocker.patch('lattice2d.network.NetworkCommand.create_and_send')
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_select_character', { 'character': 'heather_granville' }, 'pending', player2.connection)
@@ -103,9 +103,9 @@ class TestServerStates():
 			def test_removes_character(self, mocker):
 				mocker.patch('lattice2d.network.NetworkCommand.create_and_send')
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_select_character', { 'character': 'heather_granville' }, 'pending', player2.connection)
@@ -115,9 +115,9 @@ class TestServerStates():
 			def test_moves_to_next_player(self, mocker):
 				mocker.patch('lattice2d.network.NetworkCommand.create_and_send')
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_select_character', { 'character': 'heather_granville' }, 'pending', player2.connection)
@@ -127,9 +127,9 @@ class TestServerStates():
 			def test_broadcasts_updated_characters_if_all_players_have_not_selected(self, mocker, get_args):
 				mocker.patch('lattice2d.network.NetworkCommand.create_and_send')
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_select_character', { 'character': 'heather_granville' }, 'pending', player2.connection)
@@ -140,7 +140,7 @@ class TestServerStates():
 			def test_broadcasts_all_selected_if_all_players_have_selected(self, mocker, get_args):
 				mocker.patch('lattice2d.network.NetworkCommand.create_and_send')
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_select_character', { 'character': 'heather_granville' }, 'pending', player1.connection)
@@ -151,10 +151,10 @@ class TestServerStates():
 		class TestNetworkGetCharacterSelectionsHandler():
 			def test_gets_selected_character_for_each_player(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				player1.display_name = 'Player 1 Character'
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				player2.display_name = 'Player 2 Character'
 				game.players.append(player2)
 				state = ServerSetupState(game)
@@ -168,9 +168,9 @@ class TestServerStates():
 		class TestNetworkConfirmPlayerSelectionsHandler():
 			def test_does_not_respond_if_not_called_for_each_player(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_confirm_character_selections', {}, 'pending')
@@ -180,9 +180,9 @@ class TestServerStates():
 
 			def test_responds_if_called_for_each_player(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_confirm_character_selections', {}, 'pending')
@@ -193,9 +193,9 @@ class TestServerStates():
 
 			def test_sets_state_to_game_if_called_for_each_player(self, mocker):
 				game = FullServerGame('game name', mocker.stub())
-				player1 = ServerPlayer('player 1', 'connection 1')
+				player1 = Player('player 1', 'connection 1')
 				game.players.append(player1)
-				player2 = ServerPlayer('player 2', 'connection 2')
+				player2 = Player('player 2', 'connection 2')
 				game.players.append(player2)
 				state = ServerSetupState(game)
 				command = NetworkCommand('network_confirm_character_selections', {}, 'pending')

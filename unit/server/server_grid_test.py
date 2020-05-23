@@ -1,7 +1,7 @@
 import pytest
 import pyglet
-from src.server.server_grid import ServerRoomGrid, Tile
-from lattice2d.grid import UP, RIGHT, DOWN, LEFT
+from src.server.server_grid import ServerRoomGrid
+from lattice2d.grid import UP, RIGHT, DOWN, LEFT, Tile
 import types
 
 class TestServerGrid():
