@@ -47,20 +47,20 @@ class ClientGameState(FullClientState):
 
 	def key_press_handler(self, command):
 		if command.data['symbol'] == pyglet.window.key.W:
-			self.add_command(Command('client_adjust_grid_position', { 'adjust_x': 0, 'adjust_y': -constants.GRID_SIZE }))
+			self.add_command(Command('adjust_grid_position', { 'adjust_x': 0, 'adjust_y': -constants.GRID_SIZE }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.D:
-			self.add_command(Command('client_adjust_grid_position', { 'adjust_x': -constants.GRID_SIZE, 'adjust_y': 0 }))
+			self.add_command(Command('adjust_grid_position', { 'adjust_x': -constants.GRID_SIZE, 'adjust_y': 0 }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.S:
-			self.add_command(Command('client_adjust_grid_position', { 'adjust_x': 0, 'adjust_y': constants.GRID_SIZE }))
+			self.add_command(Command('adjust_grid_position', { 'adjust_x': 0, 'adjust_y': constants.GRID_SIZE }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.A:
-			self.add_command(Command('client_adjust_grid_position', { 'adjust_x': constants.GRID_SIZE, 'adjust_y': 0 }))
+			self.add_command(Command('adjust_grid_position', { 'adjust_x': constants.GRID_SIZE, 'adjust_y': 0 }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.PAGEUP or command.data['symbol'] == pyglet.window.key.UP:
-			self.add_command(Command('client_adjust_grid_scale', { 'adjust': 2 }))
+			self.add_command(Command('adjust_grid_scale', { 'adjust': 2 }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.PAGEDOWN or command.data['symbol'] == pyglet.window.key.DOWN:
-			self.add_command(Command('client_adjust_grid_scale', { 'adjust': 0.5 }))
+			self.add_command(Command('adjust_grid_scale', { 'adjust': 0.5 }))
 			self.add_command(Command('redraw'))

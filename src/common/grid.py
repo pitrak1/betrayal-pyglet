@@ -1,5 +1,5 @@
 from lattice2d.full.common import FullPlayer
-from lattice2d.grid import Tile, TileGrid, get_direction, get_distance, reverse_direction
+from lattice2d.grid import Tile, ScaledTile, ScaledTileGrid, get_direction, get_distance, reverse_direction
 from src.common import constants
 
 class AttributeSet():
@@ -49,9 +49,9 @@ class Player(FullPlayer):
 		self.variable_name = entry['variable_name']
 		self.related = entry['related']
 
-class Room(Tile):
-	def __init__(self, entry):
-		super().__init__(entry['grid_x'], entry['grid_y'])
+class Room(ScaledTile):
+	def __init__(self, entry, base_x=0, base_y=0):
+		super().__init__(entry['grid_x'], entry['grid_y'], base_x, base_y)
 		self.entry = entry
 		self.display_name = entry['display_name']
 		self.variable_name = entry['variable_name']
@@ -62,9 +62,9 @@ class Room(Tile):
 		self.players = []
 		self.links = []
 
-class RoomGrid(TileGrid):
+class RoomGrid(ScaledTileGrid):
 	def __init__(self):
-		super().__init__(constants.GRID_WIDTH, constants.GRID_HEIGHT)
+		super().__init__(constants.GRID_WIDTH, constants.GRID_HEIGHT, constants.WINDOW_CENTER_X, constants.WINDOW_CENTER_Y)
 
 	def add_adjacent_links(self, start_tile, end_tile):
 		if isinstance(end_tile, Tile):
