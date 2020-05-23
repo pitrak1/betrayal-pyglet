@@ -1,7 +1,7 @@
 import pyglet
 import sys
 from lattice2d.full.full_client import FullClientState, Renderer
-from lattice2d.full.full_server import FullServerPlayerList
+from lattice2d.full.common import FullPlayerList
 from lattice2d.nodes import Command
 from src.client.client_components import Background, Area, Button, TextBox
 from src.client.asset_manager import Assets
@@ -15,7 +15,7 @@ class ClientGameState(FullClientState):
 		self.game_name = game_name
 		self.host = host
 		self.rooms = ClientRoomGrid()
-		self.players = FullServerPlayerList()
+		self.players = FullPlayerList()
 		self.current_player = False
 		self.title = None
 		super().__init__(set_state, add_command)

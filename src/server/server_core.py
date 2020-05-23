@@ -1,4 +1,4 @@
-from lattice2d.full.full_server import FullServer, FullServerPlayerList, FullServerGame, FullServerGameList
+from lattice2d.full.full_server import FullServer, FullServerGame, FullServerGameList
 from lattice2d.network import Server
 from src.server.server_states import ServerLobbyState
 from src.common.grid import Player

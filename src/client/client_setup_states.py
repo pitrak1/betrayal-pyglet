@@ -1,7 +1,7 @@
 import pyglet
 import sys
 from lattice2d.full.full_client import FullClientState, Renderer
-from lattice2d.full.full_server import FullServerPlayerList
+from lattice2d.full.common import FullPlayerList
 from lattice2d.utilities.pagination import get_page_info
 from lattice2d.network import NetworkCommand
 from lattice2d.nodes import Node
@@ -16,7 +16,7 @@ class ClientSetupPlayerOrderState(FullClientState):
 		self.player_name = player_name
 		self.game_name = game_name
 		self.host = host
-		self.players = FullServerPlayerList()
+		self.players = FullPlayerList()
 		self.waiting = False
 		super().__init__(set_state, add_command)
 		self.add_command(NetworkCommand('network_get_player_order', status='pending'))

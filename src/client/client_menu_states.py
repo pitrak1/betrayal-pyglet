@@ -1,7 +1,7 @@
 import pyglet
 import sys
 from lattice2d.full.full_client import FullClientState, Renderer
-from lattice2d.full.full_server import FullServerPlayerList
+from lattice2d.full.common import FullPlayerList
 from lattice2d.utilities.pagination import get_page_info
 from lattice2d.network import NetworkCommand
 from lattice2d.nodes import Node
@@ -573,7 +573,7 @@ class ClientMenuLobbyState(FullClientState):
 		self.player_name = player_name
 		self.game_name = game_name
 		self.host = host
-		self.players = FullServerPlayerList()
+		self.players = FullPlayerList()
 		super().__init__(set_state, add_command)
 		self.add_command(NetworkCommand('broadcast_players_in_game', status='pending'))
 

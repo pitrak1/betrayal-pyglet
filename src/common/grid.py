@@ -1,4 +1,4 @@
-from lattice2d.full.full_server import FullServerPlayer
+from lattice2d.full.common import FullPlayer
 from lattice2d.grid import Tile, TileGrid, get_direction, get_distance, reverse_direction
 from src.common import constants
 
@@ -25,7 +25,7 @@ class AttributeSet():
 	def is_dead(self):
 		return self.speed_index == 0 or self.might_index == 0 or self.sanity_index == 0 or self.knowledge_index == 0
 
-class Player(FullServerPlayer):
+class Player(FullPlayer):
 	def __init__(self, name, connection=None, game=None):
 		super().__init__(name, connection, game)
 		self.host = False
