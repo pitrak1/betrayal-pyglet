@@ -5,7 +5,8 @@ from src.client.client_core import ClientCore
 CONFIG = {
 	'command_types': [
 		'client_select',
-		'client_adjust_grid',
+		'client_adjust_grid_position',
+		'client_adjust_grid_scale',
 		'network_start_game',
 		'network_get_player_order',
 		'network_confirm_player_order',
