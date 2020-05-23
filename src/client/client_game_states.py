@@ -20,15 +20,15 @@ class ClientRoom(ServerRoom):
 
 	def redraw_handler(self, command):
 		renderer = command.data['renderer']
-		self.other = [
-			pyglet.sprite.Sprite(
-				Assets().rooms[self.asset_index],
-				x=self.grid_x * constants.GRID_SIZE + self.base_x,
-				y=self.grid_y * constants.GRID_SIZE + self.base_y,
-				batch=renderer.get_batch(),
-				group=renderer.get_group(1)
-			)
-		]
+		self.room_sprite = pyglet.sprite.Sprite(
+			Assets().rooms[self.asset_index],
+			x=self.grid_x * constants.GRID_SIZE + self.base_x,
+			y=self.grid_y * constants.GRID_SIZE + self.base_y,
+			batch=renderer.get_batch(),
+			group=renderer.get_group(1)
+		)
+		self.room_sprite.update(rotation=self.sprite_rotation * 90)
+		self.other = [self.room_sprite]
 
 	def client_adjust_grid_handler(self, command):
 		self.base_x = command.data['base_x']
