@@ -1,4 +1,4 @@
-from lattice2d.full.common import FullPlayer
+from lattice2d.full.common import FullPlayer, FullPlayerList
 from lattice2d.grid import Tile, ScaledTile, ScaledTileGrid, get_direction, get_distance, reverse_direction
 from src.common import constants
 
@@ -26,13 +26,15 @@ class AttributeSet():
 		return self.speed_index == 0 or self.might_index == 0 or self.sanity_index == 0 or self.knowledge_index == 0
 
 class Player(FullPlayer):
-	def __init__(self, name, connection=None, game=None):
+	def __init__(self, name, connection=None, game=None, entry=None):
 		super().__init__(name, connection, game)
 		self.host = False
 		self.attributes = None
 		self.display_name = None
 		self.variable_name = None
 		self.related = None
+		if entry:
+			self.set_character(entry)
 		
 	def set_character(self, entry):
 		self.attributes = AttributeSet(
@@ -59,7 +61,7 @@ class Room(ScaledTile):
 		self.doors = entry['doors']
 		self.floor = entry['floor']
 		self.sprite_rotation = entry['sprite_rotation']
-		self.players = []
+		self.players = FullPlayerList()
 		self.links = []
 
 class RoomGrid(ScaledTileGrid):

@@ -5,6 +5,7 @@ from lattice2d.grid import TileGrid
 from lattice2d.network import NetworkCommand
 from lattice2d.utilities.threaded_sync import ThreadedSync
 from lattice2d.nodes import Node
+from src.server.server_grid import ServerRoomGrid
 from src.common import constants
 
 class ServerLobbyState(FullServerState):
@@ -67,8 +68,19 @@ class ServerSetupState(FullServerState):
 				command.update_and_send(status='success', connection=player.connection)
 
 class ServerGameState(FullServerState):
-	pass
-	# def network_get_player_positions_handler(self, command):
-	# 	parsed_players = [(player.name, player.variable_name, player.grid_x, player.grid_y) for player in self.game.players]
-	# 	command.update_and_send(status='success', data={ 'players': parsed_players })
+	def __init__(self, game):
+		super().__init__(game)
+		self.game.current_player_index = 0
+		self.rooms = ServerRoomGrid()
+		self.children = [self.rooms]
+		for player in self.game.players:
+			self.rooms.add_actor(0, 0, player)
+
+	def network_get_player_positions_handler(self, command):
+		parsed_players = [(player.name, player.variable_name, player.grid_x, player.grid_y) for player in self.game.players]
+		command.update_and_send(status='success', data={ 'players': parsed_players })
+
+	def network_get_current_player_handler(self, command):
+		current_player = self.game.get_current_player().name
+		command.update_and_send(status='success', data={ 'player_name': current_player })
 

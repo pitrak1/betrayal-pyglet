@@ -2,10 +2,12 @@ import pyglet
 import sys
 from lattice2d.full.full_client import FullClientState, Renderer
 from lattice2d.full.common import FullPlayerList
+from lattice2d.network import NetworkCommand
 from lattice2d.nodes import Command
 from src.client.client_components import Background, Area, Button, TextBox
 from src.client.asset_manager import Assets
 from src.client.client_grid import ClientRoomGrid, ClientRoom
+from src.common.grid import Player
 from src.common import constants
 import config
 
@@ -20,7 +22,29 @@ class ClientGameState(FullClientState):
 		self.title = None
 		super().__init__(set_state, add_command)
 		self.children = [self.rooms]
-		self.add_command(Command('redraw'))
+		self.add_command(NetworkCommand('network_get_player_positions', status='pending'))
+
+	def network_get_player_positions_handler(self, command):
+		if command.status == 'success':
+			for player_tuple in command.data['players']:
+				name, character, grid_x, grid_y = player_tuple
+				entry = next(c for c in config.CHARACTERS if c['variable_name'] == character)
+				player = Player(name, entry=entry)
+				self.players.append(player)
+				self.rooms.add_actor(grid_x, grid_y, player)
+			self.add_command(NetworkCommand('network_get_current_player', status='pending'))
+
+	def network_get_current_player_handler(self, command):
+		if command.status == 'success':
+			player_name = command.data['player_name']
+			if player_name == self.player_name:
+				self.title = 'Your turn'
+				self.current_player = True
+			else:
+				self.title = f'{player_name}\'s turn'
+				self.current_player = False
+
+			self.add_command(Command('redraw'))
 
 	def redraw(self):
 		if self.title:

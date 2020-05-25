@@ -63,6 +63,7 @@ class ClientRoom(Room):
 			self.door_sprites.append(door_sprite)
 
 		self.other = [self.room_sprite] + self.door_sprites
+		self.default_handler(command)
 
 class ClientRoomGrid(RoomGrid):
 	def __init__(self):
