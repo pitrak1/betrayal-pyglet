@@ -26,8 +26,8 @@ class AttributeSet():
 		return self.speed_index == 0 or self.might_index == 0 or self.sanity_index == 0 or self.knowledge_index == 0
 
 class Player(FullPlayer):
-	def __init__(self, name, connection=None, game=None, entry=None):
-		super().__init__(name, connection, game)
+	def __init__(self, name, connection=None, game=None, entry=None, grid_x=None, grid_y=None, base_x=0, base_y=0):
+		super().__init__(name, connection, game, grid_x, grid_y, base_x, base_y)
 		self.host = False
 		self.attributes = None
 		self.display_name = None

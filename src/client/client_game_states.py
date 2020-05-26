@@ -6,8 +6,7 @@ from lattice2d.network import NetworkCommand
 from lattice2d.nodes import Command
 from src.client.client_components import Background, Area, Button, TextBox
 from src.client.asset_manager import Assets
-from src.client.client_grid import ClientRoomGrid, ClientRoom
-from src.common.grid import Player
+from src.client.client_grid import ClientRoomGrid, ClientRoom, ClientPlayer
 from src.common import constants
 import config
 
@@ -29,7 +28,7 @@ class ClientGameState(FullClientState):
 			for player_tuple in command.data['players']:
 				name, character, grid_x, grid_y = player_tuple
 				entry = next(c for c in config.CHARACTERS if c['variable_name'] == character)
-				player = Player(name, entry=entry)
+				player = ClientPlayer(name, entry=entry)
 				self.players.append(player)
 				self.rooms.add_actor(grid_x, grid_y, player)
 			self.add_command(NetworkCommand('network_get_current_player', status='pending'))
