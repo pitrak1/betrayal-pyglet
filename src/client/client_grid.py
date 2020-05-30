@@ -1,5 +1,6 @@
 import pyglet
 from lattice2d.grid import UP, RIGHT, LEFT, DOWN
+from lattice2d.utilities.bounds import within_circle_bounds, within_square_bounds
 from src.client.asset_manager import Assets
 from src.common.grid import Room, RoomGrid, Player
 from src.common import constants
@@ -16,6 +17,16 @@ class ClientPlayer(Player):
 			group=renderer.get_group(2)
 		)
 		self.player_sprite.update(scale=self.base_scale)
+
+	def mouse_press_handler(self, command):
+		if self.within_bounds(command.data['x'], command.data['y']):
+			print(self.display_name)
+			return True
+		else:
+			return False
+
+	def within_bounds(self, x, y):
+		return within_circle_bounds(self.grid_x * constants.GRID_SIZE, self.grid_y * constants.GRID_SIZE, x, y, constants.CHARACTER_SIZE // 2)
 
 class ClientRoom(Room):
 	def redraw_handler(self, command):
@@ -76,6 +87,14 @@ class ClientRoom(Room):
 
 		self.other = [self.room_sprite] + self.door_sprites
 		self.default_handler(command)
+
+	def within_bounds(self, x, y):
+		return within_square_bounds(self.grid_x * constants.GRID_SIZE, self.grid_y * constants.GRID_SIZE, x, y, constants.GRID_SIZE)
+
+	def mouse_press_handler(self, command):
+		if self.within_bounds(command.data['x'], command.data['y']):
+			if not self.default_handler(command):
+				print(self.display_name)
 
 class ClientRoomGrid(RoomGrid):
 	def __init__(self):
