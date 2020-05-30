@@ -15,6 +15,7 @@ class ClientPlayer(Player):
 			batch=renderer.get_batch(),
 			group=renderer.get_group(2)
 		)
+		self.player_sprite.update(scale=self.base_scale)
 
 class ClientRoom(Room):
 	def redraw_handler(self, command):
