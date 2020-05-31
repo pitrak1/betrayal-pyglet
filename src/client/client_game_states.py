@@ -15,7 +15,7 @@ class ClientGameState(FullClientState):
 		self.player_name = player_name
 		self.game_name = game_name
 		self.host = host
-		self.rooms = ClientRoomGrid()
+		self.rooms = ClientRoomGrid(add_command)
 		self.players = FullPlayerList()
 		self.current_player = False
 		self.title = None
@@ -28,7 +28,7 @@ class ClientGameState(FullClientState):
 			for player_tuple in command.data['players']:
 				name, character, grid_x, grid_y = player_tuple
 				entry = next(c for c in config.CHARACTERS if c['variable_name'] == character)
-				player = ClientPlayer(name, entry=entry)
+				player = ClientPlayer(name, self.add_command, entry=entry)
 				self.players.append(player)
 				self.rooms.add_actor(grid_x, grid_y, player)
 			self.add_command(NetworkCommand('network_get_current_player', status='pending'))
