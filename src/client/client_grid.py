@@ -126,9 +126,12 @@ class ClientRoom(Room):
 
 	def mouse_press_handler(self, command):
 		if self.within_bounds(command.data['x'], command.data['y']):
-			if not self.default_handler(command):
-				self.add_command(Command('client_select', { 'selected': self }))
-				self.add_command(Command('redraw'))
+			if command.data['button'] == pyglet.window.mouse.LEFT:
+				if not self.default_handler(command):
+					self.add_command(Command('client_select', { 'selected': self }))
+					self.add_command(Command('redraw'))
+			elif command.data['button'] == pyglet.window.mouse.RIGHT:
+				self.add_command(Command('client_move', { 'grid_x': self.grid_x, 'grid_y': self.grid_y }))
 
 	def client_select_handler(self, command):
 		self.selected = command.data['selected'] == self

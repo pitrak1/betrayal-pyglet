@@ -1,7 +1,7 @@
 import random
 import config
 from lattice2d.full.full_server import FullServerState
-from lattice2d.grid import TileGrid
+from lattice2d.grid import TileGrid, get_distance
 from lattice2d.network import NetworkCommand
 from lattice2d.utilities.threaded_sync import ThreadedSync
 from lattice2d.nodes import Node
@@ -83,4 +83,11 @@ class ServerGameState(FullServerState):
 	def network_get_current_player_handler(self, command):
 		current_player = self.game.get_current_player().name
 		command.update_and_send(status='success', data={ 'player_name': current_player })
+
+	def network_move_handler(self, command):
+		player = self.game.players.find_by_name(command.data['player'])
+		assert player and self.game.is_current_player(player)
+		assert get_distance(player.grid_x, player.grid_y, command.data['grid_x'], command.data['grid_y']) == 1
+		self.rooms.move_actor(command.data['grid_x'], command.data['grid_y'], player)
+		command.update_and_send(status='success')
 

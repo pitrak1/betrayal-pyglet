@@ -19,6 +19,7 @@ class ClientGameState(FullClientState):
 		self.players = FullPlayerList()
 		self.current_player = False
 		self.title = None
+		self.current_selection = None
 		super().__init__(set_state, add_command)
 		self.children = [self.rooms]
 		self.add_command(NetworkCommand('network_get_player_positions', status='pending'))
@@ -62,11 +63,28 @@ class ClientGameState(FullClientState):
 				)
 			]
 		
+	def client_select_handler(self, command):
+		self.current_selection = command.data['selected']
+		self.default_handler(command)
+
 	def redraw_handler(self, command):
 		self.renderer = Renderer()
 		self.redraw()
 		command.data.update({ 'renderer': self.renderer })
 		self.rooms.on_command(command)
+
+	def client_move_handler(self, command):
+		if isinstance(self.current_selection, ClientPlayer):
+			self.add_command(NetworkCommand('network_move', { 
+				'player': self.current_selection.name, 
+				'grid_x': command.data['grid_x'], 
+				'grid_y': command.data['grid_y'] 
+			}, status='pending'))
+
+	def network_move_handler(self, command):
+		if command.status == 'success':
+			self.rooms.move_actor(command.data['grid_x'], command.data['grid_y'], self.current_selection)
+			self.add_command(Command('redraw'))
 
 	def key_press_handler(self, command):
 		if command.data['symbol'] == pyglet.window.key.W:

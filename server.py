@@ -5,6 +5,8 @@ from src.server.server_states import ServerLobbyState
 CONFIG = {
 	'command_types': [
 		'client_select',
+		'client_move',
+		'network_move',
 		'network_start_game',
 		'network_get_player_order',
 		'network_confirm_player_order',
