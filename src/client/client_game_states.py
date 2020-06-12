@@ -4,6 +4,7 @@ from lattice2d.full.full_client import FullClientState, Renderer
 from lattice2d.full.common import FullPlayerList
 from lattice2d.network import NetworkCommand
 from lattice2d.nodes import Command
+from lattice2d.grid import get_distance
 from src.client.client_components import Background, Area, Button, TextBox
 from src.client.asset_manager import Assets
 from src.client.client_grid import ClientRoomGrid, ClientRoom, ClientPlayer
@@ -74,7 +75,7 @@ class ClientGameState(FullClientState):
 		self.rooms.on_command(command)
 
 	def client_move_handler(self, command):
-		if isinstance(self.current_selection, ClientPlayer):
+		if isinstance(self.current_selection, ClientPlayer) and get_distance(self.current_selection.grid_x, self.current_selection.grid_y, command.data['grid_x'], command.data['grid_y']) == 1:
 			self.add_command(NetworkCommand('network_move', { 
 				'player': self.current_selection.name, 
 				'grid_x': command.data['grid_x'], 
