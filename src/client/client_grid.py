@@ -1,5 +1,5 @@
 import pyglet
-from lattice2d.grid import UP, RIGHT, LEFT, DOWN
+from lattice2d.grid import UP, RIGHT, LEFT, DOWN, ScaledEmptyTile
 from lattice2d.utilities.bounds import within_circle_bounds, within_square_bounds
 from lattice2d.nodes import Command
 from src.client.asset_manager import Assets
@@ -137,10 +137,28 @@ class ClientRoom(Room):
 		self.selected = command.data['selected'] == self
 		self.default_handler(command)
 
+class ClientEmptyTile(ScaledEmptyTile):
+	def __init__(self, add_command, grid_x=None, grid_y=None, base_x=None, base_y=None):
+		super().__init__(grid_x, grid_y, base_x, base_y)
+		self.add_command = add_command
+
+	def mouse_press_handler(self, command):
+		if self.within_bounds(command.data['x'], command.data['y']):
+			if command.data['button'] == pyglet.window.mouse.RIGHT:
+				print('something')
+				# self.add_command(Command('client_move', { 'grid_x': self.grid_x, 'grid_y': self.grid_y }))
+
+	def within_bounds(self, x, y):
+		return within_square_bounds(self.grid_x * constants.GRID_SIZE, self.grid_y * constants.GRID_SIZE, x, y, constants.GRID_SIZE)
+
+
 class ClientRoomGrid(RoomGrid):
 	def __init__(self, add_command):
 		super().__init__()
+		self.children = []
 		self.add_command = add_command
+		for i in range(self.grid_height * self.grid_width):
+			self.children.append(ClientEmptyTile(add_command, (i % self.grid_width), (i // self.grid_height), self.base_x, self.base_y))
 		for room in config.STARTING_ROOMS:
 			self.add_tile(room['grid_x'], room['grid_y'], ClientRoom(room, add_command, base_x=self.base_x, base_y=self.base_y))
 
