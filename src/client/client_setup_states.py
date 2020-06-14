@@ -25,10 +25,8 @@ class ClientSetupPlayerOrderState(FullClientState):
 		self.children = [
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y - 140, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] - 140), 
+				unit_dimensions=(12, 3), 
 				text='Continue', 
 				on_click=self.continue_,
 				batch=self.renderer.get_batch(),
@@ -38,8 +36,8 @@ class ClientSetupPlayerOrderState(FullClientState):
 		]
 		self.waiting_text = pyglet.text.Label(
 			text='', 
-			x=constants.WINDOW_CENTER_X - 220, 
-			y=constants.WINDOW_CENTER_Y - 200, 
+			x=constants.WINDOW_CENTER[0] - 220, 
+			y=constants.WINDOW_CENTER[1] - 200, 
 			anchor_x='left', 
 			anchor_y='center', 
 			align='left', 
@@ -52,8 +50,8 @@ class ClientSetupPlayerOrderState(FullClientState):
 			pyglet.text.Label(
 				text='Welcome to Betrayal Online',
 				font_size=25,
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y + 200,
+				x=constants.WINDOW_CENTER[0], 
+				y=constants.WINDOW_CENTER[1] + 200,
 				anchor_x='center',
 				anchor_y='center',
 				align='center',
@@ -63,8 +61,8 @@ class ClientSetupPlayerOrderState(FullClientState):
 			),
 			pyglet.text.Label(
 				text='Turn order will be randomly determined', 
-				x=constants.WINDOW_CENTER_X - 220, 
-				y=constants.WINDOW_CENTER_Y + 100, 
+				x=constants.WINDOW_CENTER[0] - 220, 
+				y=constants.WINDOW_CENTER[1] + 100, 
 				anchor_x='left', 
 				anchor_y='center', 
 				align='left', 
@@ -75,8 +73,8 @@ class ClientSetupPlayerOrderState(FullClientState):
 			),
 			pyglet.text.Label(
 				text='First player in the order will play first.', 
-				x=constants.WINDOW_CENTER_X - 220, 
-				y=constants.WINDOW_CENTER_Y + 60, 
+				x=constants.WINDOW_CENTER[0] - 220, 
+				y=constants.WINDOW_CENTER[1] + 60, 
 				anchor_x='left', 
 				anchor_y='center', 
 				align='left', 
@@ -87,8 +85,8 @@ class ClientSetupPlayerOrderState(FullClientState):
 			),
 			pyglet.text.Label(
 				text='Last player in the order will choose their character first.', 
-				x=constants.WINDOW_CENTER_X - 220, 
-				y=constants.WINDOW_CENTER_Y + 40, 
+				x=constants.WINDOW_CENTER[0] - 220, 
+				y=constants.WINDOW_CENTER[1] + 40, 
 				anchor_x='left', 
 				anchor_y='center', 
 				align='left', 
@@ -99,8 +97,8 @@ class ClientSetupPlayerOrderState(FullClientState):
 			),
 			pyglet.text.Label(
 				text='The player order is:', 
-				x=constants.WINDOW_CENTER_X - 220, 
-				y=constants.WINDOW_CENTER_Y - 40, 
+				x=constants.WINDOW_CENTER[0] - 220, 
+				y=constants.WINDOW_CENTER[1] - 40, 
 				anchor_x='left', 
 				anchor_y='center', 
 				align='left', 
@@ -119,8 +117,8 @@ class ClientSetupPlayerOrderState(FullClientState):
 				player_text += ', '
 			self.other.append(pyglet.text.Label(
 				text=player_text[:-2], 
-				x=constants.WINDOW_CENTER_X - 220, 
-				y=constants.WINDOW_CENTER_Y - 60, 
+				x=constants.WINDOW_CENTER[0] - 220, 
+				y=constants.WINDOW_CENTER[1] - 60, 
 				anchor_x='left', 
 				anchor_y='center', 
 				align='left', 
@@ -148,21 +146,19 @@ class ClientSetupPlayerOrderState(FullClientState):
 
 
 class CharacterTile(Node):
-	def __init__(self, entry, x, y, active, batch, area_group, text_group, highlight_group):
+	def __init__(self, entry, position, active, batch, area_group, text_group, highlight_group):
 		super().__init__()
 		self.__area = Area(
 			asset=Assets().common['area'], 
-			x=x, 
-			y=y + 60, 
-			unit_width=16, 
-			unit_height=24,
+			position=(position[0], position[1] + 60), 
+			unit_dimensions=(16, 24),
 			batch=batch,
 			group=area_group
 		)
 		self.__name_label = pyglet.text.Label(
 			text=entry['display_name'], 
-			x=x, 
-			y=y + 230, 
+			x=position[0], 
+			y=position[1] + 230, 
 			anchor_x='center', 
 			anchor_y='center', 
 			align='center', 
@@ -174,8 +170,8 @@ class CharacterTile(Node):
 		)
 		self.__picture = pyglet.sprite.Sprite(
 			Assets().characters[entry['variable_name']], 
-			x=x, 
-			y=y + 120, 
+			x=position[0], 
+			y=position[1] + 120, 
 			batch=batch,
 			group=text_group
 		)
@@ -185,8 +181,8 @@ class CharacterTile(Node):
 			speed_text += f'{value} '
 		self.__speed_label = pyglet.text.Label(
 			text=speed_text, 
-			x=x, 
-			y=y + 15, 
+			x=position[0], 
+			y=position[1] + 15, 
 			anchor_x='center', 
 			anchor_y='center', 
 			align='center', 
@@ -198,8 +194,8 @@ class CharacterTile(Node):
 		)
 		self.__speed_indicator = pyglet.sprite.Sprite(
 			Assets().common['attribute_highlight'], 
-			x=x - 60 + 20 * entry['speed_index'], 
-			y=y + 15, 
+			x=position[0] - 60 + 20 * entry['speed_index'], 
+			y=position[1] + 15, 
 			batch=batch,
 			group=highlight_group
 		)
@@ -209,8 +205,8 @@ class CharacterTile(Node):
 			might_text += f'{value} '
 		self.__might_label = pyglet.text.Label(
 			text=might_text, 
-			x=x, 
-			y=y - 25, 
+			x=position[0], 
+			y=position[1] - 25, 
 			anchor_x='center', 
 			anchor_y='center', 
 			align='center', 
@@ -222,8 +218,8 @@ class CharacterTile(Node):
 		)
 		self.__might_indicator = pyglet.sprite.Sprite(
 			Assets().common['attribute_highlight'], 
-			x=x - 60 + 20 * entry['might_index'], 
-			y=y - 25,
+			x=position[0] - 60 + 20 * entry['might_index'], 
+			y=position[1] - 25,
 			batch=batch,
 			group=highlight_group
 		)
@@ -233,8 +229,8 @@ class CharacterTile(Node):
 			sanity_text += f'{value} '
 		self.__sanity_label = pyglet.text.Label(
 			text=sanity_text, 
-			x=x, 
-			y=y - 65, 
+			x=position[0], 
+			y=position[1] - 65, 
 			anchor_x='center', 
 			anchor_y='center', 
 			align='center', 
@@ -246,8 +242,8 @@ class CharacterTile(Node):
 		)
 		self.__sanity_indicator = pyglet.sprite.Sprite(
 			Assets().common['attribute_highlight'], 
-			x=x - 60 + 20 * entry['sanity_index'], 
-			y=y - 65,
+			x=position[0] - 60 + 20 * entry['sanity_index'], 
+			y=position[1] - 65,
 			batch=batch,
 			group=highlight_group
 		)
@@ -257,8 +253,8 @@ class CharacterTile(Node):
 			knowledge_text += f'{value} '
 		self.__knowledge_label = pyglet.text.Label(
 			text=knowledge_text, 
-			x=x, 
-			y=y - 105, 
+			x=position[0], 
+			y=position[1] - 105, 
 			anchor_x='center', 
 			anchor_y='center', 
 			align='center', 
@@ -270,8 +266,8 @@ class CharacterTile(Node):
 		)
 		self.__knowledge_indicator = pyglet.sprite.Sprite(
 			Assets().common['attribute_highlight'], 
-			x=x - 60 + 20 * entry['knowledge_index'], 
-			y=y - 105,
+			x=position[0] - 60 + 20 * entry['knowledge_index'], 
+			y=position[1] - 105,
 			batch=batch,
 			group=highlight_group
 		)
@@ -279,8 +275,8 @@ class CharacterTile(Node):
 		if not active:
 			self.__active_label = pyglet.text.Label(
 				text='NOT ACTIVE', 
-				x=x, 
-				y=y + 215, 
+				x=position[0], 
+				y=position[1] + 215, 
 				anchor_x='center', 
 				anchor_y='center', 
 				align='center', 
@@ -306,10 +302,8 @@ class ClientSetupCharacterSelectionState(FullClientState):
 		self.children = [
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X-300, 
-				y=constants.WINDOW_CENTER_Y, 
-				unit_width=4, 
-				unit_height=6, 
+				position=(constants.WINDOW_CENTER[0]-300, constants.WINDOW_CENTER[1]), 
+				unit_dimensions=(4, 6), 
 				text='Left', 
 				on_click=self.go_left,
 				batch=self.renderer.get_batch(),
@@ -318,10 +312,8 @@ class ClientSetupCharacterSelectionState(FullClientState):
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X+300, 
-				y=constants.WINDOW_CENTER_Y, 
-				unit_width=4, 
-				unit_height=6, 
+				position=(constants.WINDOW_CENTER[0]+300, constants.WINDOW_CENTER[1]), 
+				unit_dimensions=(4, 6), 
 				text='Right', 
 				on_click=self.go_right,
 				batch=self.renderer.get_batch(),
@@ -332,8 +324,8 @@ class ClientSetupCharacterSelectionState(FullClientState):
 
 		self.title = pyglet.text.Label(
 			text=self.title_text, 
-			x=constants.WINDOW_CENTER_X, 
-			y=constants.WINDOW_HEIGHT - 40, 
+			x=constants.WINDOW_CENTER[0], 
+			y=constants.WINDOW_DIMENSIONS[1] - 40, 
 			anchor_x='center', 
 			anchor_y='center', 
 			align='center', 
@@ -348,10 +340,8 @@ class ClientSetupCharacterSelectionState(FullClientState):
 			if self.current_player:
 				self.children.append(Button(
 					asset=Assets().common['button'], 
-					x=constants.WINDOW_CENTER_X, 
-					y=constants.WINDOW_CENTER_Y-250, 
-					unit_width=12, 
-					unit_height=3, 
+					position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]-250), 
+					unit_dimensions=(12, 3), 
 					text='Select', 
 					on_click=self.select_character,
 					batch=self.renderer.get_batch(),
@@ -360,8 +350,7 @@ class ClientSetupCharacterSelectionState(FullClientState):
 				))
 			self.children.append(CharacterTile(
 				entry=config.CHARACTERS[self.character_index], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]), 
 				active=True,
 				batch=self.renderer.get_batch(),
 				area_group=self.renderer.get_group(0),
@@ -371,8 +360,7 @@ class ClientSetupCharacterSelectionState(FullClientState):
 		else:
 			self.children.append(CharacterTile(
 				entry=config.CHARACTERS[self.character_index], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]), 
 				active=False,
 				batch=self.renderer.get_batch(),
 				area_group=self.renderer.get_group(0),
@@ -440,10 +428,8 @@ class ClientSetupCharacterOverviewState(FullClientState):
 		self.children = [
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y - 200, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] - 200), 
+				unit_dimensions=(12, 3), 
 				text='Begin', 
 				on_click=self.confirm_characters,
 				batch=self.renderer.get_batch(),
@@ -453,8 +439,8 @@ class ClientSetupCharacterOverviewState(FullClientState):
 		]
 		self.waiting_label = pyglet.text.Label(
 			text='', 
-			x=constants.WINDOW_CENTER_X - 220, 
-			y=constants.WINDOW_CENTER_Y - 260, 
+			x=constants.WINDOW_CENTER[0] - 220, 
+			y=constants.WINDOW_CENTER[1] - 260, 
 			anchor_x='left', 
 			anchor_y='center', 
 			align='left', 
@@ -466,8 +452,8 @@ class ClientSetupCharacterOverviewState(FullClientState):
 		self.other = [
 			pyglet.text.Label(
 				text='The players\' selected characters are:', 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_HEIGHT - 40, 
+				x=constants.WINDOW_CENTER[0], 
+				y=constants.WINDOW_DIMENSIONS[1] - 40, 
 				anchor_x='center', 
 				anchor_y='center', 
 				align='center', 
@@ -485,8 +471,8 @@ class ClientSetupCharacterOverviewState(FullClientState):
 				label_text = f'{selection[0]}: {selection[1]}'
 				self.other.append(pyglet.text.Label(
 					text=label_text, 
-					x=constants.WINDOW_CENTER_X - 180, 
-					y=constants.WINDOW_CENTER_Y + 130 - (40 * count), 
+					x=constants.WINDOW_CENTER[0] - 180, 
+					y=constants.WINDOW_CENTER[1] + 130 - (40 * count), 
 					anchor_x='left', 
 					anchor_y='center', 
 					align='left', 

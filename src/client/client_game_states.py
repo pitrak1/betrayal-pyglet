@@ -28,11 +28,11 @@ class ClientGameState(FullClientState):
 	def network_get_player_positions_handler(self, command):
 		if command.status == 'success':
 			for player_tuple in command.data['players']:
-				name, character, grid_x, grid_y = player_tuple
+				name, character, grid_position = player_tuple
 				entry = next(c for c in config.CHARACTERS if c['variable_name'] == character)
 				player = ClientPlayer(name, self.add_command, entry=entry)
 				self.players.append(player)
-				self.rooms.add_actor(grid_x, grid_y, player)
+				self.rooms.add_actor(grid_position, player)
 			self.add_command(NetworkCommand('network_get_current_player', status='pending'))
 
 	def network_get_current_player_handler(self, command):
@@ -52,8 +52,8 @@ class ClientGameState(FullClientState):
 			self.other = [
 				pyglet.text.Label(
 					text=self.title, 
-					x=constants.WINDOW_CENTER_X, 
-					y=constants.WINDOW_HEIGHT - 40, 
+					x=constants.WINDOW_CENTER[0], 
+					y=constants.WINDOW_DIMENSIONS[1] - 40, 
 					anchor_x='center', 
 					anchor_y='center', 
 					align='center', 
@@ -75,30 +75,29 @@ class ClientGameState(FullClientState):
 		self.rooms.on_command(command)
 
 	def client_move_handler(self, command):
-		if isinstance(self.current_selection, ClientPlayer) and get_distance(self.current_selection.grid_x, self.current_selection.grid_y, command.data['grid_x'], command.data['grid_y']) == 1:
+		if isinstance(self.current_selection, ClientPlayer) and get_distance(self.current_selection.grid_position, command.data['grid_position']) == 1:
 			self.add_command(NetworkCommand('network_move', { 
 				'player': self.current_selection.name, 
-				'grid_x': command.data['grid_x'], 
-				'grid_y': command.data['grid_y'] 
+				'grid_position': command.data['grid_position']			
 			}, status='pending'))
 
 	def network_move_handler(self, command):
 		if command.status == 'success':
-			self.rooms.move_actor(command.data['grid_x'], command.data['grid_y'], self.current_selection)
+			self.rooms.move_actor(command.data['grid_position'], self.current_selection)
 			self.add_command(Command('redraw'))
 
 	def key_press_handler(self, command):
 		if command.data['symbol'] == pyglet.window.key.W:
-			self.add_command(Command('adjust_grid_position', { 'adjust_x': 0, 'adjust_y': -constants.GRID_SIZE }))
+			self.add_command(Command('adjust_grid_position', { 'adjust': (0, -constants.GRID_SIZE) }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.D:
-			self.add_command(Command('adjust_grid_position', { 'adjust_x': -constants.GRID_SIZE, 'adjust_y': 0 }))
+			self.add_command(Command('adjust_grid_position', { 'adjust': (-constants.GRID_SIZE, 0) }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.S:
-			self.add_command(Command('adjust_grid_position', { 'adjust_x': 0, 'adjust_y': constants.GRID_SIZE }))
+			self.add_command(Command('adjust_grid_position', { 'adjust': (0, constants.GRID_SIZE) }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.A:
-			self.add_command(Command('adjust_grid_position', { 'adjust_x': constants.GRID_SIZE, 'adjust_y': 0 }))
+			self.add_command(Command('adjust_grid_position', { 'adjust': (constants.GRID_SIZE, 0) }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.PAGEUP or command.data['symbol'] == pyglet.window.key.UP:
 			self.add_command(Command('adjust_grid_scale', { 'adjust': 2 }))

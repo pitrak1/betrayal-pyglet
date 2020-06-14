@@ -26,8 +26,8 @@ class AttributeSet():
 		return self.speed_index == 0 or self.might_index == 0 or self.sanity_index == 0 or self.knowledge_index == 0
 
 class Player(FullPlayer):
-	def __init__(self, name, connection=None, game=None, entry=None, grid_x=None, grid_y=None, base_x=0, base_y=0):
-		super().__init__(name, connection, game, grid_x, grid_y, base_x, base_y)
+	def __init__(self, name, connection=None, game=None, entry=None, grid_position=(None, None), base_position=(0, 0)):
+		super().__init__(name, connection, game, grid_position, base_position)
 		self.host = False
 		self.attributes = None
 		self.display_name = None
@@ -52,8 +52,8 @@ class Player(FullPlayer):
 		self.related = entry['related']
 
 class Room(ScaledTile):
-	def __init__(self, entry, base_x=0, base_y=0):
-		super().__init__(entry['grid_x'], entry['grid_y'], base_x, base_y)
+	def __init__(self, entry, base_position=(0, 0)):
+		super().__init__(entry['grid_position'], base_position)
 		self.entry = entry
 		self.display_name = entry['display_name']
 		self.variable_name = entry['variable_name']
@@ -66,11 +66,11 @@ class Room(ScaledTile):
 
 class RoomGrid(ScaledTileGrid):
 	def __init__(self):
-		super().__init__(constants.GRID_WIDTH, constants.GRID_HEIGHT, constants.WINDOW_CENTER_X, constants.WINDOW_CENTER_Y)
+		super().__init__(constants.GRID_DIMENSIONS, constants.WINDOW_CENTER)
 
 	def add_adjacent_links(self, start_tile, end_tile):
 		if isinstance(end_tile, Tile):
-			direction = get_direction(start_tile.grid_x, start_tile.grid_y, end_tile.grid_x, end_tile.grid_y)
+			direction = get_direction(start_tile.grid_position, end_tile.grid_position)
 			if start_tile.doors[direction] and end_tile.doors[reverse_direction(direction)]:
 				start_tile.links.append(end_tile)
 				end_tile.links.append(start_tile)

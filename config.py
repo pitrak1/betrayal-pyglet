@@ -180,8 +180,7 @@ STARTING_ROOMS = [
 		'asset_index': 2,
 		'doors': [True, True, False, True],
 		'floor': 1,
-		'grid_x': 0,
-		'grid_y': 0,
+		'grid_position': (0, 0),
 		'sprite_rotation': 1
 	},
 	{
@@ -190,8 +189,7 @@ STARTING_ROOMS = [
 		'asset_index': 1,
 		'doors': [True, True, True, True],
 		'floor': 1,
-		'grid_x': 0,
-		'grid_y': 1,
+		'grid_position': (0, 1),
 		'sprite_rotation': 1
 	},
 	{
@@ -200,8 +198,7 @@ STARTING_ROOMS = [
 		'asset_index': 0,
 		'doors': [False, False, True, False],
 		'floor': 1,
-		'grid_x': 0,
-		'grid_y': 2,
+		'grid_position': (0, 2),
 		'sprite_rotation': 1
 	}
 ]

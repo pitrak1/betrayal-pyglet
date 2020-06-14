@@ -7,4 +7,4 @@ class ServerRoomGrid(RoomGrid):
 	def __init__(self):
 		super().__init__()
 		for room in config.STARTING_ROOMS:
-			self.add_tile(room['grid_x'], room['grid_y'], Room(room))
+			self.add_tile(room['grid_position'], Room(room))

@@ -74,10 +74,10 @@ class ServerGameState(FullServerState):
 		self.rooms = ServerRoomGrid()
 		self.children = [self.rooms]
 		for player in self.game.players:
-			self.rooms.add_actor(0, 0, player)
+			self.rooms.add_actor((0, 0), player)
 
 	def network_get_player_positions_handler(self, command):
-		parsed_players = [(player.name, player.variable_name, player.grid_x, player.grid_y) for player in self.game.players]
+		parsed_players = [(player.name, player.variable_name, player.grid_position) for player in self.game.players]
 		command.update_and_send(status='success', data={ 'players': parsed_players })
 
 	def network_get_current_player_handler(self, command):
@@ -87,7 +87,7 @@ class ServerGameState(FullServerState):
 	def network_move_handler(self, command):
 		player = self.game.players.find_by_name(command.data['player'])
 		assert player and self.game.is_current_player(player)
-		assert get_distance(player.grid_x, player.grid_y, command.data['grid_x'], command.data['grid_y']) == 1
-		self.rooms.move_actor(command.data['grid_x'], command.data['grid_y'], player)
+		assert get_distance(player.grid_position, command.data['grid_position']) == 1
+		self.rooms.move_actor(command.data['grid_position'], player)
 		command.update_and_send(status='success')
 

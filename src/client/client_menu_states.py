@@ -20,19 +20,15 @@ class ClientMenuSplashState(FullClientState):
 			),
 			Area(
 				asset=Assets().common['area'],
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y, 
-				unit_width=20, 
-				unit_height=30,
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]),
+				unit_dimensions=(20, 30), 
 				batch=self.renderer.get_batch(),
 				group=self.renderer.get_group(1)
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y + 50,
-				unit_width=12,
-				unit_height=3,
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] + 50),
+				unit_dimensions=(12, 3),
 				text='Begin', 
 				on_click=self.begin,
 				batch=self.renderer.get_batch(),
@@ -44,8 +40,8 @@ class ClientMenuSplashState(FullClientState):
 			pyglet.text.Label(
 				text='Betrayal Online',
 				font_size=25,
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y + 150,
+				x=constants.WINDOW_CENTER[0], 
+				y=constants.WINDOW_CENTER[1] + 150,
 				anchor_x='center',
 				anchor_y='center',
 				align='center',
@@ -63,8 +59,7 @@ class ClientMenuCreatePlayerState(FullClientState):
 	def redraw(self):
 		self.player_name_input = TextBox(
 			asset=Assets().common['text_box'], 
-			x=constants.WINDOW_CENTER_X - 120, 
-			y=constants.WINDOW_CENTER_Y + 50, 
+			position=(constants.WINDOW_CENTER[0] - 120, constants.WINDOW_CENTER[1] + 50), 
 			unit_width=16,
 			label_text='Player Name',
 			max_length=25,
@@ -81,20 +76,16 @@ class ClientMenuCreatePlayerState(FullClientState):
 			),
 			Area(
 				asset=Assets().common['area'],
-				x=constants.WINDOW_CENTER_X,
-				y=constants.WINDOW_CENTER_Y,
-				unit_width=20,
-				unit_height=30,
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]),
+				unit_dimensions=(20, 30),
 				batch=self.renderer.get_batch(),
 				group=self.renderer.get_group(1)
 			),
 			self.player_name_input,
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y - 50, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] - 50), 
+				unit_dimensions=(12, 3), 
 				text='Continue', 
 				on_click=self.continue_,
 				batch=self.renderer.get_batch(),
@@ -103,10 +94,8 @@ class ClientMenuCreatePlayerState(FullClientState):
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y - 110, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] - 110), 
+				unit_dimensions=(12, 3),
 				text='Exit', 
 				on_click=self.exit,
 				batch=self.renderer.get_batch(),
@@ -118,8 +107,8 @@ class ClientMenuCreatePlayerState(FullClientState):
 			pyglet.text.Label(
 				text='Betrayal Online',
 				font_size=25,
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y + 150,
+				x=constants.WINDOW_CENTER[0], 
+				y=constants.WINDOW_CENTER[1] + 150,
 				anchor_x='center',
 				anchor_y='center',
 				align='center',
@@ -164,19 +153,15 @@ class ClientMenuMainMenuState(FullClientState):
 			),
 			Area(
 				asset=Assets().common['area'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y, 
-				unit_width=20, 
-				unit_height=30,
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]), 
+				unit_dimensions=(20, 30), 
 				batch=self.renderer.get_batch(),
 				group=self.renderer.get_group(1)
 			),
 			Button(
 				asset=Assets().common['button'],
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y + 50, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] + 50), 
+				unit_dimensions=(12, 3), 
 				text='Create Game', 
 				on_click=self.create_game,
 				batch=self.renderer.get_batch(),
@@ -185,10 +170,8 @@ class ClientMenuMainMenuState(FullClientState):
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y - 30, 
-				unit_width=12, 
-				unit_height=3,
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] - 30), 
+				unit_dimensions=(12, 3), 
 				text='Join Game', 
 				on_click=self.join_game,
 				batch=self.renderer.get_batch(),
@@ -197,10 +180,8 @@ class ClientMenuMainMenuState(FullClientState):
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y - 110, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] - 110), 
+				unit_dimensions=(12, 3), 
 				text='Exit', 
 				on_click=self.exit,
 				batch=self.renderer.get_batch(),
@@ -212,8 +193,8 @@ class ClientMenuMainMenuState(FullClientState):
 			pyglet.text.Label(
 				text='Betrayal Online',
 				font_size=25,
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y + 150,
+				x=constants.WINDOW_CENTER[0], 
+				y=constants.WINDOW_CENTER[1] + 150,
 				anchor_x='center',
 				anchor_y='center',
 				align='center',
@@ -245,8 +226,7 @@ class ClientMenuCreateGameState(FullClientState):
 	def redraw(self):
 		self.game_name_input = TextBox(
 			asset=Assets().common['text_box'], 
-			x=constants.WINDOW_CENTER_X - 200, 
-			y=constants.WINDOW_CENTER_Y + 50, 
+			position=(constants.WINDOW_CENTER[0] - 200, constants.WINDOW_CENTER[1] + 50), 
 			unit_width=26, 
 			label_text='Game Name',
 			max_length=40,
@@ -262,20 +242,16 @@ class ClientMenuCreateGameState(FullClientState):
 			),
 			Area(
 				asset=Assets().common['area'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y, 
-				unit_width=40, 
-				unit_height=30, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]), 
+				unit_dimensions=(40, 30), 
 				batch=self.renderer.get_batch(),
 				group=self.renderer.get_group(1)
 			),
 			self.game_name_input,
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X - 150, 
-				y=constants.WINDOW_CENTER_Y - 100, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0] - 150, constants.WINDOW_CENTER[1] - 100), 
+				unit_dimensions=(12, 3), 
 				text='Back', 
 				on_click=self.back,
 				batch=self.renderer.get_batch(),
@@ -284,10 +260,8 @@ class ClientMenuCreateGameState(FullClientState):
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X + 150, 
-				y=constants.WINDOW_CENTER_Y - 100, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0] + 150, constants.WINDOW_CENTER[1] - 100), 
+				unit_dimensions=(12, 3), 
 				text='Create', 
 				on_click=self.create,
 				batch=self.renderer.get_batch(),
@@ -298,8 +272,8 @@ class ClientMenuCreateGameState(FullClientState):
 		self.other = [
 			pyglet.text.Label(
 				text='Create Game', 
-				x=constants.WINDOW_CENTER_X,
-				y=constants.WINDOW_CENTER_Y + 200,
+				x=constants.WINDOW_CENTER[0],
+				y=constants.WINDOW_CENTER[1] + 200,
 				anchor_x='center', 
 				anchor_y='center', 
 				align='center', 
@@ -331,23 +305,21 @@ class ClientMenuCreateGameState(FullClientState):
 			self.set_state(ClientMenuLobbyState(self.set_state, self.add_command, self.player_name, command.data['game_name'], True))
 
 class GameListing(Node):
-	def __init__(self, name, players, x, y, on_click, batch, area_group, text_group):
+	def __init__(self, name, players, position, on_click, batch, area_group, text_group):
 		super().__init__()
 		self.name = name
 		self.__area = Area(
 			asset=Assets().common['button'], 
-			x=x, 
-			y=y, 
-			unit_width=26, 
-			unit_height=2, 
+			position=position,
+			unit_dimensions=(26, 2),
 			align='left',
 			batch=batch,
 			group=area_group
 		)
 		self.__game_name = pyglet.text.Label(
 			text=name, 
-			x=x, 
-			y=y, 
+			x=position[0], 
+			y=position[1], 
 			anchor_x='left', 
 			anchor_y='center', 
 			align='left', 
@@ -357,8 +329,8 @@ class GameListing(Node):
 		)
 		self.__player_count = pyglet.text.Label(
 			text=f'{players}/{constants.PLAYERS_PER_GAME}', 
-			x=x + 390, 
-			y=y, 
+			x=position[0] + 390, 
+			y=position[1], 
 			anchor_x='right', 
 			anchor_y='center', 
 			align='right', 
@@ -369,7 +341,7 @@ class GameListing(Node):
 		self.__on_click = on_click
 
 	def mouse_press_handler(self, command, state=None):
-		if self.__area.within_bounds(command.data['x'], command.data['y']):
+		if self.__area.within_bounds((command.data['x'], command.data['y'])):
 			self.__on_click()	
 
 class ClientMenuGameListState(FullClientState):
@@ -390,19 +362,15 @@ class ClientMenuGameListState(FullClientState):
 			),
 			Area(
 				asset=Assets().common['area'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y, 
-				unit_width=40, 
-				unit_height=30, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]), 
+				unit_dimensions=(40, 30), 
 				batch=self.renderer.get_batch(),
 				group=self.renderer.get_group(1)
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X - 150, 
-				y=constants.WINDOW_CENTER_Y - 185, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0] - 150, constants.WINDOW_CENTER[1] - 185), 
+				unit_dimensions=(12, 3), 
 				text='Back', 
 				on_click=self.back,
 				batch=self.renderer.get_batch(),
@@ -411,10 +379,8 @@ class ClientMenuGameListState(FullClientState):
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X + 150, 
-				y=constants.WINDOW_CENTER_Y - 185, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0] + 150, constants.WINDOW_CENTER[1] - 185), 
+				unit_dimensions=(12, 3), 
 				text='Refresh', 
 				on_click=self.refresh,
 				batch=self.renderer.get_batch(),
@@ -425,8 +391,8 @@ class ClientMenuGameListState(FullClientState):
 		self.error_text = pyglet.text.Label(
 			text='',
 			font_size=15,
-			x=constants.WINDOW_CENTER_X + 150, 
-			y=constants.WINDOW_CENTER_Y - 220,
+			x=constants.WINDOW_CENTER[0] + 150, 
+			y=constants.WINDOW_CENTER[1] - 220,
 			anchor_x='center',
 			anchor_y='center',
 			align='center',
@@ -438,8 +404,8 @@ class ClientMenuGameListState(FullClientState):
 			pyglet.text.Label(
 				text='Games',
 				font_size=25,
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y + 200,
+				x=constants.WINDOW_CENTER[0], 
+				y=constants.WINDOW_CENTER[1] + 200,
 				anchor_x='center',
 				anchor_y='center',
 				align='center',
@@ -463,8 +429,7 @@ class ClientMenuGameListState(FullClientState):
 				self.children.append(GameListing(
 					name=game[0], 
 					players=game[1], 
-					x=constants.WINDOW_CENTER_X - 200, 
-					y=constants.WINDOW_CENTER_Y + 120 - 40 * (count % constants.GAME_LIST_PAGE_SIZE), 
+					position=(constants.WINDOW_CENTER[0] - 200, constants.WINDOW_CENTER[1] + 120 - 40 * (count % constants.GAME_LIST_PAGE_SIZE)), 
 					on_click=lambda : self.join(game[0], int(game[1])),
 					batch=self.renderer.get_batch(),
 					area_group=self.renderer.get_group(2),
@@ -475,10 +440,8 @@ class ClientMenuGameListState(FullClientState):
 			if down:
 				self.elements.append(Button(
 					asset=Assets().common['button'], 
-					x=constants.WINDOW_CENTER_X + 250, 
-					y=constants.WINDOW_CENTER_Y - 50, 
-					unit_width=3, 
-					unit_height=5, 
+					position=(constants.WINDOW_CENTER[0] + 250, constants.WINDOW_CENTER[1] - 50), 
+					unit_dimensions=(3, 5), 
 					text='Down', 
 					on_click=self.go_forward_page,
 					batch=self.renderer.get_batch(),
@@ -489,10 +452,8 @@ class ClientMenuGameListState(FullClientState):
 			if up:
 				self.elements.append(Button(
 					asset=Assets().common['button'], 
-					x=constants.WINDOW_CENTER_X + 250, 
-					y=constants.WINDOW_CENTER_Y + 50, 
-					unit_width=3, 
-					unit_height=5, 
+					position=(constants.WINDOW_CENTER[0] + 250, constants.WINDOW_CENTER[1] + 50), 
+					unit_dimensions=(3, 5), 
 					text='Up', 
 					on_click=self.go_back_page,
 					batch=self.renderer.get_batch(),
@@ -536,22 +497,20 @@ class ClientMenuGameListState(FullClientState):
 			self.set_state(ClientMenuLobbyState(self.set_state, self.add_command, self.player_name, command.data['game_name'], False))
 
 class GamePlayer(Node):
-	def __init__(self, name, host, x, y, batch, area_group, text_group):
+	def __init__(self, name, host, position, batch, area_group, text_group):
 		super().__init__()
 		self.__area = Area(
 			asset=Assets().common['button'], 
-			x=x, 
-			y=y, 
-			unit_width=26, 
-			unit_height=2, 
+			position=position, 
+			unit_dimensions=(26, 2), 
 			align='left',
 			batch=batch,
 			group=area_group
 		)
 		self.__player_name = pyglet.text.Label(
 			text=name, 
-			x=x, 
-			y=y, 
+			x=position[0], 
+			y=position[1], 
 			anchor_x='left', 
 			anchor_y='center', 
 			align='left', 
@@ -562,8 +521,8 @@ class GamePlayer(Node):
 		if host:
 			self.__crown = pyglet.sprite.Sprite(
 				Assets().common['host_marker'], 
-				x=x + 390, 
-				y=y,
+				x=position[0] + 390, 
+				y=position[1],
 				batch=batch,
 				group=text_group
 			)
@@ -586,19 +545,15 @@ class ClientMenuLobbyState(FullClientState):
 			),
 			Area(
 				asset=Assets().common['area'], 
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y, 
-				unit_width=40, 
-				unit_height=30, 
+				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]), 
+				unit_dimensions=(40, 30), 
 				batch=self.renderer.get_batch(),
 				group=self.renderer.get_group(1)
 			),
 			Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X - 150, 
-				y=constants.WINDOW_CENTER_Y - 185, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0] - 150, constants.WINDOW_CENTER[1] - 185), 
+				unit_dimensions=(12, 3), 
 				text='Back', 
 				on_click=self.leave_game,
 				batch=self.renderer.get_batch(),
@@ -609,8 +564,8 @@ class ClientMenuLobbyState(FullClientState):
 		self.error_text = pyglet.text.Label(
 			text='',
 			font_size=15,
-			x=constants.WINDOW_CENTER_X + 150, 
-			y=constants.WINDOW_CENTER_Y - 220,
+			x=constants.WINDOW_CENTER[0] + 150, 
+			y=constants.WINDOW_CENTER[1] - 220,
 			anchor_x='center',
 			anchor_y='center',
 			align='center',
@@ -622,8 +577,8 @@ class ClientMenuLobbyState(FullClientState):
 			pyglet.text.Label(
 				text=self.game_name,
 				font_size=25,
-				x=constants.WINDOW_CENTER_X, 
-				y=constants.WINDOW_CENTER_Y + 200,
+				x=constants.WINDOW_CENTER[0], 
+				y=constants.WINDOW_CENTER[1] + 200,
 				anchor_x='center',
 				anchor_y='center',
 				align='center',
@@ -637,10 +592,8 @@ class ClientMenuLobbyState(FullClientState):
 		if self.host:
 			self.children.append(Button(
 				asset=Assets().common['button'], 
-				x=constants.WINDOW_CENTER_X + 150, 
-				y=constants.WINDOW_CENTER_Y - 185, 
-				unit_width=12, 
-				unit_height=3, 
+				position=(constants.WINDOW_CENTER[0] + 150, constants.WINDOW_CENTER[1] - 185), 
+				unit_dimensions=(12, 3), 
 				text='Start', 
 				on_click=self.start_game,
 				batch=self.renderer.get_batch(),
@@ -653,8 +606,7 @@ class ClientMenuLobbyState(FullClientState):
 			self.children.append(GamePlayer(
 				name=player[0], 
 				host=player[1], 
-				x=constants.WINDOW_CENTER_X - 200, 
-				y=constants.WINDOW_CENTER_Y + 120 - 40 * count,
+				position=(constants.WINDOW_CENTER[0] - 200, constants.WINDOW_CENTER[1] + 120 - 40 * count),
 				batch=self.renderer.get_batch(),
 				area_group=self.renderer.get_group(2),
 				text_group=self.renderer.get_group(3)

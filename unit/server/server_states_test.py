@@ -124,7 +124,7 @@ class TestServerStates():
 				state.on_command(command)
 				assert game.get_current_player() == player1
 
-			def test_broadcasts_updated_characters_if_all_players_have_not_selected(self, mocker, get_args):
+			def test_broadcasts_updated_characters_if_all_players_have_not_selected(self, mocker, get_positional_args):
 				mocker.patch('lattice2d.network.NetworkCommand.create_and_send')
 				game = FullServerGame('game name', mocker.stub())
 				player1 = Player('player 1', 'connection 1')
@@ -135,9 +135,9 @@ class TestServerStates():
 				command = NetworkCommand('network_select_character', { 'character': 'heather_granville' }, 'pending', player2.connection)
 				state.on_command(command)
 				assert NetworkCommand.create_and_send.call_count == 2
-				assert get_args(NetworkCommand.create_and_send, 0, 0) == 'network_get_available_characters'
+				assert get_positional_args(NetworkCommand.create_and_send, 0, 0) == 'network_get_available_characters'
 
-			def test_broadcasts_all_selected_if_all_players_have_selected(self, mocker, get_args):
+			def test_broadcasts_all_selected_if_all_players_have_selected(self, mocker, get_positional_args):
 				mocker.patch('lattice2d.network.NetworkCommand.create_and_send')
 				game = FullServerGame('game name', mocker.stub())
 				player1 = Player('player 1', 'connection 1')
@@ -146,7 +146,7 @@ class TestServerStates():
 				command = NetworkCommand('network_select_character', { 'character': 'heather_granville' }, 'pending', player1.connection)
 				state.on_command(command)
 				assert NetworkCommand.create_and_send.call_count == 1
-				assert get_args(NetworkCommand.create_and_send, 0, 0) == 'network_all_characters_selected'
+				assert get_positional_args(NetworkCommand.create_and_send, 0, 0) == 'network_all_characters_selected'
 
 		class TestNetworkGetCharacterSelectionsHandler():
 			def test_gets_selected_character_for_each_player(self, mocker):
