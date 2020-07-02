@@ -1,27 +1,23 @@
 import pyglet
 import sys
-from lattice2d.full.full_client import FullClientState, Renderer
-from lattice2d.full.common import FullPlayerList
+from lattice2d.full.client import ClientState, Renderer
 from lattice2d.network import NetworkCommand
 from lattice2d.nodes import Command
 from lattice2d.grid import get_distance
-from src.client.client_components import Background, Area, Button, TextBox
-from src.client.asset_manager import Assets
+from lattice2d.full.components import BackgroundComponent, AreaComponent, ButtonComponent, TextBoxComponent
+from lattice2d.assets import Assets
 from src.client.client_grid import ClientRoomGrid, ClientRoom, ClientPlayer
 from src.common import constants
 import config
 
-class ClientGameState(FullClientState):
-	def __init__(self, set_state, add_command, player_name, game_name, host):
-		self.player_name = player_name
-		self.game_name = game_name
-		self.host = host
+class ClientGameState(ClientState):
+	def __init__(self, add_command, custom_data={}):
 		self.rooms = ClientRoomGrid(add_command)
-		self.players = FullPlayerList()
+		self.players = []
 		self.current_player = False
 		self.title = None
 		self.current_selection = None
-		super().__init__(set_state, add_command)
+		super().__init__(add_command, custom_data)
 		self.children = [self.rooms]
 		self.add_command(NetworkCommand('network_get_player_positions', status='pending'))
 

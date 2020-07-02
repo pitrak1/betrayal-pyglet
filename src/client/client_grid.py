@@ -2,8 +2,9 @@ import pyglet
 from lattice2d.grid import UP, RIGHT, LEFT, DOWN, ScaledEmptyTile
 from lattice2d.utilities.bounds import within_circle_bounds, within_square_bounds
 from lattice2d.nodes import Command
-from src.client.asset_manager import Assets
-from src.common.grid import Room, RoomGrid, Player
+from lattice2d.assets import Assets
+from src.common.grid import Room, RoomGrid
+from lattice2d.full.common import Player
 from src.common import constants
 import config
 

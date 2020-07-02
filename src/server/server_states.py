@@ -1,6 +1,6 @@
 import random
 import config
-from lattice2d.full.full_server import FullServerState
+from lattice2d.full.server import ServerState
 from lattice2d.grid import TileGrid, get_distance
 from lattice2d.network import NetworkCommand
 from lattice2d.utilities.threaded_sync import ThreadedSync
@@ -8,18 +8,18 @@ from lattice2d.nodes import Node
 from src.server.server_grid import ServerRoomGrid
 from src.common import constants
 
-class ServerLobbyState(FullServerState):
+class ServerLobbyState(ServerState):
 	def network_start_game_handler(self, command):
 		if len(self.game.players) < constants.MINIMUM_PLAYERS:
 			command.update_and_send(status='not_enough_players')
 		else:
-			self.game.set_state(ServerSetupState(self.game))
+			self.to_setup_state()
 			for player in self.game.players:
 				command.update_and_send(status='success', connection=player.connection)
 
-class ServerSetupState(FullServerState):
-	def __init__(self, game):
-		super().__init__(game)
+class ServerSetupState(ServerState):
+	def __init__(self, game, custom_data={}):
+		super().__init__(game, custom_data)
 		random.shuffle(self.game.players)
 		self.waiting = ThreadedSync(len(self.game.players))
 		self.game.current_player_index = len(self.game.players) - 1
@@ -63,11 +63,12 @@ class ServerSetupState(FullServerState):
 	def network_confirm_character_selections_handler(self, command):
 		self.waiting.count()
 		if self.waiting.done():
-			self.game.set_state(ServerGameState(self.game))
-			for player in self.game.players:
-				command.update_and_send(status='success', connection=player.connection)
+			print('game')
+			# self.game.set_state(ServerGameState(self.game))
+			# for player in self.game.players:
+			# 	command.update_and_send(status='success', connection=player.connection)
 
-class ServerGameState(FullServerState):
+class ServerGameState(ServerState):
 	def __init__(self, game):
 		super().__init__(game)
 		self.game.current_player_index = 0

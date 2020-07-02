@@ -1,32 +1,27 @@
 import pyglet
 import sys
-from lattice2d.full.full_client import FullClientState, Renderer
-from lattice2d.full.common import FullPlayerList
+from lattice2d.full.components import BackgroundComponent, AreaComponent, ButtonComponent, TextBoxComponent
+from lattice2d.full.client import ClientState, Renderer
 from lattice2d.utilities.pagination import get_page_info
 from lattice2d.network import NetworkCommand
 from lattice2d.nodes import Node
-from src.client.client_components import Background, Area, Button, TextBox
+from lattice2d.assets import Assets
 from src.common import constants
-from src.client.asset_manager import Assets
-from src.client.client_game_states import ClientGameState
+# from src.client.client_game_states import ClientGameState
 import config
 
-class ClientSetupPlayerOrderState(FullClientState):
-	def __init__(self, set_state, add_command, player_name, game_name, host):
-		self.player_name = player_name
-		self.game_name = game_name
-		self.host = host
-		self.players = FullPlayerList()
+class ClientSetupPlayerOrderState(ClientState):
+	def __init__(self, add_command, custom_data={}):
+		self.players = []
 		self.waiting = False
-		super().__init__(set_state, add_command)
+		super().__init__(add_command, custom_data)
 		self.add_command(NetworkCommand('network_get_player_order', status='pending'))
 		
 	def redraw(self):
 		self.children = [
-			Button(
-				asset=Assets().common['button'], 
+			ButtonComponent(
 				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] - 140), 
-				unit_dimensions=(12, 3), 
+				unit_dimensions=(6, 2), 
 				text='Continue', 
 				on_click=self.continue_,
 				batch=self.renderer.get_batch(),
@@ -142,16 +137,15 @@ class ClientSetupPlayerOrderState(FullClientState):
 
 	def network_confirm_player_order_handler(self, command):
 		if command.status == 'success':
-			self.set_state(ClientSetupCharacterSelectionState(self.set_state, self.add_command, self.player_name, self.game_name, self.host))
+			self.to_character_selection_state(self.custom_data)
 
 
 class CharacterTile(Node):
 	def __init__(self, entry, position, active, batch, area_group, text_group, highlight_group):
 		super().__init__()
-		self.__area = Area(
-			asset=Assets().common['area'], 
+		self.__area = AreaComponent(
 			position=(position[0], position[1] + 60), 
-			unit_dimensions=(16, 24),
+			unit_dimensions=(8, 12),
 			batch=batch,
 			group=area_group
 		)
@@ -193,7 +187,7 @@ class CharacterTile(Node):
 			group=text_group
 		)
 		self.__speed_indicator = pyglet.sprite.Sprite(
-			Assets().common['attribute_highlight'], 
+			Assets().custom['attribute_highlight'], 
 			x=position[0] - 60 + 20 * entry['speed_index'], 
 			y=position[1] + 15, 
 			batch=batch,
@@ -217,7 +211,7 @@ class CharacterTile(Node):
 			group=text_group
 		)
 		self.__might_indicator = pyglet.sprite.Sprite(
-			Assets().common['attribute_highlight'], 
+			Assets().custom['attribute_highlight'], 
 			x=position[0] - 60 + 20 * entry['might_index'], 
 			y=position[1] - 25,
 			batch=batch,
@@ -241,7 +235,7 @@ class CharacterTile(Node):
 			group=text_group
 		)
 		self.__sanity_indicator = pyglet.sprite.Sprite(
-			Assets().common['attribute_highlight'], 
+			Assets().custom['attribute_highlight'], 
 			x=position[0] - 60 + 20 * entry['sanity_index'], 
 			y=position[1] - 65,
 			batch=batch,
@@ -265,7 +259,7 @@ class CharacterTile(Node):
 			group=text_group
 		)
 		self.__knowledge_indicator = pyglet.sprite.Sprite(
-			Assets().common['attribute_highlight'], 
+			Assets().custom['attribute_highlight'], 
 			x=position[0] - 60 + 20 * entry['knowledge_index'], 
 			y=position[1] - 105,
 			batch=batch,
@@ -286,34 +280,29 @@ class CharacterTile(Node):
 				group=text_group
 			)
 
-class ClientSetupCharacterSelectionState(FullClientState):
-	def __init__(self, set_state, add_command, player_name, game_name, host):
-		self.player_name = player_name
-		self.game_name = game_name
-		self.host = host
+class ClientSetupCharacterSelectionState(ClientState):
+	def __init__(self, add_command, custom_data={}):
 		self.current_player = False
 		self.character_index = 0
 		self.available_characters = []
 		self.title_text = ''
-		super().__init__(set_state, add_command)
+		super().__init__(add_command, custom_data)
 		self.add_command(NetworkCommand('network_get_available_characters', status='pending'))
 
 	def redraw(self):
 		self.children = [
-			Button(
-				asset=Assets().common['button'], 
+			ButtonComponent(
 				position=(constants.WINDOW_CENTER[0]-300, constants.WINDOW_CENTER[1]), 
-				unit_dimensions=(4, 6), 
+				unit_dimensions=(2, 3), 
 				text='Left', 
 				on_click=self.go_left,
 				batch=self.renderer.get_batch(),
 				area_group=self.renderer.get_group(0),
 				text_group=self.renderer.get_group(1)
 			),
-			Button(
-				asset=Assets().common['button'], 
+			ButtonComponent(
 				position=(constants.WINDOW_CENTER[0]+300, constants.WINDOW_CENTER[1]), 
-				unit_dimensions=(4, 6), 
+				unit_dimensions=(2, 3), 
 				text='Right', 
 				on_click=self.go_right,
 				batch=self.renderer.get_batch(),
@@ -336,12 +325,11 @@ class ClientSetupCharacterSelectionState(FullClientState):
 		)
 		self.other = [self.title]
 
-		if config.CHARACTERS[self.character_index]['variable_name'] in self.available_characters:
+		if constants.CHARACTERS[self.character_index]['variable_name'] in self.available_characters:
 			if self.current_player:
-				self.children.append(Button(
-					asset=Assets().common['button'], 
+				self.children.append(ButtonComponent(
 					position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]-250), 
-					unit_dimensions=(12, 3), 
+					unit_dimensions=(6, 2), 
 					text='Select', 
 					on_click=self.select_character,
 					batch=self.renderer.get_batch(),
@@ -349,7 +337,7 @@ class ClientSetupCharacterSelectionState(FullClientState):
 					text_group=self.renderer.get_group(1)
 				))
 			self.children.append(CharacterTile(
-				entry=config.CHARACTERS[self.character_index], 
+				entry=constants.CHARACTERS[self.character_index], 
 				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]), 
 				active=True,
 				batch=self.renderer.get_batch(),
@@ -359,7 +347,7 @@ class ClientSetupCharacterSelectionState(FullClientState):
 			))
 		else:
 			self.children.append(CharacterTile(
-				entry=config.CHARACTERS[self.character_index], 
+				entry=constants.CHARACTERS[self.character_index], 
 				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1]), 
 				active=False,
 				batch=self.renderer.get_batch(),
@@ -371,13 +359,13 @@ class ClientSetupCharacterSelectionState(FullClientState):
 	def go_left(self):
 		self.character_index -= 1
 		if self.character_index < 0:
-			self.character_index = len(config.CHARACTERS) - 1
+			self.character_index = len(constants.CHARACTERS) - 1
 		self.renderer = Renderer()
 		self.redraw()
 
 	def go_right(self):
 		self.character_index += 1
-		if self.character_index > len(config.CHARACTERS) - 1:
+		if self.character_index > len(constants.CHARACTERS) - 1:
 			self.character_index = 0
 		self.renderer = Renderer()
 		self.redraw()
@@ -411,25 +399,20 @@ class ClientSetupCharacterSelectionState(FullClientState):
 
 	def network_all_characters_selected_handler(self, command):
 		if command.status == 'success':
-			self.set_state(ClientSetupCharacterOverviewState(self.set_state, self.add_command, self.player_name, self.game_name, self.host))
+			self.to_character_overview_state(self.custom_data)
 
-
-class ClientSetupCharacterOverviewState(FullClientState):
-	def __init__(self, set_state, add_command, player_name, game_name, host):
-		self.player_name = player_name
-		self.game_name = game_name
-		self.host = host
+class ClientSetupCharacterOverviewState(ClientState):
+	def __init__(self, add_command, custom_data={}):
 		self.player_selections = []
 		self.waiting = False
-		super().__init__(set_state, add_command)
+		super().__init__(add_command, custom_data)
 		self.add_command(NetworkCommand('network_get_character_selections', {}, 'pending'))
 		
 	def redraw(self):
 		self.children = [
-			Button(
-				asset=Assets().common['button'], 
+			ButtonComponent(
 				position=(constants.WINDOW_CENTER[0], constants.WINDOW_CENTER[1] - 200), 
-				unit_dimensions=(12, 3), 
+				unit_dimensions=(6, 2), 
 				text='Begin', 
 				on_click=self.confirm_characters,
 				batch=self.renderer.get_batch(),
@@ -496,4 +479,5 @@ class ClientSetupCharacterOverviewState(FullClientState):
 
 	def network_confirm_character_selections_handler(self, command):
 		if command.status == 'success':
-			self.set_state(ClientGameState(self.set_state, self.add_command, self.player_name, self.game_name, self.host))
+			print('confirmed')
+			# self.set_state(ClientGameState(self.set_state, self.add_command, self.player_name, self.game_name, self.host))
