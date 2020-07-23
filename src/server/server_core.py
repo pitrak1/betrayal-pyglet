@@ -1,7 +1,6 @@
-from lattice2d.full.server import ServerCore as Lattice2dServerCore, ServerGame
-from lattice2d.network import Server
-from src.server.server_states import ServerLobbyState
-from src.common.grid import Player
+from lattice2d.server.server_core import ServerCore as Lattice2dServerCore
+from lattice2d.server.server_game import ServerGame
+from lattice2d.grid. player import Player
 
 class ServerCore(Lattice2dServerCore):
 	def create_player_handler(self, command):

@@ -1,4 +1,4 @@
-from lattice2d.full.client import ClientCore
+from lattice2d.client.client_core import ClientCore
 from config import CONFIG
 
 c = ClientCore(CONFIG)

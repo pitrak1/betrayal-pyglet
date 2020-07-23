@@ -204,3 +204,156 @@ CHARACTERS = [
 		'related': ['professor_longfellow']
 	}
 ]
+
+STARTING_ROOMS = [
+	{
+		'display_name': 'Entrance Hall',
+		'variable_name': 'entrance_hall',
+		'asset_index': 2,
+		'doors': [True, True, False, True],
+		'floor': 1,
+		'grid_position': (0, 0),
+		'sprite_rotation': 1
+	},
+	{
+		'display_name': 'Foyer',
+		'variable_name': 'foyer',
+		'asset_index': 1,
+		'doors': [True, True, True, True],
+		'floor': 1,
+		'grid_position': (0, 1),
+		'sprite_rotation': 1
+	},
+	{
+		'display_name': 'Grand Staircase',
+		'variable_name': 'grand_staircase',
+		'asset_index': 0,
+		'doors': [False, False, True, False],
+		'floor': 1,
+		'grid_position': (0, 2),
+		'sprite_rotation': 1
+	}
+]
+
+ROOMS = [
+	{
+		'display_name': 'Dungeon',
+		'variable_name': 'dungeon',
+		'asset_index': 8,
+		'doors': [True, False, True, False]
+	},
+	{
+		'display_name': 'Furnace Room',
+		'variable_name': 'furnace_room',
+		'asset_index': 9,
+		'doors': [True, False, True, True]
+	},
+	{
+		'display_name': 'Larder',
+		'variable_name': 'larder',
+		'asset_index': 10,
+		'doors': [True, False, True, False]
+	},
+	{
+		'display_name': 'Pentagram Chamber',
+		'variable_name': 'pentagram_chamber',
+		'asset_index': 11,
+		'doors': [False, True, False, False]
+	},
+	{
+		'display_name': 'Stairs From Basement',
+		'variable_name': 'stairs_from_basement',
+		'asset_index': 12,
+		'doors': [True, False, True, False]
+	},
+	{
+		'display_name': 'Storm Cellar',
+		'variable_name': 'storm_cellar',
+		'asset_index': 13,
+		'doors': [False, True, True, False]
+	},
+	{
+		'display_name': 'Underground Lake',
+		'variable_name': 'underground_lake',
+		'asset_index': 14,
+		'doors': [True, True, False, False]
+	},
+	{
+		'display_name': 'Wine Cellar',
+		'variable_name': 'wine_cellar',
+		'asset_index': 15,
+		'doors': [True, False, True, False]
+	},
+	{
+		'display_name': 'Arsenal',
+		'variable_name': 'arsenal',
+		'asset_index': 16,
+		'doors': [False, True, True, False]
+	},
+	{
+		'display_name': 'Kitchen',
+		'variable_name': 'kitchen',
+		'asset_index': 17,
+		'doors': [True, True, False, False]
+	},
+	{
+		'display_name': 'Laundry',
+		'variable_name': 'laundry',
+		'asset_index': 18,
+		'doors': [False, False, True, True]
+	},
+	{
+		'display_name': 'Menagerie',
+		'variable_name': 'menagerie',
+		'asset_index': 19,
+		'doors': [False, True, False, True]
+	},
+	{
+		'display_name': 'Catacombs',
+		'variable_name': 'catacombs',
+		'asset_index': 20,
+		'doors': [True, False, True, False]
+	},
+	{
+		'display_name': 'Cave',
+		'variable_name': 'cave',
+		'asset_index': 21,
+		'doors': [True, True, True, True]
+	},
+	{
+		'display_name': 'Chasm',
+		'variable_name': 'chasm',
+		'asset_index': 22,
+		'doors': [False, True, False, True]
+	},
+	{
+		'display_name': 'Crypt',
+		'variable_name': 'crypt',
+		'asset_index': 23,
+		'doors': [True, False, False, False]
+	}
+]
+
+COMMON_ASSETS = {
+	'button': { 'asset_type': 'multiple', 'asset': 'brown_button.png', 'rows': 3, 'columns': 3 },
+	'area': { 'asset_type': 'multiple', 'asset': 'white_button.png', 'rows': 3, 'columns': 3 },
+	'text_box': { 'asset_type': 'multiple', 'asset': 'brown_button.png', 'rows': 3, 'columns': 3 },
+	'host_marker': { 'asset_type': 'single', 'asset': 'crown.png' },
+	'menu_background': { 'asset_type': 'single', 'asset': 'menu_background.jpg' },
+	'door': { 'asset_type': 'single', 'asset': 'door.png' },
+	'room_selected': { 'asset_type': 'single', 'asset': 'room_selected.png' },
+	'character_selected': { 'asset_type': 'single', 'asset': 'character_selected.png' },
+	'attribute_highlight': { 'asset_type': 'single', 'asset': 'attribute_highlight.png' }
+}
+
+ROOMS_ASSET = {
+	'asset': 'rooms.jpg',
+	'rows': 9,
+	'columns': 8
+}
+
+ONE_DOOR = 0
+RIGHT_ANGLE = 1
+ACROSS = 2
+ONE_WALL = 3
+NO_WALLS = 4
