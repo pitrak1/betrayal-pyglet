@@ -48,7 +48,7 @@ class SetupState(ServerState):
 					NetworkCommand.create_and_send('network_get_available_characters', { 'characters': self.characters }, 'success', player.connection)
 
 	def network_get_character_selections_handler(self, command):
-		selections = [(p.name, p.display_name) for p in self.game.players]
+		selections = [(p.character_entry['variable_name'], p.character_entry['display_name']) for p in self.game.players]
 		command.update_and_send(status='success', data={ 'selections': selections })
 
 	def network_confirm_character_selections_handler(self, command):

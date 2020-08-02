@@ -11,6 +11,7 @@ from src.client.setup_states.character_selection_state import CharacterSelection
 from src.client.setup_states.character_overview_state import CharacterOverviewState
 from src.server.setup_state import SetupState
 from src.server.lobby_state import LobbyState as ServerLobbyState
+from src.common.player import Player
 
 CONFIG = {
 	'window_dimensions': (1280, 720),
@@ -40,6 +41,7 @@ CONFIG = {
 		'network_confirm_character_selections',
 		'network_get_player_positions'
 	],
+	'player_class': Player,
 	'client_states': {
 		'starting_state': SplashState,
 		'states': [
