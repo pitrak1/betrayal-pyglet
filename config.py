@@ -9,8 +9,10 @@ from src.client.menu_states.lobby_state import LobbyState as ClientLobbyState
 from src.client.setup_states.player_order_state import PlayerOrderState
 from src.client.setup_states.character_selection_state import CharacterSelectionState
 from src.client.setup_states.character_overview_state import CharacterOverviewState
+from src.client.game_states.base_state import BaseState
 from src.server.setup_state import SetupState
 from src.server.lobby_state import LobbyState as ServerLobbyState
+from src.server.game_state import GameState
 from src.common.player import Player
 
 CONFIG = {
@@ -99,6 +101,12 @@ CONFIG = {
 			},
 			{
 				'state': CharacterOverviewState,
+				'transitions': {
+					'to_game_base_state': BaseState
+				}
+			},
+			{
+				'state': BaseState,
 				'transitions': {}
 			}
 		]
@@ -114,6 +122,12 @@ CONFIG = {
 			},
 			{
 				'state': SetupState,
+				'transitions': {
+					'to_game_state': GameState
+				}
+			},
+			{
+				'state': GameState,
 				'transitions': {}
 			}
 		]
@@ -127,8 +141,49 @@ CONFIG = {
 				'asset': {
 					'location': 'rooms.jpg',
 					'type': 'grid',
+					'rows': 9,
+					'columns': 8,
 					'index': 8
 				}
+			},
+			{
+				'display_name': 'Entrance Hall',
+				'variable_name': 'entrance_hall',
+				'asset': {
+					'location': 'rooms.jpg',
+					'type': 'grid',
+					'rows': 9,
+					'columns': 8,
+					'index': 2,
+					'sprite_rotation': 1
+				}
+				
+			},
+			{
+				'display_name': 'Foyer',
+				'variable_name': 'foyer',
+				'asset': {
+					'location': 'rooms.jpg',
+					'type': 'grid',
+					'rows': 9,
+					'columns': 8,
+					'index': 1,
+					'sprite_rotation': 1
+				}
+				
+			},
+			{
+				'display_name': 'Grand Staircase',
+				'variable_name': 'grand_staircase',
+				'asset': {
+					'location': 'rooms.jpg',
+					'type': 'grid',
+					'rows': 9,
+					'columns': 8,
+					'index': 0,
+					'sprite_rotation': 1
+				}
+				
 			}
 		],
 		'characters': {
@@ -316,6 +371,18 @@ CONFIG = {
 			},
 			'host_marker': {
 				'location': 'crown.png',
+				'type': 'single'
+			},
+			'character_selected': {
+				'location': 'character_selected.png',
+				'type': 'single'
+			},
+			'door': {
+				'location': 'door.png',
+				'type': 'single'
+			},
+			'room_selected': {
+				'location': 'room_selected.png',
 				'type': 'single'
 			}
 		}

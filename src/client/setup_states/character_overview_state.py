@@ -82,5 +82,4 @@ class CharacterOverviewState(ClientState):
 
 	def network_confirm_character_selections_handler(self, command):
 		if command.status == 'success':
-			print('confirmed')
-			# self.set_state(ClientGameState(self.set_state, self.add_command, self.player_name, self.game_name, self.host))
+			self.to_game_base_state(self.custom_data)

@@ -1,6 +1,8 @@
-from lattice2d.full.common import Player as Lattice2dPlayer
-from lattice2d.grid import Tile, ScaledTile, ScaledTileGrid, get_direction, get_distance, reverse_direction
-from src.common import constants
+from lattice2d.grid.player import Player as Lattice2dPlayer
+from lattice2d.grid.tile import Tile
+from lattice2d.grid.tile_grid import TileGrid
+from lattice2d.grid.grid_navigation import get_direction, get_distance, reverse_direction
+from constants import GRID_DIMENSIONS, WINDOW_CENTER
 
 class AttributeSet():
 	def __init__(self, speed, speed_index, might, might_index, sanity, sanity_index, knowledge, knowledge_index):
@@ -51,7 +53,7 @@ class Player(Lattice2dPlayer):
 		self.variable_name = entry['variable_name']
 		self.related = entry['related']
 
-class Room(ScaledTile):
+class Room(Tile):
 	def __init__(self, entry, base_position=(0, 0)):
 		super().__init__(entry['grid_position'], base_position)
 		self.entry = entry
@@ -64,9 +66,9 @@ class Room(ScaledTile):
 		self.players = []
 		self.links = []
 
-class RoomGrid(ScaledTileGrid):
-	def __init__(self):
-		super().__init__(constants.GRID_DIMENSIONS, constants.WINDOW_CENTER)
+class RoomGrid(TileGrid):
+	def __init__(self, grid_dimensions):
+		super().__init__(grid_dimensions, WINDOW_CENTER)
 
 	def add_adjacent_links(self, start_tile, end_tile):
 		if isinstance(end_tile, Tile):

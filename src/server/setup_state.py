@@ -54,7 +54,6 @@ class SetupState(ServerState):
 	def network_confirm_character_selections_handler(self, command):
 		self.waiting.count()
 		if self.waiting.done():
-			print('game')
-			# self.game.set_state(ServerGameState(self.game))
-			# for player in self.game.players:
-			# 	command.update_and_send(status='success', connection=player.connection)
+			self.to_game_state()
+			for player in self.game.players:
+				command.update_and_send(status='success', connection=player.connection)

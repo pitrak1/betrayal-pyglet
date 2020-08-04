@@ -1,19 +1,19 @@
 import pyglet
-import sys
-from lattice2d.full.client import ClientState, Renderer
-from lattice2d.network import NetworkCommand
-from lattice2d.nodes import Command
-from lattice2d.grid import get_distance
-from lattice2d.full.components import BackgroundComponent, AreaComponent, ButtonComponent, TextBoxComponent
-from lattice2d.assets import Assets
-from src.client.client_grid import ClientRoomGrid, ClientRoom, ClientPlayer
-from src.common import constants
-import config
+from lattice2d.client.client_state import ClientState
+from lattice2d.client.renderer import Renderer
+from src.client.game_states.client_room_grid import ClientRoomGrid
+from src.client.game_states.client_player import ClientPlayer
+from lattice2d.network.network_command import NetworkCommand
+from lattice2d.nodes.command import Command
+from lattice2d.client.components.label import Label
+from lattice2d.grid.grid_navigation import get_distance
+from constants import GRID_SIZE, GRID_DIMENSIONS, CHARACTERS, WINDOW_CENTER, WINDOW_DIMENSIONS
 
-class ClientGameState(ClientState):
+class BaseState(ClientState):
 	def __init__(self, add_command, custom_data={}):
-		self.rooms = ClientRoomGrid(add_command)
+		self.rooms = ClientRoomGrid(add_command, GRID_DIMENSIONS)
 		self.players = []
+		self.player_name = custom_data['player_name']
 		self.current_player = False
 		self.title = None
 		self.current_selection = None
@@ -25,8 +25,8 @@ class ClientGameState(ClientState):
 		if command.status == 'success':
 			for player_tuple in command.data['players']:
 				name, character, grid_position = player_tuple
-				entry = next(c for c in config.CHARACTERS if c['variable_name'] == character)
-				player = ClientPlayer(name, self.add_command, entry=entry)
+				entry = next(c for c in CHARACTERS if c['variable_name'] == character)
+				player = ClientPlayer(name, self.add_command, character_entry=entry)
 				self.players.append(player)
 				self.rooms.add_actor(grid_position, player)
 			self.add_command(NetworkCommand('network_get_current_player', status='pending'))
@@ -45,11 +45,12 @@ class ClientGameState(ClientState):
 
 	def redraw(self):
 		if self.title:
-			self.other = [
-				pyglet.text.Label(
+			self.children = [
+				self.rooms,
+				Label(
 					text=self.title, 
-					x=constants.WINDOW_CENTER[0], 
-					y=constants.WINDOW_DIMENSIONS[1] - 40, 
+					x=WINDOW_CENTER[0], 
+					y=WINDOW_DIMENSIONS[1] - 40, 
 					anchor_x='center', 
 					anchor_y='center', 
 					align='center', 
@@ -84,16 +85,16 @@ class ClientGameState(ClientState):
 
 	def key_press_handler(self, command):
 		if command.data['symbol'] == pyglet.window.key.W:
-			self.add_command(Command('adjust_grid_position', { 'adjust': (0, -constants.GRID_SIZE) }))
+			self.add_command(Command('adjust_grid_position', { 'adjust': (0, -GRID_SIZE) }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.D:
-			self.add_command(Command('adjust_grid_position', { 'adjust': (-constants.GRID_SIZE, 0) }))
+			self.add_command(Command('adjust_grid_position', { 'adjust': (-GRID_SIZE, 0) }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.S:
-			self.add_command(Command('adjust_grid_position', { 'adjust': (0, constants.GRID_SIZE) }))
+			self.add_command(Command('adjust_grid_position', { 'adjust': (0, GRID_SIZE) }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.A:
-			self.add_command(Command('adjust_grid_position', { 'adjust': (constants.GRID_SIZE, 0) }))
+			self.add_command(Command('adjust_grid_position', { 'adjust': (GRID_SIZE, 0) }))
 			self.add_command(Command('redraw'))
 		elif command.data['symbol'] == pyglet.window.key.PAGEUP or command.data['symbol'] == pyglet.window.key.UP:
 			self.add_command(Command('adjust_grid_scale', { 'adjust': 2 }))
