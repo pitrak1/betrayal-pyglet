@@ -26,7 +26,7 @@ class BaseState(ClientState):
 			for player_tuple in command.data['players']:
 				name, character, grid_position = player_tuple
 				entry = next(c for c in CHARACTERS if c['variable_name'] == character)
-				player = ClientPlayer(name, self.add_command, character_entry=entry)
+				player = ClientPlayer(name, add_command=self.add_command, character_entry=entry)
 				self.players.append(player)
 				self.rooms.add_actor(grid_position, player)
 			self.add_command(NetworkCommand('network_get_current_player', status='pending'))

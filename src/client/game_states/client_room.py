@@ -24,7 +24,7 @@ class ClientRoom(Room):
 		self.room_sprite.update(rotation=self.sprite_rotation * 90, scale=self.base_scale)
 		if self.selected:
 			self.room_highlight_sprite = pyglet.sprite.Sprite(
-				Austom().custom['room_selected'],
+				Assets().custom['room_selected'],
 				x=self.get_scaled_x_position(self.grid_position[0], 0),
 				y=self.get_scaled_y_position(self.grid_position[1], 0),
 				batch=renderer.get_batch(),
