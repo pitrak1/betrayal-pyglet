@@ -136,255 +136,135 @@ CONFIG = {
 		'path': os.path.join(definitions.ROOT_DIR,'assets'),
 		'tiles': [
 			{
-				'display_name': 'Dungeon',
-				'variable_name': 'dungeon',
-				'asset': {
-					'location': 'rooms.jpg',
-					'type': 'grid',
-					'rows': 9,
-					'columns': 8,
-					'index': 8
-				}
-			},
-			{
-				'display_name': 'Entrance Hall',
-				'variable_name': 'entrance_hall',
-				'asset': {
-					'location': 'rooms.jpg',
-					'type': 'grid',
-					'rows': 9,
-					'columns': 8,
-					'index': 2,
-					'sprite_rotation': 1
-				}
-				
-			},
-			{
-				'display_name': 'Foyer',
-				'variable_name': 'foyer',
-				'asset': {
-					'location': 'rooms.jpg',
-					'type': 'grid',
-					'rows': 9,
-					'columns': 8,
-					'index': 1,
-					'sprite_rotation': 1
-				}
-				
-			},
-			{
-				'display_name': 'Grand Staircase',
-				'variable_name': 'grand_staircase',
-				'asset': {
-					'location': 'rooms.jpg',
-					'type': 'grid',
-					'rows': 9,
-					'columns': 8,
-					'index': 0,
-					'sprite_rotation': 1
-				}
-				
+				'location': 'rooms.jpg',
+				'type': 'grid',
+				'rows': 9,
+				'columns': 8,
+				'assets': [
+					{
+						'variable_name': 'dungeon',
+						'index': 8
+					},
+					{
+						'variable_name': 'entrance_hall',
+						'index': 2
+					},
+					{
+						'variable_name': 'foyer',
+						'index': 1
+					},
+					{
+						'variable_name': 'grand_staircase',
+						'index': 0
+					}
+				]
 			}
 		],
-		'characters': {
-			'heather_granville': {
+		'characters': [
+			{
+				'variable_name': 'heather_granville',
 				'display_name': 'Heather Granville',
 				'location': 'heather_granville.png',
-				'type': 'single',
-				'speed': [0, 3, 3, 4, 5, 6, 6, 7, 8],
-				'speed_index': 3,
-				'might': [0, 3, 3, 3, 4, 5, 6, 7, 8],
-				'might_index': 3,
-				'sanity': [0, 3, 3, 3, 4, 5, 6, 6, 6],
-				'sanity_index': 3,
-				'knowledge': [0, 2, 3, 3, 4, 5, 6, 7, 8],
-				'knowledge_index': 5,
-				'related': ['jenny_leclerc']
+				'type': 'single'
 			},
-			'jenny_leclerc': {
+			{
+				'variable_name': 'jenny_leclerc',
 				'display_name': 'Jenny LeClerc',
 				'location': 'jenny_leclerc.png',
-				'type': 'single',
-				'speed': [0, 2, 3, 4, 4, 4, 5, 6, 8],
-				'speed_index': 4,
-				'might': [0, 3, 4, 4, 4, 4, 5, 6, 8],
-				'might_index': 3,
-				'sanity': [0, 1, 1, 2, 4, 4, 4, 5, 6],
-				'sanity_index': 5,
-				'knowledge': [0, 2, 3, 3, 4, 4, 5, 6, 8],
-				'knowledge_index': 3,
-				'related': ['heather_granville']
+				'type': 'single'
 			},
-			'madame_zostra': {
+			{
+				'variable_name': 'madame_zostra',
 				'display_name': 'Madame Zostra',
 				'location': 'madame_zostra.png',
-				'type': 'single',
-				'speed': [0, 2, 3, 3, 5, 5, 6, 6, 7],
-				'speed_index': 3,
-				'might': [0, 2, 3, 3, 4, 5, 5, 5, 6],
-				'might_index': 4,
-				'sanity': [0, 4, 4, 4, 5, 6, 7, 8, 8],
-				'sanity_index': 3,
-				'knowledge': [0, 1, 3, 4, 4, 4, 5, 6, 6],
-				'knowledge_index': 4,
-				'related': ['vivian_lopez']
+				'type': 'single'
 			},
-			'vivian_lopez': {
+			{
+				'variable_name': 'vivian_lopez',
 				'display_name': 'Vivian Lopez',
 				'location': 'vivian_lopez.png',
-				'type': 'single',
-				'speed': [0, 3, 4, 4, 4, 4, 6, 7, 8],
-				'speed_index': 4,
-				'might': [0, 2, 2, 2, 4, 4, 5, 6, 6],
-				'might_index': 3,
-				'sanity': [0, 4, 4, 4, 5, 6, 7, 8, 8],
-				'sanity_index': 3,
-				'knowledge': [0, 4, 5, 5, 5, 5, 6, 6, 7],
-				'knowledge_index': 4,
-				'related': ['madame_zostra']
+				'type': 'single'
 			},
-			'brandon_jaspers': {
+			{
+				'variable_name': 'brandon_jaspers',
 				'display_name': 'Brandon Jaspers',
 				'location': 'brandon_jaspers.png',
-				'type': 'single',
-				'speed': [0, 3, 4, 4, 4, 5, 6, 7, 8],
-				'speed_index': 3,
-				'might': [0, 2, 3, 3, 4, 5, 6, 6, 7],
-				'might_index': 4,
-				'sanity': [0, 3, 3, 3, 4, 5, 6, 7, 8],
-				'sanity_index': 4,
-				'knowledge': [0, 1, 3, 3, 5, 5, 6, 6, 7],
-				'knowledge_index': 3,
-				'related': ['peter_akimoto']
+				'type': 'single'
 			},
-			'peter_akimoto': {
+			{
+				'variable_name': 'peter_akimoto',
 				'display_name': 'Peter Akimoto',
 				'location': 'peter_akimoto.png',
-				'type': 'single',
-				'speed': [0, 3, 3, 3, 4, 6, 6, 7, 7],
-				'speed_index': 4,
-				'might': [0, 2, 3, 3, 4, 5, 5, 6, 8],
-				'might_index': 3,
-				'sanity': [0, 3, 4, 4, 4, 5, 6, 6, 7],
-				'sanity_index': 4,
-				'knowledge': [0, 3, 4, 4, 5, 6, 7, 7, 8],
-				'knowledge_index': 3,
-				'related': ['brandon_jaspers']
+				'type': 'single'
 			},
-			'darrin_williams': {
+			{
+				'variable_name': 'darrin_williams',
 				'display_name': 'Darrin Williams',
 				'location': 'darrin_williams.png',
-				'type': 'single',
-				'speed': [0, 4, 4, 4, 5, 6, 7, 7, 8],
-				'speed_index': 5,
-				'might': [0, 2, 3, 3, 4, 5, 6, 6, 7],
-				'might_index': 3,
-				'sanity': [0, 1, 2, 3, 4, 5, 5, 5, 7],
-				'sanity_index': 3,
-				'knowledge': [0, 2, 3, 3, 4, 5, 5, 5, 7],
-				'knowledge_index': 3,
-				'related': ['ox_bellows']
+				'type': 'single'
 			},
-			'ox_bellows': {
+			{
+				'variable_name': 'ox_bellows',
 				'display_name': 'Ox Bellows',
 				'location': 'ox_bellows.png',
-				'type': 'single',
-				'speed': [0, 2, 2, 2, 3, 4, 5, 5, 6],
-				'speed_index': 5,
-				'might': [0, 4, 5, 5, 6, 6, 7, 8, 8],
-				'might_index': 3,
-				'sanity': [0, 2, 2, 3, 4, 5, 5, 6, 7],
-				'sanity_index': 3,
-				'knowledge': [0, 2, 2, 3, 3, 5, 5, 6, 6],
-				'knowledge_index': 3,
-				'related': ['darrin_williams']
+				'type': 'single'
 			},
-			'zoe_ingstrom': {
+			{
+				'variable_name': 'zoe_ingstrom',
 				'display_name': 'Zoe Ingstrom',
 				'location': 'zoe_ingstrom.png',
-				'type': 'single',
-				'speed': [0, 4, 4, 4, 4, 5, 6, 8, 8],
-				'speed_index': 4,
-				'might': [0, 2, 2, 3, 3, 4, 4, 6, 7],
-				'might_index': 4,
-				'sanity': [0, 3, 4, 5, 5, 6, 6, 7, 8],
-				'sanity_index': 3,
-				'knowledge': [0, 1, 2, 3, 4, 4, 5, 5, 5],
-				'knowledge_index': 3,
-				'related': ['missy_dubourde']
+				'type': 'single'
 			},
-			'missy_dubourde': {
+			{
+				'variable_name': 'missy_dubourde',
 				'display_name': 'Missy Dubourde',
 				'location': 'missy_dubourde.png',
-				'type': 'single',
-				'speed': [0, 3, 4, 5, 6, 6, 6, 7, 7],
-				'speed_index': 3,
-				'might': [0, 2, 3, 3, 3, 4, 5, 6, 7],
-				'might_index': 4,
-				'sanity': [0, 1, 2, 3, 4, 5, 5, 6, 7],
-				'sanity_index': 3,
-				'knowledge': [0, 2, 3, 4, 4, 5, 6, 6, 6],
-				'knowledge_index': 4,
-				'related': ['zoe_ingstrom']
+				'type': 'single'
 			},
-			'professor_longfellow': {
+			{
+				'variable_name': 'professor_longfellow',
 				'display_name': 'Professor Longfellow',
 				'location': 'professor_longfellow.png',
-				'type': 'single',
-				'speed': [0, 2, 2, 4, 4, 5, 5, 6, 6],
-				'speed_index': 4,
-				'might': [0, 1, 2, 3, 4, 5, 5, 6, 6],
-				'might_index': 3,
-				'sanity': [0, 1, 3, 3, 4, 5, 5, 6, 7],
-				'sanity_index': 3,
-				'knowledge': [0, 4, 5, 5, 5, 5, 6, 7, 8],
-				'knowledge_index': 5,
-				'related': ['father_rhinehardt']
+				'type': 'single'
 			},
-			'father_rhinehardt': {
+			{
+				'variable_name': 'father_rhinehardt',
 				'display_name': 'Father Rhinehardt',
 				'location': 'father_rhinehardt.png',
-				'type': 'single',
-				'speed': [0, 2, 3, 3, 4, 5, 6, 7, 7],
-				'speed_index': 3,
-				'might': [0, 1, 2, 2, 4, 4, 5, 5, 7],
-				'might_index': 3,
-				'sanity': [0, 3, 4, 5, 5, 6, 7, 7, 8],
-				'sanity_index': 5,
-				'knowledge': [0, 1, 3, 3, 4, 5, 6, 6, 8],
-				'knowledge_index': 4,
-				'related': ['professor_longfellow']
+				'type': 'single'
 			}
-		},
-		'custom': {
-			'menu_background': {
+		],
+		'custom': [
+			{
+				'variable_name': 'menu_background',
 				'location': 'menu_background.jpg',
 				'type': 'single'
 			},
-			'host_marker': {
+			{
+				'variable_name': 'host_marker',
 				'location': 'crown.png',
 				'type': 'single'
 			},
-			'attribute_highlight': {
+			{
+				'variable_name': 'attribute_highlight',
 				'location': 'attribute_highlight.png',
 				'type': 'single'
 			},
-			'host_marker': {
-				'location': 'crown.png',
-				'type': 'single'
-			},
-			'character_selected': {
+			{
+				'variable_name': 'character_selected',
 				'location': 'character_selected.png',
 				'type': 'single'
 			},
-			'door': {
+			{
+				'variable_name': 'door',
 				'location': 'door.png',
 				'type': 'single'
 			},
-			'room_selected': {
+			{
+				'variable_name': 'room_selected',
 				'location': 'room_selected.png',
 				'type': 'single'
 			}
-		}
+		]
 	}
 }
