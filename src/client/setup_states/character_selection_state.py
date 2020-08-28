@@ -21,7 +21,7 @@ class CharacterSelectionState(ClientState):
 		self.children = [
 			Button(
 				position=(WINDOW_CENTER[0]-300, WINDOW_CENTER[1]), 
-				unit_dimensions=(2, 3), 
+				unit_dimensions=(4, 6), 
 				text='Left', 
 				on_click=self.go_left,
 				batch=self.renderer.get_batch(),
@@ -30,7 +30,7 @@ class CharacterSelectionState(ClientState):
 			),
 			Button(
 				position=(WINDOW_CENTER[0]+300, WINDOW_CENTER[1]), 
-				unit_dimensions=(2, 3), 
+				unit_dimensions=(4, 6), 
 				text='Right', 
 				on_click=self.go_right,
 				batch=self.renderer.get_batch(),
@@ -57,7 +57,7 @@ class CharacterSelectionState(ClientState):
 			if self.current_player:
 				self.children.append(Button(
 					position=(WINDOW_CENTER[0], WINDOW_CENTER[1]-250), 
-					unit_dimensions=(6, 2), 
+					unit_dimensions=(12, 3), 
 					text='Select', 
 					on_click=self.select_character,
 					batch=self.renderer.get_batch(),

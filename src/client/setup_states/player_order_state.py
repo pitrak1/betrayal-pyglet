@@ -16,7 +16,7 @@ class PlayerOrderState(ClientState):
 		self.children = [
 			Button(
 				position=(WINDOW_CENTER[0], WINDOW_CENTER[1] - 140), 
-				unit_dimensions=(6, 2), 
+				unit_dimensions=(12, 3), 
 				text='Continue', 
 				on_click=self.continue_,
 				batch=self.renderer.get_batch(),

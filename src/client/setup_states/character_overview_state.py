@@ -15,7 +15,7 @@ class CharacterOverviewState(ClientState):
 		self.children = [
 			Button(
 				position=(WINDOW_CENTER[0], WINDOW_CENTER[1] - 200), 
-				unit_dimensions=(6, 2), 
+				unit_dimensions=(12, 3), 
 				text='Begin', 
 				on_click=self.confirm_characters,
 				batch=self.renderer.get_batch(),

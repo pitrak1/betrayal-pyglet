@@ -21,7 +21,7 @@ class SplashState(ClientState):
 			),
 			Button(
 				position=(WINDOW_CENTER[0], WINDOW_CENTER[1] + 50),
-				unit_dimensions=(6, 2),
+				unit_dimensions=(12, 3),
 				text='Begin', 
 				on_click=self.begin,
 				batch=self.renderer.get_batch(),

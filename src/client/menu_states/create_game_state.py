@@ -33,7 +33,7 @@ class CreateGameState(ClientState):
 			self.game_name_input,
 			Button(
 				position=(WINDOW_CENTER[0] - 150, WINDOW_CENTER[1] - 100), 
-				unit_dimensions=(6, 2), 
+				unit_dimensions=(12, 3), 
 				text='Back', 
 				on_click=self.back,
 				batch=self.renderer.get_batch(),
@@ -42,7 +42,7 @@ class CreateGameState(ClientState):
 			),
 			Button(
 				position=(WINDOW_CENTER[0] + 150, WINDOW_CENTER[1] - 100), 
-				unit_dimensions=(6, 2), 
+				unit_dimensions=(12, 3), 
 				text='Create', 
 				on_click=self.create,
 				batch=self.renderer.get_batch(),

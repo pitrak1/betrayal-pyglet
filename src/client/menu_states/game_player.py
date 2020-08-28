@@ -15,13 +15,14 @@ class GamePlayer(Node):
 			group=area_group
 		)
 		self.__player_name = Label(
-			text=name, 
+			text=name,
 			x=position[0], 
 			y=position[1], 
 			anchor_x='left', 
 			anchor_y='center', 
 			align='left', 
 			font_size=15,
+			color=(0, 0, 0, 255),
 			batch=batch,
 			group=text_group
 		)

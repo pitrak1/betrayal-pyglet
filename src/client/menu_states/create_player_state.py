@@ -36,7 +36,7 @@ class CreatePlayerState(ClientState):
 			self.player_name_input,
 			Button(
 				position=(WINDOW_CENTER[0], WINDOW_CENTER[1] - 50), 
-				unit_dimensions=(6, 2), 
+				unit_dimensions=(12, 3), 
 				text='Continue', 
 				on_click=self.continue_,
 				batch=self.renderer.get_batch(),
@@ -45,7 +45,7 @@ class CreatePlayerState(ClientState):
 			),
 			Button(
 				position=(WINDOW_CENTER[0], WINDOW_CENTER[1] - 110), 
-				unit_dimensions=(6, 2),
+				unit_dimensions=(12, 3),
 				text='Exit', 
 				on_click=self.exit,
 				batch=self.renderer.get_batch(),

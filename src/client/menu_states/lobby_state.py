@@ -41,7 +41,7 @@ class LobbyState(ClientState):
 			),
 			Button(
 				position=(WINDOW_CENTER[0] - 150, WINDOW_CENTER[1] - 185), 
-				unit_dimensions=(6, 2), 
+				unit_dimensions=(12, 3), 
 				text='Back', 
 				on_click=self.leave_game,
 				batch=self.renderer.get_batch(),
@@ -66,7 +66,7 @@ class LobbyState(ClientState):
 		if self.custom_data['host']:
 			self.children.append(Button(
 				position=(WINDOW_CENTER[0] + 150, WINDOW_CENTER[1] - 185), 
-				unit_dimensions=(6, 2), 
+				unit_dimensions=(12, 3), 
 				text='Start', 
 				on_click=self.start_game,
 				batch=self.renderer.get_batch(),
