@@ -1,5 +1,7 @@
 from config import CONFIG
+from lattice2d.config import Config
 from src.server.server_core import ServerCore
 
-server = ServerCore(CONFIG)
+Config(CONFIG)
+server = ServerCore()
 server.run()

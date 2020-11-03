@@ -1,9 +1,9 @@
 import pyglet
-from lattice2d.grid.empty_tile import EmptyTile
-from lattice2d.utilities.bounds import within_square_bounds
+from lattice2d.grid import GridEntity
+from lattice2d.utilities import within_square_bounds
 from constants import GRID_SIZE
 
-class ClientEmptyTile(EmptyTile):
+class ClientEmptyTile(GridEntity):
 	def __init__(self, add_command, grid_position=(None, None), base_position=(0, 0)):
 		super().__init__(grid_position, base_position)
 		self.add_command = add_command

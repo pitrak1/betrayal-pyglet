@@ -1,7 +1,5 @@
-from lattice2d.grid.player import Player as Lattice2dPlayer
-from lattice2d.grid.tile import Tile
-from lattice2d.grid.tile_grid import TileGrid
-from lattice2d.grid.grid_navigation import get_direction, get_distance, reverse_direction
+from lattice2d.grid import Tile, TileGrid, get_direction, get_distance, reverse_direction
+from lattice2d.server import Player as Lattice2dPlayer
 from constants import GRID_DIMENSIONS, WINDOW_CENTER
 
 class AttributeSet():

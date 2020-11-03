@@ -1,8 +1,7 @@
 import pyglet
-from lattice2d.client.components.area import Area
-from lattice2d.client.components.label import Label
-from lattice2d.nodes.node import Node
-from lattice2d.client.assets import Assets
+from lattice2d.components import Area, Label
+from lattice2d.nodes import Node
+from lattice2d.client import Assets
 from constants import WINDOW_CENTER
 
 class CharacterTile(Node):

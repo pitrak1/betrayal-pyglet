@@ -1,18 +1,14 @@
 import pyglet
-from lattice2d.client.components.area import Area
-from lattice2d.client.components.label import Label
-from lattice2d.nodes.node import Node
-from lattice2d.client.assets import Assets
+from lattice2d.components import Area, Label, Component
+from lattice2d.client import Assets
 
-class GamePlayer(Node):
-	def __init__(self, name, host, position, batch, area_group, text_group):
+class GamePlayer(Component):
+	def __init__(self, name, host, position):
 		super().__init__()
 		self.__area = Area(
 			position=position, 
 			unit_dimensions=(13, 2), 
-			align='left',
-			batch=batch,
-			group=area_group
+			align='left'
 		)
 		self.__player_name = Label(
 			text=name,
@@ -22,15 +18,20 @@ class GamePlayer(Node):
 			anchor_y='center', 
 			align='left', 
 			font_size=15,
-			color=(0, 0, 0, 255),
-			batch=batch,
-			group=text_group
+			color=(0, 0, 0, 255)
 		)
+		self.__crown = None
 		if host:
 			self.__crown = pyglet.sprite.Sprite(
 				Assets().custom['host_marker'], 
 				x=position[0] + 390, 
-				y=position[1],
-				batch=batch,
-				group=text_group
+				y=position[1]
 			)
+
+	def register(self, layer):
+		self.__area.register(layer)
+		self.__player_name.batch = layer.batch
+		self.__player_name.group = layer.groups[1]
+		if self.__crown:
+			self.__crown.batch = layer.batch
+			self.__crown.group = layer.groups[1]

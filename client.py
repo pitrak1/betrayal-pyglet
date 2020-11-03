@@ -1,5 +1,7 @@
-from lattice2d.client.client_core import ClientCore
+from lattice2d.client import ClientCore
 from config import CONFIG
+from lattice2d.config import Config
 
-c = ClientCore(CONFIG)
+Config(CONFIG)
+c = ClientCore()
 c.run()

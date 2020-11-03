@@ -14,15 +14,25 @@ from src.server.setup_state import SetupState
 from src.server.lobby_state import LobbyState as ServerLobbyState
 from src.server.game_state import GameState
 from src.common.player import Player
+from src.common.grid import Room
+
 
 CONFIG = {
-	'window_dimensions': (1280, 720),
-	'log_level': 3,
+	'window_dimensions': (1280, 780),
 	'network': {
 		'ip_address': '0.0.0.0',
 		'port': 8080
 	},
-	'group_count': 6,
+	'logging': {
+		# 'lattice2d_core': 'cyan',
+		'lattice2d_network': 'red',
+		'lattice2d_components': 'yellow',
+		'lattice2d_rendering': 'green'
+	},
+	'rendering': {
+		'layers': ['background', 'base', 'environment', 'actors', 'ui'],
+		'groups_per_layer': 2
+	},
 	'grid': {
 		'width': 10,
 		'height': 10,
@@ -44,6 +54,7 @@ CONFIG = {
 		'network_get_player_positions'
 	],
 	'player_class': Player,
+	'empty_tile_class': Room,
 	'client_states': {
 		'starting_state': SplashState,
 		'states': [
@@ -133,137 +144,137 @@ CONFIG = {
 		]
 	},
 	'assets': {
-		'path': os.path.join(definitions.ROOT_DIR,'assets'),
-		'tiles': [
+		'path': os.path.join(definitions.ROOT_DIR, 'assets'),
+		'resources': [
 			{
+				'key': 'rooms',
 				'location': 'rooms.jpg',
 				'type': 'grid',
 				'rows': 9,
 				'columns': 8,
-				'assets': [
+				'resources': [
 					{
-						'variable_name': 'dungeon',
+						'key': 'dungeon',
 						'index': 8
 					},
 					{
-						'variable_name': 'entrance_hall',
+						'key': 'entrance_hall',
 						'index': 2
 					},
 					{
-						'variable_name': 'foyer',
+						'key': 'foyer',
 						'index': 1
 					},
 					{
-						'variable_name': 'grand_staircase',
+						'key': 'grand_staircase',
 						'index': 0
 					}
 				]
-			}
-		],
-		'characters': [
+			},
 			{
-				'variable_name': 'heather_granville',
-				'display_name': 'Heather Granville',
+				'key': 'heather_granville',
 				'location': 'heather_granville.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'jenny_leclerc',
-				'display_name': 'Jenny LeClerc',
+				'key': 'jenny_leclerc',
 				'location': 'jenny_leclerc.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'madame_zostra',
-				'display_name': 'Madame Zostra',
+				'key': 'madame_zostra',
 				'location': 'madame_zostra.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'vivian_lopez',
-				'display_name': 'Vivian Lopez',
+				'key': 'vivian_lopez',
 				'location': 'vivian_lopez.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'brandon_jaspers',
-				'display_name': 'Brandon Jaspers',
+				'key': 'brandon_jaspers',
 				'location': 'brandon_jaspers.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'peter_akimoto',
-				'display_name': 'Peter Akimoto',
+				'key': 'peter_akimoto',
 				'location': 'peter_akimoto.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'darrin_williams',
-				'display_name': 'Darrin Williams',
+				'key': 'darrin_williams',
 				'location': 'darrin_williams.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'ox_bellows',
-				'display_name': 'Ox Bellows',
+				'key': 'ox_bellows',
 				'location': 'ox_bellows.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'zoe_ingstrom',
-				'display_name': 'Zoe Ingstrom',
+				'key': 'zoe_ingstrom',
 				'location': 'zoe_ingstrom.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'missy_dubourde',
-				'display_name': 'Missy Dubourde',
+				'key': 'missy_dubourde',
 				'location': 'missy_dubourde.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'professor_longfellow',
+				'key': 'professor_longfellow',
 				'display_name': 'Professor Longfellow',
 				'location': 'professor_longfellow.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'father_rhinehardt',
-				'display_name': 'Father Rhinehardt',
+				'key': 'father_rhinehardt',
 				'location': 'father_rhinehardt.png',
 				'type': 'single'
-			}
-		],
-		'custom': [
+			},
 			{
-				'variable_name': 'menu_background',
+				'key': 'menu_background',
 				'location': 'menu_background.jpg',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'host_marker',
+				'key': 'host_marker',
 				'location': 'crown.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'attribute_highlight',
+				'key': 'attribute_highlight',
 				'location': 'attribute_highlight.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'character_selected',
+				'key': 'character_selected',
 				'location': 'character_selected.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'door',
+				'key': 'door',
 				'location': 'door.png',
 				'type': 'single'
 			},
 			{
-				'variable_name': 'room_selected',
+				'key': 'room_selected',
 				'location': 'room_selected.png',
 				'type': 'single'
+			},
+			{
+				'key': 'grey_panel',
+				'location': 'grey_panel.png',
+				'type': 'grid',
+				'rows': 3,
+				'columns': 3
+			},
+			{
+				'key': 'grey_button',
+				'location': 'grey_button.png',
+				'type': 'grid',
+				'rows': 3,
+				'columns': 3
 			}
 		]
 	}

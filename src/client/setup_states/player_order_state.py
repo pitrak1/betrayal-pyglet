@@ -1,8 +1,6 @@
-from lattice2d.client.client_state import ClientState
-from lattice2d.client.components.button import Button
-from lattice2d.client.components.label import Label
-from lattice2d.network.network_command import NetworkCommand
-from lattice2d.client.renderer import Renderer
+from lattice2d.client import ClientState
+from lattice2d.components import Button, Label
+from lattice2d.command import Command
 from constants import WINDOW_CENTER
 
 class PlayerOrderState(ClientState):
@@ -10,7 +8,7 @@ class PlayerOrderState(ClientState):
 		self.players = []
 		self.waiting = False
 		super().__init__(add_command, custom_data)
-		self.add_command(NetworkCommand('network_get_player_order', status='pending'))
+		self.add_command(Command('network_get_player_order', status='pending'))
 		
 	def redraw(self):
 		self.children = [

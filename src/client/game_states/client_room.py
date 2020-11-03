@@ -1,8 +1,8 @@
 import pyglet
-from lattice2d.grid.grid_navigation import UP, RIGHT, LEFT, DOWN
-from lattice2d.utilities.bounds import within_square_bounds
-from lattice2d.nodes.command import Command
-from lattice2d.client.assets import Assets
+from lattice2d.grid import UP, RIGHT, LEFT, DOWN
+from lattice2d.utilities import within_square_bounds
+from lattice2d.command import Command
+from lattice2d.client import Assets
 from src.common.grid import Room
 from constants import GRID_SIZE
 

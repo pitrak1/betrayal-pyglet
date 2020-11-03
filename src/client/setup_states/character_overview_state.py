@@ -1,7 +1,6 @@
-from lattice2d.client.client_state import ClientState
-from lattice2d.client.components.button import Button
-from lattice2d.client.components.label import Label
-from lattice2d.network.network_command import NetworkCommand
+from lattice2d.client import ClientState
+from lattice2d.components import Button, Label
+from lattice2d.command import Command
 from constants import WINDOW_CENTER, WINDOW_DIMENSIONS
 
 class CharacterOverviewState(ClientState):

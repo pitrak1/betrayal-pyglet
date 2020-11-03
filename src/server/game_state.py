@@ -1,6 +1,6 @@
 import random
-from lattice2d.server.server_state import ServerState
-from lattice2d.grid.grid_navigation import get_distance
+from lattice2d.server import ServerState
+from lattice2d.grid import get_distance
 from src.server.server_grid import ServerRoomGrid
 from constants import GRID_DIMENSIONS
 

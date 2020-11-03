@@ -1,12 +1,10 @@
 import pyglet
-from lattice2d.client.client_state import ClientState
-from lattice2d.client.renderer import Renderer
+from lattice2d.client import ClientState
 from src.client.game_states.client_room_grid import ClientRoomGrid
 from src.client.game_states.client_player import ClientPlayer
-from lattice2d.network.network_command import NetworkCommand
-from lattice2d.nodes.command import Command
-from lattice2d.client.components.label import Label
-from lattice2d.grid.grid_navigation import get_distance
+from lattice2d.command import Command
+from lattice2d.components import Label
+from lattice2d.grid import get_distance
 from constants import GRID_SIZE, GRID_DIMENSIONS, CHARACTERS, WINDOW_CENTER, WINDOW_DIMENSIONS
 
 class BaseState(ClientState):
@@ -19,7 +17,7 @@ class BaseState(ClientState):
 		self.current_selection = None
 		super().__init__(add_command, custom_data)
 		self.children = [self.rooms]
-		self.add_command(NetworkCommand('network_get_player_positions', status='pending'))
+		self.add_command(Command('network_get_player_positions', status='pending'))
 
 	def network_get_player_positions_handler(self, command):
 		if command.status == 'success':
@@ -29,7 +27,7 @@ class BaseState(ClientState):
 				player = ClientPlayer(name, add_command=self.add_command, character_entry=entry)
 				self.players.append(player)
 				self.rooms.add_actor(grid_position, player)
-			self.add_command(NetworkCommand('network_get_current_player', status='pending'))
+			self.add_command(Command('network_get_current_player', status='pending'))
 
 	def network_get_current_player_handler(self, command):
 		if command.status == 'success':
@@ -73,7 +71,7 @@ class BaseState(ClientState):
 
 	def client_move_handler(self, command):
 		if isinstance(self.current_selection, ClientPlayer) and get_distance(self.current_selection.grid_position, command.data['grid_position']) == 1:
-			self.add_command(NetworkCommand('network_move', { 
+			self.add_command(Command('network_move', { 
 				'player': self.current_selection.name, 
 				'grid_position': command.data['grid_position']			
 			}, status='pending'))

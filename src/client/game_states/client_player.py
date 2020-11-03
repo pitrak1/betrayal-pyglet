@@ -1,7 +1,7 @@
 import pyglet
-from lattice2d.utilities.bounds import within_circle_bounds
-from lattice2d.nodes.command import Command
-from lattice2d.client.assets import Assets
+from lattice2d.utilities import within_circle_bounds
+from lattice2d.command import Command
+from lattice2d.client import Assets
 from src.common.player import Player
 from constants import GRID_SIZE, CHARACTER_SIZE
 

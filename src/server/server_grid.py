@@ -1,4 +1,4 @@
-from lattice2d.grid.tile_grid import TileGrid
+from lattice2d.grid import TileGrid
 from src.common.grid import Room, RoomGrid
 from constants import STARTING_ROOMS
 
