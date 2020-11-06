@@ -1,18 +1,9 @@
 import os
 import definitions
-from src.client.menu_states.splash_state import SplashState
-from src.client.menu_states.create_player_state import CreatePlayerState
-from src.client.menu_states.main_menu_state import MainMenuState
-from src.client.menu_states.create_game_state import CreateGameState
-from src.client.menu_states.game_list_state import GameListState
-from src.client.menu_states.lobby_state import LobbyState as ClientLobbyState
-from src.client.setup_states.player_order_state import PlayerOrderState
-from src.client.setup_states.character_selection_state import CharacterSelectionState
-from src.client.setup_states.character_overview_state import CharacterOverviewState
-from src.client.game_states.base_state import BaseState
-from src.server.setup_state import SetupState
-from src.server.lobby_state import LobbyState as ServerLobbyState
-from src.server.game_state import GameState
+from src.client.menu_states import SplashState, CreatePlayerState, MainMenuState, CreateGameState, GameListState, LobbyState as ClientLobbyState
+from src.client.setup_states import PlayerOrderState, CharacterSelectionState, CharacterOverviewState
+from src.client.game_states import BaseState
+from src.server.states import SetupState, LobbyState as ServerLobbyState, GameState
 from src.common.player import Player
 from src.common.grid import Room
 
@@ -24,10 +15,10 @@ CONFIG = {
 		'port': 8080
 	},
 	'logging': {
-		# 'lattice2d_core': 'cyan',
-		'lattice2d_network': 'red',
-		'lattice2d_components': 'yellow',
-		'lattice2d_rendering': 'green'
+		'lattice2d_core': 'cyan',
+		# 'lattice2d_network': 'red',
+		# 'lattice2d_components': 'yellow',
+		# 'lattice2d_rendering': 'green'
 	},
 	'rendering': {
 		'layers': ['background', 'base', 'environment', 'actors', 'ui'],

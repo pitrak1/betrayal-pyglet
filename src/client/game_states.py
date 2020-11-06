@@ -1,7 +1,6 @@
 import pyglet
 from lattice2d.client import ClientState
-from src.client.game_states.client_room_grid import ClientRoomGrid
-from src.client.game_states.client_player import ClientPlayer
+from src.client.components import ClientRoomGrid, ClientPlayer
 from lattice2d.command import Command
 from lattice2d.components import Label
 from lattice2d.grid import get_distance

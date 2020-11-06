@@ -2,8 +2,6 @@ import pytest
 import types
 import config
 import random
-from lattice2d.config import Config
-from lattice2d.full.full_server import FullServerGame
 
 @pytest.fixture
 def get_positional_args():
@@ -41,6 +39,6 @@ TEST_CONFIG = {
     'full_solution': {}
 }
 
-@pytest.fixture(autouse=True)
-def load_config():
-	config = Config(TEST_CONFIG)
+# @pytest.fixture(autouse=True)
+# def load_config():
+# 	config = Config(TEST_CONFIG)

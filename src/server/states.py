@@ -5,26 +5,35 @@ from lattice2d.command import Command
 from lattice2d.utilities import ThreadedSync
 from lattice2d.nodes import Node
 from src.server.server_grid import ServerRoomGrid
-from constants import CHARACTERS
+from constants import CHARACTERS, MINIMUM_PLAYERS, GRID_DIMENSIONS
+
+class LobbyState(ServerState):
+	def network_start_game_handler(self, command):
+		if len(self.state_machine.players) < MINIMUM_PLAYERS:
+			command.update_and_send(status='not_enough_players')
+		else:
+			self.to_setup_state()
+			for player in self.state_machine.players:
+				command.update_and_send(status='success', connection=player.connection)
 
 class SetupState(ServerState):
 	def __init__(self, state_machine, custom_data={}):
 		super().__init__(state_machine, custom_data)
-		random.shuffle(self.state_machine.get_players())
-		self.waiting = ThreadedSync(len(self.state_machine.get_players()))
-		self.state_machine.current_player_index = len(self.state_machine.get_players()) - 1
+		random.shuffle(self.state_machine.players)
+		self.waiting = ThreadedSync(len(self.state_machine.players))
+		self.state_machine.current_player_index = len(self.state_machine.players) - 1
 		self.characters = []
 		for character in CHARACTERS:
 			self.characters.append(character['variable_name'])
 
 	def network_get_player_order_handler(self, command):
-		parsed_players = [player.name for player in self.state_machine.get_players()]
+		parsed_players = [player.name for player in self.state_machine.players]
 		command.update_and_send(status='success', data={ 'players': parsed_players })
 
 	def network_confirm_player_order_handler(self, command):
 		self.waiting.count()
 		if self.waiting.done():
-			for player in self.state_machine.get_players():
+			for player in self.state_machine.players:
 				command.update_and_send(status='success', connection=player.connection)
 
 	def network_get_available_characters_handler(self, command):
@@ -56,3 +65,27 @@ class SetupState(ServerState):
 			self.to_game_state()
 			for player in self.state_machine.get_current_player():
 				command.update_and_send(status='success', connection=player.connection)
+
+class GameState(ServerState):
+	def __init__(self, game, custom_data={}):
+		super().__init__(game, custom_data)
+		self.game.current_player_index = 0
+		self.rooms = ServerRoomGrid(GRID_DIMENSIONS)
+		self.children = [self.rooms]
+		for player in self.game.players:
+			self.rooms.add_actor((0, 0), player)
+
+	def network_get_player_positions_handler(self, command):
+		parsed_players = [(player.name, player.character_entry['variable_name'], player.grid_position) for player in self.game.players]
+		command.update_and_send(status='success', data={ 'players': parsed_players })
+
+	def network_get_current_player_handler(self, command):
+		current_player = self.game.get_current_player().name
+		command.update_and_send(status='success', data={ 'player_name': current_player })
+
+	def network_move_handler(self, command):
+		player = next(p for p in self.game.players if p.name == command.data['player'])
+		assert player and self.game.is_current_player(player)
+		assert get_distance(player.grid_position, command.data['grid_position']) == 1
+		self.rooms.move_actor(command.data['grid_position'], player)
+		command.update_and_send(status='success')
