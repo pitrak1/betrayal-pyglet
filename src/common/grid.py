@@ -1,6 +1,6 @@
 from lattice2d.grid import Tile, TileGrid, get_direction, get_distance, reverse_direction
 from lattice2d.server import Player as Lattice2dPlayer
-from constants import GRID_DIMENSIONS, WINDOW_CENTER
+from constants import Constants
 
 class AttributeSet():
 	def __init__(self, speed, speed_index, might, might_index, sanity, sanity_index, knowledge, knowledge_index):
@@ -66,7 +66,7 @@ class Room(Tile):
 
 class RoomGrid(TileGrid):
 	def __init__(self, grid_dimensions):
-		super().__init__(grid_dimensions, WINDOW_CENTER)
+		super().__init__(grid_dimensions, Constants.window_center)
 
 	def add_adjacent_links(self, start_tile, end_tile):
 		if isinstance(end_tile, Tile):

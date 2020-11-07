@@ -22,10 +22,3 @@ def get_keyword_args():
         else:
             return stub.call_args_list[call_number][1]
     return _get_keyword_args
-
-@pytest.fixture
-def create_client_core():
-    def _create_client_core():
-        Config(CONFIG)
-        return StateMachine(Config()['client_states'])
-    return _create_client_core

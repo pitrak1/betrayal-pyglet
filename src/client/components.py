@@ -1,6 +1,5 @@
 import pyglet
 from lattice2d.components import Area, Label, Component
-from constants import PLAYERS_PER_GAME, GRID_SIZE, CHARACTER_SIZE, STARTING_ROOMS
 from lattice2d.client import Assets
 from lattice2d.nodes import Node
 from lattice2d.command import Command
@@ -8,6 +7,7 @@ from lattice2d.grid import GridEntity, UP, RIGHT, LEFT, DOWN
 from lattice2d.utilities import within_square_bounds, within_circle_bounds
 from src.common.grid import Room, RoomGrid
 from src.common.player import Player
+from constants import Constants
 
 class GameListing(Component):
 	def __init__(self, name, players, position, on_click):
@@ -28,7 +28,7 @@ class GameListing(Component):
 			color=(0, 0, 0, 255)
 		)
 		self.__player_count = Label(
-			text=f'{players}/{PLAYERS_PER_GAME}',
+			text=f'{players}/{Constants.max_players_per_game}',
 			x=position[0] + 390,
 			y=position[1],
 			anchor_x='right',
@@ -37,7 +37,7 @@ class GameListing(Component):
 			font_size=15,
 			color=(0, 0, 0, 255)
 		)
-		self.__on_click = on_click
+		self.on_click = on_click
 
 	def register(self, layer):
 		self.__area.register(layer)
@@ -46,7 +46,7 @@ class GameListing(Component):
 
 	def mouse_press_handler(self, command, state=None):
 		if self.__area.within_bounds((command.data['x'], command.data['y'])):
-			self.__on_click()
+			self.on_click()
 
 class GamePlayer(Component):
 	def __init__(self, name, host, position):
@@ -236,9 +236,9 @@ class ClientEmptyTile(GridEntity):
 
 	def within_bounds(self, position):
 		return within_square_bounds(
-			(self.grid_position[0] * GRID_SIZE, self.grid_position[1] * GRID_SIZE), 
+			(self.grid_position[0] * Constants.grid_size, self.grid_position[1] * Constants.grid_size), 
 			position, 
-			GRID_SIZE
+			Constants.grid_size
 		)
 
 class ClientPlayer(Player):
@@ -276,9 +276,9 @@ class ClientPlayer(Player):
 
 	def within_bounds(self, position):
 		return within_circle_bounds(
-			(self.grid_position[0] * GRID_SIZE, self.grid_position[1] * GRID_SIZE), 
+			(self.grid_position[0] * Constants.grid_size, self.grid_position[1] * Constants.grid_size), 
 			position, 
-			CHARACTER_SIZE // 2
+			Constants.character_size // 2
 		)
 
 	def client_select_handler(self, command):
@@ -361,9 +361,9 @@ class ClientRoom(Room):
 
 	def within_bounds(self, position):
 		return within_square_bounds(
-			(self.grid_position[0] * GRID_SIZE, self.grid_position[1] * GRID_SIZE), 
+			(self.grid_position[0] * Constants.grid_size, self.grid_position[1] * Constants.grid_size), 
 			position, 
-			GRID_SIZE
+			Constants.grid_size
 		)
 
 	def mouse_press_handler(self, command):
@@ -386,5 +386,5 @@ class ClientRoomGrid(RoomGrid):
 		self.add_command = add_command
 		for i in range(self.grid_dimensions[0] * self.grid_dimensions[1]):
 			self.children.append(ClientEmptyTile(add_command, ((i % self.grid_dimensions[0]), (i // self.grid_dimensions[1])), self.base_position))
-		for room in STARTING_ROOMS:
+		for room in Constants.starting_rooms:
 			self.add_tile(room['grid_position'], ClientRoom(room, add_command, base_position=self.base_position))

@@ -4,11 +4,11 @@ from src.client.components import ClientRoomGrid, ClientPlayer
 from lattice2d.command import Command
 from lattice2d.components import Label
 from lattice2d.grid import get_distance
-from constants import GRID_SIZE, GRID_DIMENSIONS, CHARACTERS, WINDOW_CENTER, WINDOW_DIMENSIONS
+from constants import Constants
 
 class BaseState(ClientState):
 	def __init__(self, add_command, custom_data={}):
-		self.rooms = ClientRoomGrid(add_command, GRID_DIMENSIONS)
+		self.rooms = ClientRoomGrid(add_command, Constants.grid_dimensions)
 		self.players = []
 		self.player_name = custom_data['player_name']
 		self.current_player = False
@@ -22,7 +22,7 @@ class BaseState(ClientState):
 		if command.status == 'success':
 			for player_tuple in command.data['players']:
 				name, character, grid_position = player_tuple
-				entry = next(c for c in CHARACTERS if c['variable_name'] == character)
+				entry = next(c for c in Constants.characters if c['variable_name'] == character)
 				player = ClientPlayer(name, add_command=self.add_command, character_entry=entry)
 				self.players.append(player)
 				self.rooms.add_actor(grid_position, player)
@@ -46,8 +46,8 @@ class BaseState(ClientState):
 				self.rooms,
 				Label(
 					text=self.title, 
-					x=WINDOW_CENTER[0], 
-					y=WINDOW_DIMENSIONS[1] - 40, 
+					x=Constants.window_center_x, 
+					y=Constants.window_dimensions_y - 40, 
 					anchor_x='center', 
 					anchor_y='center', 
 					align='center', 

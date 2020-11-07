@@ -5,11 +5,11 @@ from lattice2d.command import Command
 from lattice2d.utilities import ThreadedSync
 from lattice2d.nodes import Node
 from src.server.server_grid import ServerRoomGrid
-from constants import CHARACTERS, MINIMUM_PLAYERS, GRID_DIMENSIONS
+from constants import Constants
 
 class LobbyState(ServerState):
 	def network_start_game_handler(self, command):
-		if len(self.state_machine.players) < MINIMUM_PLAYERS:
+		if len(self.state_machine.players) < Constants.min_players_per_game:
 			command.update_and_send(status='not_enough_players')
 		else:
 			self.to_setup_state()
@@ -23,7 +23,7 @@ class SetupState(ServerState):
 		self.waiting = ThreadedSync(len(self.state_machine.players))
 		self.state_machine.current_player_index = len(self.state_machine.players) - 1
 		self.characters = []
-		for character in CHARACTERS:
+		for character in Constants.characters:
 			self.characters.append(character['variable_name'])
 
 	def network_get_player_order_handler(self, command):
@@ -42,7 +42,7 @@ class SetupState(ServerState):
 	def network_select_character_handler(self, command):
 		if self.game.is_current_player(command):
 			current_player = self.state_machine.get_current_player()
-			character_entry = next(character for character in CHARACTERS if character['variable_name'] == command.data['character'])
+			character_entry = next(character for character in Constants.characters if character['variable_name'] == command.data['character'])
 			current_player.set_character(character_entry)
 			self.characters = [x for x in self.characters if x != character_entry['variable_name'] and x not in character_entry['related']]
 
@@ -70,7 +70,7 @@ class GameState(ServerState):
 	def __init__(self, game, custom_data={}):
 		super().__init__(game, custom_data)
 		self.game.current_player_index = 0
-		self.rooms = ServerRoomGrid(GRID_DIMENSIONS)
+		self.rooms = ServerRoomGrid(Constants.grid_dimensions)
 		self.children = [self.rooms]
 		for player in self.game.players:
 			self.rooms.add_actor((0, 0), player)

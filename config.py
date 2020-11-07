@@ -6,10 +6,11 @@ from src.client.game_states import BaseState
 from src.server.states import SetupState, LobbyState as ServerLobbyState, GameState
 from src.common.player import Player
 from src.common.grid import Room
+from constants import Constants
 
 
 CONFIG = {
-	'window_dimensions': (1280, 780),
+	'window_dimensions': Constants.window_dimensions,
 	'network': {
 		'ip_address': '0.0.0.0',
 		'port': 8080
@@ -25,15 +26,15 @@ CONFIG = {
 		'groups_per_layer': 2
 	},
 	'grid': {
-		'width': 10,
-		'height': 10,
-		'size': 512
+		'width': Constants.grid_dimensions_x,
+		'height': Constants.grid_dimensions_y,
+		'size': Constants.grid_size
 	},
 	'command_types': [
 		'client_select',
 		'client_move',
 		'network_move',
-		'network_start_game',
+		'start_game',
 		'network_get_player_order',
 		'network_confirm_player_order',
 		'network_get_available_characters',
