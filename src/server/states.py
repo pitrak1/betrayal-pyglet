@@ -8,7 +8,7 @@ from src.server.server_grid import ServerRoomGrid
 from constants import Constants
 
 class LobbyState(ServerState):
-	def network_start_game_handler(self, command):
+	def start_game_handler(self, command):
 		if len(self.state_machine.players) < Constants.min_players_per_game:
 			command.update_and_send(status='not_enough_players')
 		else:
