@@ -28,7 +28,7 @@ class Constants:
 	characters = [
 		{
 			'display_name': 'Heather Granville',
-			'variable_name': 'heather_granville',
+			'key': 'heather_granville',
 			'portrait_asset': 'heather_granville.png',
 			'speed': [0, 3, 3, 4, 5, 6, 6, 7, 8],
 			'speed_index': 3,
@@ -42,7 +42,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Jenny LeClerc',
-			'variable_name': 'jenny_leclerc',
+			'key': 'jenny_leclerc',
 			'portrait_asset': 'jenny_leclerc.png',
 			'speed': [0, 2, 3, 4, 4, 4, 5, 6, 8],
 			'speed_index': 4,
@@ -56,7 +56,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Madame Zostra',
-			'variable_name': 'madame_zostra',
+			'key': 'madame_zostra',
 			'portrait_asset': 'madame_zostra.png',
 			'speed': [0, 2, 3, 3, 5, 5, 6, 6, 7],
 			'speed_index': 3,
@@ -70,7 +70,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Vivian Lopez',
-			'variable_name': 'vivian_lopez',
+			'key': 'vivian_lopez',
 			'portrait_asset': 'vivian_lopez.png',
 			'speed': [0, 3, 4, 4, 4, 4, 6, 7, 8],
 			'speed_index': 4,
@@ -84,7 +84,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Brandon Jaspers',
-			'variable_name': 'brandon_jaspers',
+			'key': 'brandon_jaspers',
 			'portrait_asset': 'brandon_jaspers.png',
 			'speed': [0, 3, 4, 4, 4, 5, 6, 7, 8],
 			'speed_index': 3,
@@ -98,7 +98,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Peter Akimoto',
-			'variable_name': 'peter_akimoto',
+			'key': 'peter_akimoto',
 			'portrait_asset': 'peter_akimoto.png',
 			'speed': [0, 3, 3, 3, 4, 6, 6, 7, 7],
 			'speed_index': 4,
@@ -112,7 +112,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Darrin Williams',
-			'variable_name': 'darrin_williams',
+			'key': 'darrin_williams',
 			'portrait_asset': 'darrin_williams.png',
 			'speed': [0, 4, 4, 4, 5, 6, 7, 7, 8],
 			'speed_index': 5,
@@ -126,7 +126,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Ox Bellows',
-			'variable_name': 'ox_bellows',
+			'key': 'ox_bellows',
 			'portrait_asset': 'ox_bellows.png',
 			'speed': [0, 2, 2, 2, 3, 4, 5, 5, 6],
 			'speed_index': 5,
@@ -140,7 +140,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Zoe Ingstrom',
-			'variable_name': 'zoe_ingstrom',
+			'key': 'zoe_ingstrom',
 			'portrait_asset': 'zoe_ingstrom.png',
 			'speed': [0, 4, 4, 4, 4, 5, 6, 8, 8],
 			'speed_index': 4,
@@ -154,7 +154,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Missy Dubourde',
-			'variable_name': 'missy_dubourde',
+			'key': 'missy_dubourde',
 			'portrait_asset': 'missy_dubourde.png',
 			'speed': [0, 3, 4, 5, 6, 6, 6, 7, 7],
 			'speed_index': 3,
@@ -168,7 +168,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Professor Longfellow',
-			'variable_name': 'professor_longfellow',
+			'key': 'professor_longfellow',
 			'portrait_asset': 'professor_longfellow.png',
 			'speed': [0, 2, 2, 4, 4, 5, 5, 6, 6],
 			'speed_index': 4,
@@ -182,7 +182,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Father Rhinehardt',
-			'variable_name': 'father_rhinehardt',
+			'key': 'father_rhinehardt',
 			'portrait_asset': 'father_rhinehardt.png',
 			'speed': [0, 2, 3, 3, 4, 5, 6, 7, 7],
 			'speed_index': 3,
@@ -199,7 +199,7 @@ class Constants:
 	starting_rooms = [
 		{
 			'display_name': 'Entrance Hall',
-			'variable_name': 'entrance_hall',
+			'key': 'entrance_hall',
 			'asset_index': 2,
 			'doors': [True, True, False, True],
 			'floor': 1,
@@ -208,7 +208,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Foyer',
-			'variable_name': 'foyer',
+			'key': 'foyer',
 			'asset_index': 1,
 			'doors': [True, True, True, True],
 			'floor': 1,
@@ -217,7 +217,7 @@ class Constants:
 		},
 		{
 			'display_name': 'Grand Staircase',
-			'variable_name': 'grand_staircase',
+			'key': 'grand_staircase',
 			'asset_index': 0,
 			'doors': [False, False, True, False],
 			'floor': 1,
@@ -229,97 +229,97 @@ class Constants:
 	rooms = [
 		{
 			'display_name': 'Dungeon',
-			'variable_name': 'dungeon',
+			'key': 'dungeon',
 			'asset_index': 8,
 			'doors': [True, False, True, False]
 		},
 		{
 			'display_name': 'Furnace Room',
-			'variable_name': 'furnace_room',
+			'key': 'furnace_room',
 			'asset_index': 9,
 			'doors': [True, False, True, True]
 		},
 		{
 			'display_name': 'Larder',
-			'variable_name': 'larder',
+			'key': 'larder',
 			'asset_index': 10,
 			'doors': [True, False, True, False]
 		},
 		{
 			'display_name': 'Pentagram Chamber',
-			'variable_name': 'pentagram_chamber',
+			'key': 'pentagram_chamber',
 			'asset_index': 11,
 			'doors': [False, True, False, False]
 		},
 		{
 			'display_name': 'Stairs From Basement',
-			'variable_name': 'stairs_from_basement',
+			'key': 'stairs_from_basement',
 			'asset_index': 12,
 			'doors': [True, False, True, False]
 		},
 		{
 			'display_name': 'Storm Cellar',
-			'variable_name': 'storm_cellar',
+			'key': 'storm_cellar',
 			'asset_index': 13,
 			'doors': [False, True, True, False]
 		},
 		{
 			'display_name': 'Underground Lake',
-			'variable_name': 'underground_lake',
+			'key': 'underground_lake',
 			'asset_index': 14,
 			'doors': [True, True, False, False]
 		},
 		{
 			'display_name': 'Wine Cellar',
-			'variable_name': 'wine_cellar',
+			'key': 'wine_cellar',
 			'asset_index': 15,
 			'doors': [True, False, True, False]
 		},
 		{
 			'display_name': 'Arsenal',
-			'variable_name': 'arsenal',
+			'key': 'arsenal',
 			'asset_index': 16,
 			'doors': [False, True, True, False]
 		},
 		{
 			'display_name': 'Kitchen',
-			'variable_name': 'kitchen',
+			'key': 'kitchen',
 			'asset_index': 17,
 			'doors': [True, True, False, False]
 		},
 		{
 			'display_name': 'Laundry',
-			'variable_name': 'laundry',
+			'key': 'laundry',
 			'asset_index': 18,
 			'doors': [False, False, True, True]
 		},
 		{
 			'display_name': 'Menagerie',
-			'variable_name': 'menagerie',
+			'key': 'menagerie',
 			'asset_index': 19,
 			'doors': [False, True, False, True]
 		},
 		{
 			'display_name': 'Catacombs',
-			'variable_name': 'catacombs',
+			'key': 'catacombs',
 			'asset_index': 20,
 			'doors': [True, False, True, False]
 		},
 		{
 			'display_name': 'Cave',
-			'variable_name': 'cave',
+			'key': 'cave',
 			'asset_index': 21,
 			'doors': [True, True, True, True]
 		},
 		{
 			'display_name': 'Chasm',
-			'variable_name': 'chasm',
+			'key': 'chasm',
 			'asset_index': 22,
 			'doors': [False, True, False, True]
 		},
 		{
 			'display_name': 'Crypt',
-			'variable_name': 'crypt',
+			'key': 'crypt',
 			'asset_index': 23,
 			'doors': [True, False, False, False]
 		}

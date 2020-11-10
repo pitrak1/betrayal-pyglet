@@ -17,13 +17,13 @@ CONFIG = {
 	},
 	'logging': {
 		'lattice2d_core': 'cyan',
-		# 'lattice2d_network': 'red',
+		'lattice2d_network': 'red',
 		# 'lattice2d_components': 'yellow',
 		# 'lattice2d_rendering': 'green'
 	},
 	'rendering': {
 		'layers': ['background', 'base', 'environment', 'actors', 'ui'],
-		'groups_per_layer': 2
+		'groups_per_layer': 3
 	},
 	'grid': {
 		'width': Constants.grid_dimensions_x,
@@ -33,17 +33,17 @@ CONFIG = {
 	'command_types': [
 		'client_select',
 		'client_move',
-		'network_move',
+		'move_actor',
 		'start_game',
-		'network_get_player_order',
-		'network_confirm_player_order',
-		'network_get_available_characters',
-		'network_get_current_player',
-		'network_select_character',
-		'network_all_characters_selected',
-		'network_get_character_selections',
-		'network_confirm_character_selections',
-		'network_get_player_positions'
+		'get_player_order',
+		'confirm_player_order',
+		'get_available_characters',
+		'get_current_player',
+		'select_character',
+		'all_characters_selected',
+		'get_character_selections',
+		'confirm_character_selections',
+		'get_player_positions'
 	],
 	'player_class': Player,
 	'empty_tile_class': Room,

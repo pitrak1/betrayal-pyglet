@@ -24,46 +24,46 @@ class SetupState(ServerState):
 		self.state_machine.current_player_index = len(self.state_machine.players) - 1
 		self.characters = []
 		for character in Constants.characters:
-			self.characters.append(character['variable_name'])
+			self.characters.append(character['key'])
 
-	def network_get_player_order_handler(self, command):
+	def get_player_order_handler(self, command):
 		parsed_players = [player.name for player in self.state_machine.players]
 		command.update_and_send(status='success', data={ 'players': parsed_players })
 
-	def network_confirm_player_order_handler(self, command):
+	def confirm_player_order_handler(self, command):
 		self.waiting.count()
 		if self.waiting.done():
 			for player in self.state_machine.players:
 				command.update_and_send(status='success', connection=player.connection)
 
-	def network_get_available_characters_handler(self, command):
+	def get_available_characters_handler(self, command):
 		command.update_and_send(status='success', data={ 'characters': self.characters })
 
-	def network_select_character_handler(self, command):
-		if self.game.is_current_player(command):
+	def select_character_handler(self, command):
+		if self.state_machine.is_current_player(command):
 			current_player = self.state_machine.get_current_player()
-			character_entry = next(character for character in Constants.characters if character['variable_name'] == command.data['character'])
+			character_entry = next(character for character in Constants.characters if character['key'] == command.data['character'])
 			current_player.set_character(character_entry)
-			self.characters = [x for x in self.characters if x != character_entry['variable_name'] and x not in character_entry['related']]
+			self.characters = [x for x in self.characters if x != character_entry['key'] and x not in character_entry['related']]
 
-			self.game.current_player_index -= 1
+			self.state_machine.current_player_index -= 1
 			current_player = self.state_machine.get_current_player()
-			if self.game.current_player_index < 0:
-				for player in self.state_machine.get_current_player():
-					Command.create_and_send('network_all_characters_selected', {}, 'success', player.connection)
+			if self.state_machine.current_player_index < 0:
+				for player in self.state_machine.players:
+					Command.create_and_send('all_characters_selected', {}, 'success', player.connection)
 			else:
-				for player in self.state_machine.get_current_player():
-					Command.create_and_send('network_get_available_characters', { 'characters': self.characters }, 'success', player.connection)
+				for player in self.state_machine.players:
+					Command.create_and_send('get_available_characters', { 'characters': self.characters }, 'success', player.connection)
 
-	def network_get_character_selections_handler(self, command):
-		selections = [(p.name, p.character_entry['display_name']) for p in self.state_machine.get_current_player()]
+	def get_character_selections_handler(self, command):
+		selections = [(p.name, p.character_entry['display_name']) for p in self.state_machine.players]
 		command.update_and_send(status='success', data={ 'selections': selections })
 
-	def network_confirm_character_selections_handler(self, command):
+	def confirm_character_selections_handler(self, command):
 		self.waiting.count()
 		if self.waiting.done():
 			self.to_game_state()
-			for player in self.state_machine.get_current_player():
+			for player in self.state_machine.players:
 				command.update_and_send(status='success', connection=player.connection)
 
 class GameState(ServerState):

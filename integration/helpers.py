@@ -4,6 +4,7 @@ from lattice2d.command import Command
 import random
 import time
 from config import CONFIG
+from constants import Constants
 from lattice2d.config import Config
 from lattice2d.states import StateMachine
 from lattice2d.server import ServerGame, Player
@@ -67,8 +68,17 @@ def enter_text(state_machine, component_key, text):
 	state_machine.current_state.get_component(component_key).selected = True
 	state_machine.on_update(0.1)
 
+def text(state_machine, component_key):
+	return state_machine.current_state.get_component(component_key).text
+
 def get_text(state_machine, component_key):
 	return state_machine.current_state.get_component(component_key).get_text()
+
+def assert_character_tile(state_machine, character_index):
+	assert state_machine.current_state.get_component('character_tile').display_name == Constants.characters[character_index]['display_name']
+
+def get_character_tile(state_machine):
+	return state_machine.current_state.get_component('character_tile')
 
 def wait_for_state(state_machine, state_class):
 	start = time.perf_counter()
@@ -110,6 +120,21 @@ def to_lobby_state_as_player(state_machine):
 	game_name = f'lobby{random.randrange(1000)}'
 	add_command(state_machine, Command('join_game', { 'game_name': game_name }, 'success'))
 	wait_for_state(state_machine, LobbyState)
+	return [player_name, game_name]
+
+def to_player_order_state(state_machine):
+	[player_name, game_name] = to_lobby_state_as_host(state_machine)
+	add_command(state_machine, Command('start_game', {}, 'success'))
+	return [player_name, game_name]
+
+def to_character_selection_state(state_machine):
+	[player_name, game_name] = to_player_order_state(state_machine)
+	add_command(state_machine, Command('confirm_player_order', {}, 'success'))
+	return [player_name, game_name]
+
+def to_character_overview_state(state_machine):
+	[player_name, game_name] = to_character_selection_state(state_machine)
+	add_command(state_machine, Command('all_characters_selected', {}, 'success'))
 	return [player_name, game_name]
 
 

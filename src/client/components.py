@@ -83,14 +83,14 @@ class GamePlayer(Component):
 			self.__crown.group = layer.groups[1]
 
 
-class CharacterTile(Node):
-	def __init__(self, entry, position, active, batch, area_group, text_group, highlight_group):
+class CharacterTile(Component):
+	def __init__(self, entry, position, active):
 		super().__init__()
+		self.display_name = entry['display_name']
+		self.active = active
 		self.__area = Area(
 			position=(position[0], position[1] + 60), 
-			unit_dimensions=(8, 12),
-			batch=batch,
-			group=area_group
+			unit_dimensions=(8, 12)
 		)
 		self.__name_label = Label(
 			text=entry['display_name'], 
@@ -101,16 +101,12 @@ class CharacterTile(Node):
 			align='center', 
 			font_size=15,
 			font_name='Courier',
-			color=(0, 0, 0, 255), 
-			batch=batch,
-			group=text_group
+			color=(0, 0, 0, 255)
 		)
 		self.__picture = pyglet.sprite.Sprite(
-			Assets().characters[entry['variable_name']], 
+			Assets()[entry['key']], 
 			x=position[0], 
-			y=position[1] + 120, 
-			batch=batch,
-			group=text_group
+			y=position[1] + 120
 		)
 
 		speed_text = 'SPD: '
@@ -125,16 +121,12 @@ class CharacterTile(Node):
 			align='center', 
 			font_size=12, 
 			font_name='Courier',
-			color=(0, 0, 0, 255), 
-			batch=batch,
-			group=text_group
+			color=(0, 0, 0, 255)
 		)
 		self.__speed_indicator = pyglet.sprite.Sprite(
-			Assets().custom['attribute_highlight'], 
+			Assets()['attribute_highlight'], 
 			x=position[0] - 60 + 20 * entry['speed_index'], 
-			y=position[1] + 15, 
-			batch=batch,
-			group=highlight_group
+			y=position[1] + 15
 		)
 
 		might_text = 'MGT: '
@@ -149,16 +141,12 @@ class CharacterTile(Node):
 			align='center', 
 			font_size=12, 
 			font_name='Courier',
-			color=(0, 0, 0, 255),
-			batch=batch,
-			group=text_group
+			color=(0, 0, 0, 255)
 		)
 		self.__might_indicator = pyglet.sprite.Sprite(
-			Assets().custom['attribute_highlight'], 
+			Assets()['attribute_highlight'], 
 			x=position[0] - 60 + 20 * entry['might_index'], 
-			y=position[1] - 25,
-			batch=batch,
-			group=highlight_group
+			y=position[1] - 25
 		)
 
 		sanity_text = 'SAN: '
@@ -173,16 +161,12 @@ class CharacterTile(Node):
 			align='center', 
 			font_size=12, 
 			font_name='Courier',
-			color=(0, 0, 0, 255), 
-			batch=batch,
-			group=text_group
+			color=(0, 0, 0, 255)
 		)
 		self.__sanity_indicator = pyglet.sprite.Sprite(
-			Assets().custom['attribute_highlight'], 
+			Assets()['attribute_highlight'], 
 			x=position[0] - 60 + 20 * entry['sanity_index'], 
-			y=position[1] - 65,
-			batch=batch,
-			group=highlight_group
+			y=position[1] - 65
 		)
 
 		knowledge_text = 'KNW: '
@@ -197,16 +181,12 @@ class CharacterTile(Node):
 			align='center', 
 			font_size=12, 
 			font_name='Courier',
-			color=(0, 0, 0, 255), 
-			batch=batch,
-			group=text_group
+			color=(0, 0, 0, 255)
 		)
 		self.__knowledge_indicator = pyglet.sprite.Sprite(
-			Assets().custom['attribute_highlight'], 
+			Assets()['attribute_highlight'], 
 			x=position[0] - 60 + 20 * entry['knowledge_index'], 
-			y=position[1] - 105,
-			batch=batch,
-			group=highlight_group
+			y=position[1] - 105
 		)
 
 		if not active:
@@ -218,10 +198,34 @@ class CharacterTile(Node):
 				anchor_y='center', 
 				align='center', 
 				font_size=12, 
-				color=(0, 0, 0, 255), 
-				batch=batch,
-				group=text_group
+				color=(0, 0, 0, 255)
 			)
+
+	def register(self, layer):
+		self.__area.register(layer)
+		self.__name_label.register(layer, 1)
+		self.__picture.batch = layer.batch
+		self.__picture.group = layer.groups[1]
+
+		self.__speed_label.register(layer, 1)
+		self.__speed_indicator.batch = layer.batch
+		self.__speed_indicator.group = layer.groups[2]
+
+		self.__might_label.register(layer, 1)
+		self.__might_indicator.batch = layer.batch
+		self.__might_indicator.group = layer.groups[2]
+
+		self.__knowledge_label.register(layer, 1)
+		self.__knowledge_indicator.batch = layer.batch
+		self.__knowledge_indicator.group = layer.groups[2]
+
+		self.__sanity_label.register(layer, 1)
+		self.__sanity_indicator.batch = layer.batch
+		self.__sanity_indicator.group = layer.groups[2]
+
+		if not self.active:
+			self.__active_label.register(layer, 1)
+
 
 class ClientEmptyTile(GridEntity):
 	def __init__(self, add_command, grid_position=(None, None), base_position=(0, 0)):

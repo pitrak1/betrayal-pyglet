@@ -7,8 +7,8 @@ from lattice2d.grid import get_distance
 from constants import Constants
 
 class BaseState(ClientState):
-	def __init__(self, add_command, custom_data={}):
-		self.rooms = ClientRoomGrid(add_command, Constants.grid_dimensions)
+	def __init__(self, state_machine, custom_data={}):
+		self.rooms = ClientRoomGrid(state_machine, Constants.grid_dimensions)
 		self.players = []
 		self.player_name = custom_data['player_name']
 		self.current_player = False
@@ -16,7 +16,7 @@ class BaseState(ClientState):
 		self.current_selection = None
 		super().__init__(add_command, custom_data)
 		self.children = [self.rooms]
-		self.add_command(Command('network_get_player_positions', status='pending'))
+		self.add_command(Command('get_player_positions', status='pending'))
 
 	def network_get_player_positions_handler(self, command):
 		if command.status == 'success':
