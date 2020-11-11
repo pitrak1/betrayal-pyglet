@@ -10,7 +10,7 @@ class SplashState(ClientState):
 	def __init__(self, state_machine, custom_data = {}):
 		super().__init__(state_machine, custom_data)
 		self.register_component('background', 'background', Background('menu_background'))
-		self.register_component('area', 'base', Area(
+		self.register_component('area', 'tiles', Area(
 			position=(Constants.window_center_x, Constants.window_center_y),
 			unit_dimensions=(10, 15)
 		))
@@ -38,7 +38,7 @@ class CreatePlayerState(ClientState):
 	def __init__(self, state_machine, custom_data={}):
 		super().__init__(state_machine, custom_data)
 		self.register_component('background', 'background', Background('menu_background'))
-		self.register_component('area', 'base', Area(
+		self.register_component('area', 'tiles', Area(
 			position=(Constants.window_center_x, Constants.window_center_y),
 			unit_dimensions=(10, 15)
 		))
@@ -96,7 +96,7 @@ class MainMenuState(ClientState):
 	def __init__(self, state_machine, custom_data={}):
 		super().__init__(state_machine, custom_data)
 		self.register_component('background', 'background', Background('menu_background'))
-		self.register_component('area', 'base', Area(
+		self.register_component('area', 'tiles', Area(
 			position=(Constants.window_center_x, Constants.window_center_y),
 			unit_dimensions=(10, 15)
 		))
@@ -147,7 +147,7 @@ class CreateGameState(ClientState):
 	def __init__(self, state_machine, custom_data={}):
 		super().__init__(state_machine, custom_data)
 		self.register_component('background', 'background', Background('menu_background'))
-		self.register_component('area', 'base', Area(
+		self.register_component('area', 'tiles', Area(
 			position=(Constants.window_center_x, Constants.window_center_y),
 			unit_dimensions=(20, 15)
 		))
@@ -210,7 +210,7 @@ class GameListState(ClientState):
 		super().__init__(state_machine, custom_data)
 		self.add_command(Command('get_games', status='pending'))
 		self.register_component('background', 'background', Background('menu_background'))
-		self.register_component('area', 'base', Area(
+		self.register_component('area', 'tiles', Area(
 			position=(Constants.window_center_x, Constants.window_center_y),
 			unit_dimensions=(20, 15)
 		))
@@ -328,7 +328,7 @@ class LobbyState(ClientState):
 		super().__init__(state_machine, custom_data)
 		self.add_command(Command('broadcast_players_in_game', status='pending'))
 		self.register_component('background', 'background', Background('menu_background'))
-		self.register_component('area', 'base', Area(
+		self.register_component('area', 'tiles', Area(
 			position=(Constants.window_center_x, Constants.window_center_y),
 			unit_dimensions=(20, 15)
 		))

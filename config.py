@@ -5,7 +5,7 @@ from src.client.setup_states import PlayerOrderState, CharacterSelectionState, C
 from src.client.game_states import BaseState
 from src.server.states import SetupState, LobbyState as ServerLobbyState, GameState
 from src.common.player import Player
-from src.common.grid import Room
+from src.common.grid import EmptyRoom
 from constants import Constants
 
 
@@ -22,7 +22,7 @@ CONFIG = {
 		# 'lattice2d_rendering': 'green'
 	},
 	'rendering': {
-		'layers': ['background', 'base', 'environment', 'actors', 'ui'],
+		'layers': ['background', 'tiles', 'environment', 'actors', 'effects', 'ui'],
 		'groups_per_layer': 3
 	},
 	'grid': {
@@ -46,7 +46,7 @@ CONFIG = {
 		'get_player_positions'
 	],
 	'player_class': Player,
-	'empty_tile_class': Room,
+	'empty_tile_class': EmptyRoom,
 	'client_states': {
 		'starting_state': SplashState,
 		'states': [

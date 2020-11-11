@@ -1,6 +1,6 @@
 import pytest
 import pyglet
-from src.common.grid import AttributeSet
+from src.common.player import AttributeSet
 from constants import Constants
 
 class TestAttributeSet():

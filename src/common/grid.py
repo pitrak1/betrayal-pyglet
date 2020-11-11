@@ -1,62 +1,28 @@
-from lattice2d.grid import Tile, TileGrid, get_direction, get_distance, reverse_direction
-from lattice2d.server import Player as Lattice2dPlayer
+import pyglet
+from lattice2d.grid import Tile, TileGrid, get_direction, get_distance, reverse_direction, UP, RIGHT, DOWN, LEFT
+from lattice2d.client import Assets
 from constants import Constants
 
-class AttributeSet():
-	def __init__(self, speed, speed_index, might, might_index, sanity, sanity_index, knowledge, knowledge_index):
-		self.speed = speed
-		self.speed_index = speed_index
-		self.might = might
-		self.might_index = might_index
-		self.sanity = sanity
-		self.sanity_index = sanity_index
-		self.knowledge = knowledge
-		self.knowledge_index = knowledge_index
+class EmptyRoom(Tile):
+	def __init__(self, state_machine, grid_position=(None, None), base_position=(0, 0)):
+		super().__init__(state_machine, grid_position, base_position)
+		self.state_machine = state_machine
+		self.add_command = state_machine.add_command
+		self.doors = [True, True, True, True]
+		self.links = []
 
-	def get_attribute_value(self, attribute):
-		return getattr(self, attribute)[getattr(self, f'{attribute}_index')]
+	def mouse_press_handler(self, command):
+		if self.within_bounds((command.data['x'], command.data['y'])):
+			if command.data['button'] == pyglet.window.mouse.RIGHT:
+				print('something')
 
-	def change_attribute_value(self, attribute, change):
-		setattr(self, f'{attribute}_index', getattr(self, f'{attribute}_index') + change)
 
-		if getattr(self, f'{attribute}_index') < 0: setattr(self, f'{attribute}_index', 0)
-		if getattr(self, f'{attribute}_index') > 8: setattr(self, f'{attribute}_index', 8)
-
-	def is_dead(self):
-		return self.speed_index == 0 or self.might_index == 0 or self.sanity_index == 0 or self.knowledge_index == 0
-
-class Player(Lattice2dPlayer):
-	def __init__(self, name, connection=None, game=None, entry=None, grid_position=(None, None), base_position=(0, 0)):
-		super().__init__(name, connection, game, grid_position, base_position)
-		self.host = False
-		self.attributes = None
-		self.display_name = None
-		self.variable_name = None
-		self.related = None
-		if entry:
-			self.set_character(entry)
-		
-	def set_character(self, entry):
-		self.attributes = AttributeSet(
-			speed=entry['speed'],
-			speed_index=entry['speed_index'], 
-			might=entry['might'],
-			might_index=entry['might_index'], 
-			sanity=entry['sanity'], 
-			sanity_index=entry['sanity_index'], 
-			knowledge=entry['knowledge'], 
-			knowledge_index=entry['knowledge_index']
-		)
-		self.display_name = entry['display_name']
-		self.variable_name = entry['variable_name']
-		self.related = entry['related']
-
-class Room(Tile):
-	def __init__(self, entry, base_position=(0, 0)):
-		super().__init__(entry['grid_position'], base_position)
+class Room(EmptyRoom):
+	def __init__(self, state_machine, entry, grid_position=(None, None), base_position=(0, 0)):
+		super().__init__(state_machine, grid_position, base_position)
 		self.entry = entry
 		self.display_name = entry['display_name']
-		self.variable_name = entry['variable_name']
+		self.key = entry['key']
 		self.asset_index = entry['asset_index']
 		self.doors = entry['doors']
 		self.floor = entry['floor']
@@ -64,9 +30,93 @@ class Room(Tile):
 		self.players = []
 		self.links = []
 
+		self.selected = False
+
+		scaled_position = self.get_scaled_position()
+		self.room_sprite = pyglet.sprite.Sprite(
+			Assets()[self.entry['key']],
+			x=scaled_position[0],
+			y=scaled_position[1]
+		)
+		self.room_sprite.update(rotation=self.sprite_rotation * 90, scale=self.base_scale)
+
+
+		self.door_sprites = []
+		if self.doors[UP]:
+			scaled_position = self.get_scaled_position((0, 0.5), (0, -20))
+			door_sprite = pyglet.sprite.Sprite(
+				Assets()['door'],
+				x=scaled_position[0],
+				y=scaled_position[1]
+			)
+			door_sprite.update(scale=self.base_scale)
+			self.door_sprites.append(door_sprite)
+
+		if self.doors[RIGHT]:
+			scaled_position = self.get_scaled_position((0.5, 0), (-20, 0))
+			door_sprite = pyglet.sprite.Sprite(
+				Assets()['door'],
+				x=scaled_position[0],
+				y=scaled_position[1]
+			)
+			door_sprite.update(rotation=90, scale=self.base_scale)
+			self.door_sprites.append(door_sprite)
+
+		if self.doors[DOWN]:
+			scaled_position = self.get_scaled_position((0, -0.5), (0, 20))
+			door_sprite = pyglet.sprite.Sprite(
+				Assets()['door'],
+				x=scaled_position[0],
+				y=scaled_position[1]
+			)
+			door_sprite.update(rotation=180, scale=self.base_scale)
+			self.door_sprites.append(door_sprite)
+
+		if self.doors[LEFT]:
+			scaled_position = self.get_scaled_position((-0.5, 0), (20, 0))
+			door_sprite = pyglet.sprite.Sprite(
+				Assets()['door'],
+				x=scaled_position[0],
+				y=scaled_position[1]
+			)
+			door_sprite.update(rotation=270, scale=self.base_scale)
+			self.door_sprites.append(door_sprite)
+
+
+	def register(self, layer):
+		self.room_sprite.batch = layer.batch
+		self.room_sprite.group = layer.groups[0]
+
+		for door in self.door_sprites:
+			door.batch = layer.batch
+			door.group = layer.groups[1]
+
+	def mouse_press_handler(self, command):
+		if self.within_bounds((command.data['x'], command.data['y'])):
+			if command.data['button'] == pyglet.window.mouse.LEFT:
+				if not self.default_handler(command):
+					self.add_command(Command('client_select', { 'selected': self }))
+					self.add_command(Command('redraw'))
+			elif command.data['button'] == pyglet.window.mouse.RIGHT:
+				self.add_command(Command('client_move', { 'grid_position': self.grid_position }))
+
+	def client_select_handler(self, command):
+		self.selected = command.data['selected'] == self
+		self.default_handler(command)
+
+
 class RoomGrid(TileGrid):
-	def __init__(self, grid_dimensions):
-		super().__init__(grid_dimensions, Constants.window_center)
+	def __init__(self, state_machine, grid_dimensions):
+		super().__init__(state_machine, grid_dimensions)
+		self.children = []
+		self.state_machine = state_machine
+		self.add_command = state_machine.add_command
+		for room in Constants.starting_rooms:
+			self.add_tile(room['grid_position'], Room(state_machine, room, room['grid_position'], self.base_position))
+
+	def add_tile(self, grid_position, tile):
+		super().add_tile(grid_position, tile)
+		self.state_machine.current_state.register_component(tile.key, 'environment', tile)
 
 	def add_adjacent_links(self, start_tile, end_tile):
 		if isinstance(end_tile, Tile):

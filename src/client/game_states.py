@@ -1,6 +1,7 @@
 import pyglet
 from lattice2d.client import ClientState
-from src.client.components import ClientRoomGrid, ClientPlayer
+from src.common.grid import RoomGrid
+from src.common.player import ClientPlayer
 from lattice2d.command import Command
 from lattice2d.components import Label
 from lattice2d.grid import get_distance
@@ -8,15 +9,9 @@ from constants import Constants
 
 class BaseState(ClientState):
 	def __init__(self, state_machine, custom_data={}):
-		self.rooms = ClientRoomGrid(state_machine, Constants.grid_dimensions)
-		self.players = []
-		self.player_name = custom_data['player_name']
-		self.current_player = False
-		self.title = None
-		self.current_selection = None
-		super().__init__(add_command, custom_data)
+		super().__init__(state_machine, custom_data)
+		self.rooms = RoomGrid(state_machine, Constants.grid_dimensions)
 		self.children = [self.rooms]
-		self.add_command(Command('get_player_positions', status='pending'))
 
 	def network_get_player_positions_handler(self, command):
 		if command.status == 'success':

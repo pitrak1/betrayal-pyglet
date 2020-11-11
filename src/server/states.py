@@ -4,7 +4,7 @@ from lattice2d.grid import TileGrid, get_distance
 from lattice2d.command import Command
 from lattice2d.utilities import ThreadedSync
 from lattice2d.nodes import Node
-from src.server.server_grid import ServerRoomGrid
+from src.common.grid import RoomGrid
 from constants import Constants
 
 class LobbyState(ServerState):
@@ -56,7 +56,7 @@ class SetupState(ServerState):
 					Command.create_and_send('get_available_characters', { 'characters': self.characters }, 'success', player.connection)
 
 	def get_character_selections_handler(self, command):
-		selections = [(p.name, p.character_entry['display_name']) for p in self.state_machine.players]
+		selections = [(p.name, p.entry['display_name']) for p in self.state_machine.players]
 		command.update_and_send(status='success', data={ 'selections': selections })
 
 	def confirm_character_selections_handler(self, command):
@@ -67,25 +67,23 @@ class SetupState(ServerState):
 				command.update_and_send(status='success', connection=player.connection)
 
 class GameState(ServerState):
-	def __init__(self, game, custom_data={}):
-		super().__init__(game, custom_data)
-		self.game.current_player_index = 0
-		self.rooms = ServerRoomGrid(Constants.grid_dimensions)
+	def __init__(self, state_machine, custom_data={}):
+		super().__init__(state_machine, custom_data)
+		self.state_machine.current_player_index = 0
+		self.rooms = RoomGrid(state_machine, Constants.grid_dimensions)
 		self.children = [self.rooms]
-		for player in self.game.players:
-			self.rooms.add_actor((0, 0), player)
 
 	def network_get_player_positions_handler(self, command):
-		parsed_players = [(player.name, player.character_entry['variable_name'], player.grid_position) for player in self.game.players]
+		parsed_players = [(player.name, player.character_entry['variable_name'], player.grid_position) for player in self.state_machine.players]
 		command.update_and_send(status='success', data={ 'players': parsed_players })
 
 	def network_get_current_player_handler(self, command):
-		current_player = self.game.get_current_player().name
+		current_player = self.state_machine.get_current_player().name
 		command.update_and_send(status='success', data={ 'player_name': current_player })
 
 	def network_move_handler(self, command):
-		player = next(p for p in self.game.players if p.name == command.data['player'])
-		assert player and self.game.is_current_player(player)
+		player = next(p for p in self.state_machine.players if p.name == command.data['player'])
+		assert player and self.state_machine.is_current_player(player)
 		assert get_distance(player.grid_position, command.data['grid_position']) == 1
 		self.rooms.move_actor(command.data['grid_position'], player)
 		command.update_and_send(status='success')
